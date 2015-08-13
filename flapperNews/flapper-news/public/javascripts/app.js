@@ -4,14 +4,14 @@ angular.module('flapperNews', ['ui.router'])
         $stateProvider
             .state('home', {
                 url: '/home',
-                templateUrl: '../partials/home.html',
+                templateUrl: 'partials/home',
                 controller: 'MainCtrl'
             });
 
         $stateProvider
             .state('posts', {
                 url: '/posts/{id}',
-                templateUrl: '../partials/comments.html',
+                templateUrl: 'partials/comments',
                 controller: 'PostCtrl'
             });
 
