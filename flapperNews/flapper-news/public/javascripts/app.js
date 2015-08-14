@@ -53,8 +53,12 @@ angular.module('flapperNews', ['ui.router'])
             post.upvotes += 1; 
         };
     }])
-    .controller('PostCtrl', ['$scope', '$stateParams', 'posts',
-                function($scope, $stateParams, posts) {
+    .controller('PostCtrl', ['$scope', '$stateParams', 'posts', '$state',
+                function($scope, $stateParams, posts, $state) {
+            //redirect if user ever tries to get acces to undefined / comment
+            if(!$stateParams.id || $stateParams.id > posts.posts.length-1) {
+                $state.go('home');
+            }
             $scope.post = posts.posts[$stateParams.id];     
             $scope.incrementUpvotes = function(comment) {
                 comment.upvotes += 1;     
