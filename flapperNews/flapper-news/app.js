@@ -5,7 +5,12 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+
+// Mongo db settings 
 mongoose.connect('mongodb://localhost/news');
+require("./models/Comments.js");
+require("./models/Posts.js");
+
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
