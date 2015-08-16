@@ -52,8 +52,8 @@ router.get('/posts', function (req, res, next) {
     });
 });
 
-router.post('/post', function(req, res, next) {
-    var post = new Post(req.bodly);
+router.post('/posts', function(req, res, next) {
+    var post = new Post(req.body);
 
     post.save(function(err, post) { 
         if(err) { return next(err); }
@@ -63,9 +63,9 @@ router.post('/post', function(req, res, next) {
 });
 
 router.param('post', function(req, res, next, id) {
-   var query = Post.findById(Id);
+   var query = Post.findById(id);
 
-   query.wxec(function(err, post) { 
+   query.exec(function(err, post) { 
        if(err) { return next(err); }
        if(!post) { return next(new Error('can\'t find post')); }
 
@@ -74,4 +74,11 @@ router.param('post', function(req, res, next, id) {
    });
 });
 
+router.delete('/posts/:post', function(req, res, next) {
+    Post.findOneAndRemove(req.post.id, function(err, doc, result) {
+        if(err) { console.log("err in delete"); return next(new Error('can\'t delete post')); }
+
+        res.json(doc);
+    });   // executes
+});
 module.exports = router;
