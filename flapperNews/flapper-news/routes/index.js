@@ -16,6 +16,7 @@ var options = {
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
+    console.log(options.root + " sending index");
     res.sendFile('index.html', options, function(err) {
         if(err) {
         res.status(err.status).end();
@@ -93,6 +94,7 @@ router.delete('/posts/:post', function(req, res, next) {
         var i = doc.comments.length; 
         console.log(doc.comments.length);
         /*jshint -W083 */
+        // disable js warning for function inside loop
         while(i--) { 
             Comment.findByIdAndRemove(doc.comments[i], function(err, result) {
                 console.log(result);
@@ -103,7 +105,6 @@ router.delete('/posts/:post', function(req, res, next) {
         res.json(doc);
     });  
 });
-
 /**
 * increment upvote of post by 1
 */

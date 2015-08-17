@@ -5,7 +5,14 @@ angular.module('flapperNews', ['ui.router'])
             .state('home', {
                 url: '/home',
                 templateUrl: 'partials/home',
-                controller: 'MainCtrl'
+                controller: 'MainCtrl',
+                resolve: { 
+                    postPromise: ['posts', '$location', function(posts, $location) {
+                        console.log("resolving http " + $location.path());
+                        return posts.getAll();
+                    }]
+                }
+
             });
 
         $stateProvider
@@ -17,22 +24,21 @@ angular.module('flapperNews', ['ui.router'])
 
         $urlRouterProvider.otherwise('home');
     }])
-    .factory('posts', [function() {
+    .factory('posts', ['$http', function($http) {
+
         var obj = {
-            posts: [{
-                title: "hello title", 
-                link:"google.com", 
-                upvotes: 0,
-                comments: [
-                {author: 'JoeShmo', body: 'Cool post!', upvotes: 0},
-                {author: 'Bobi Gindal', body: 'Great idea but everything is wrong!', upvotes: 0}
-                ]
-            }]
+            posts: []
         };
+
+        obj.getAll = function() { 
+            return $http.get('/posts').success(function(data) {
+                angular.copy(data, obj.posts);
+            });
+        };
+
         return obj;
     }])
     .controller('MainCtrl', ['$scope', 'posts', function($scope, posts){
-        $scope.test = 'Hello world!';
         $scope.posts = posts.posts; 
 
         $scope.addPost = function(){
@@ -56,9 +62,7 @@ angular.module('flapperNews', ['ui.router'])
     .controller('PostCtrl', ['$scope', '$stateParams', 'posts', '$state',
                 function($scope, $stateParams, posts, $state) {
             //redirect if user ever tries to get acces to undefined / comment
-            if(!$stateParams.id || $stateParams.id > posts.posts.length-1) {
-                $state.go('home');
-            }
+            //$state.go('home');
             $scope.post = posts.posts[$stateParams.id];     
             $scope.incrementUpvotes = function(comment) {
                 comment.upvotes += 1;     
