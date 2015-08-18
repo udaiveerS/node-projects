@@ -43,7 +43,7 @@ app.get('/partials/:name', function(req, res, next) {
 console.log(__dirname + " dirname in app.js");
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  var err = new Error('Not Found');
+  var err = new Error('Not Found' + ' it vanished ');
   err.status = 404;
   next(err);
 });
@@ -53,9 +53,10 @@ app.use(function(req, res, next) {
 // will print stacktrace
 if (app.get('env') === 'development') {
   app.use(function(err, req, res, next) {
+    console.log("gomg omdfomad" );
     res.status(err.status || 500);
     res.render('error', {
-      message: err.message,
+      message: err.message + " Great thanks for the 500",
       error: err
     });
   });

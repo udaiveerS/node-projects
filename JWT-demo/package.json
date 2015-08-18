@@ -1,0 +1,20 @@
+{
+  "name": "jwt-demo",
+  "version": "1.0.0",
+  "description": "Json web token authentication",
+  "main": "app.js",
+  "scripts": {
+    "test": "test"
+  },
+  "keywords": [
+    "jwt",
+    "angular",
+    "node"
+  ],
+  "author": "udaiveer",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.13.3",
+    "faker": "^3.0.1"
+  }
+}

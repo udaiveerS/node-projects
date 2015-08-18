@@ -108,7 +108,7 @@ router.delete('/posts/:post', function(req, res, next) {
 /**
 * increment upvote of post by 1
 */
-router.put('/posts/:post/upvotes', function(req, res, next) {
+router.put('/posts/:post/upvote', function(req, res, next) {
     req.post.upvote(function(err, post) { 
         if(err) { return next(err); } 
 
