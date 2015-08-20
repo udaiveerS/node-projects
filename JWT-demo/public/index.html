@@ -7,6 +7,12 @@
   </head>
   <body ng-app="app" ng-controller="MainCtrl as main">
     <h1> Get Random </h1> 
+    
+    <form> 
+      Username: <input type="text" ng-model="main.username"> <br/>
+      Password: <input type="password" ng-model="main.password"> <br/>
+      <button ng-click="main.login(main.username, main.password)"> Submit </button>
+    </form>
 
     <div> 
       <button ng-click="main.getRandomUser()"> Get User </button>
