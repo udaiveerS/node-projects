@@ -1,5 +1,7 @@
 (function() {
-    var app = angular.module('app', []);
+    var app = angular.module('app', [], function config($httpProvider) {
+        $httpProvider.interceptors.push('AuthInterceptor');
+    });
 
     app.constant('API_URL', 'http://localhost:3000');
 
@@ -8,6 +10,7 @@
 
        vm.getRandomUser = getRandomUser;
        vm.login = login; 
+       vm.logout = logout;
 
     function getRandomUser() {
         RandomUserFactory.getUser().then(function(response) {
@@ -21,7 +24,14 @@
             alert(response.token);
         }, handleError); 
     }
-       
+
+    function logout() {
+        UserFactory.logout();        
+        vm.username = ''; 
+        vm.password = '';
+        vm.user = null;
+    }
+
     function handleError(response) {
         alert('Error: ' + response.data);
     }
@@ -41,7 +51,8 @@
    app.factory('UserFactory', function UserFacatory($http, API_URL, AuthTokenFactory) {
 
        return {
-           login: login
+           login: login,
+           logout: logout
        };
 
        function login(username, password) {
@@ -53,6 +64,11 @@
                return success.data;
            }); 
        }
+
+       function logout() {
+           AuthTokenFactory.setToken();
+       }
+
    });
 
    app.factory('AuthTokenFactory', function($window) {
@@ -77,4 +93,19 @@
        }
    }); 
 
+    app.factory('AuthInterceptor', function AuthInterceptor(AuthTokenFactory) {
+        return {
+            request: addToken
+        };
+
+        function addToken(config) {
+            var token = AuthTokenFactory.getToken();
+            if(token) {
+                config.headers = config.headers || {}; 
+                config.headers.Authoriziation = 'Bearer ' + token;
+               }
+            return config;
+        }
+    });
+    
 })();
