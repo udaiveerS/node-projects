@@ -6,6 +6,7 @@ var jwt = require('jsonwebtoken');
 
 var app = express();
 var user = {username: 'admin' , password: 'password'}; 
+var secret = "fadsfsfsafs";
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -17,7 +18,14 @@ app.get('/random-user', function(req, res) {
 });
 
 app.post('/login', authenticate, function(req, res, next) {
-    res.json(user);
+    var token = jwt.sign({
+        username: user.username
+    }, secret); 
+
+    res.json({
+            token: token,
+            user: user
+    });
 });
 
 

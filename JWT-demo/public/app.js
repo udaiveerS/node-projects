@@ -17,7 +17,8 @@
 
     function login(username, password) {
         UserFactory.login(username, password).then(function(response) { 
-            vm.user = response.data;
+            vm.user = response.user;
+            alert(response.token);
         }, handleError); 
     }
        
@@ -37,7 +38,8 @@
        }
    });
 
-   app.factory('UserFactory', function UserFacatory($http, API_URL) {
+   app.factory('UserFactory', function UserFacatory($http, API_URL, AuthTokenFactory) {
+
        return {
            login: login
        };
@@ -46,8 +48,33 @@
            return $http.post(API_URL + '/login', { 
                username: username,
                password: password
-           });
+           }).then(function(success) {
+               AuthTokenFactory.setToken(success.data.token);
+               return success.data;
+           }); 
        }
    });
+
+   app.factory('AuthTokenFactory', function($window) {
+       var store = $window.localStorage; 
+       var key = "auth-token"; 
+
+       return { 
+           getToken: getToken,
+           setToken: setToken
+       };
+
+       function getToken() {
+           return store.getItem(key); 
+       }
+
+       function setToken(token) {
+           if(token) { 
+               store.setItem(key, token); 
+           } else { 
+               store.removeItem(key); 
+           }
+       }
+   }); 
 
 })();
