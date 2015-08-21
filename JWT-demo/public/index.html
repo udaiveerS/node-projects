@@ -4,19 +4,28 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
     <title>JWT Test</title>
+    <style>
+    [ng\:cloak], [ng-cloak], .ng-cloak {
+          display: none;
+    }
+    </style>
   </head>
-  <body ng-app="app" ng-controller="MainCtrl as main">
-    <h1> Get Random </h1> 
-    
-    <h2>Welcome {{main.user.username}} </h2>
-    <form> 
-      Username: <input type="text" ng-model="main.username"> <br/>
-      Password: <input type="password" ng-model="main.password"> <br/>
-      <button ng-click="main.login(main.username, main.password)"> Login </button>
-      <button ng-click="main.logout()"> Logout </button>
-    </form>
-    
+  <body class="ng-cloak" ng-app="app" ng-controller="MainCtrl as main">
+ 
     <div> 
+      <h2>Welcome {{main.user.username}} </h2>
+    </div>
+
+    <div ng-hide="main.user"> 
+      <form> 
+        Username: <input type="text" ng-model="main.username"> <br/>
+        Password: <input type="password" ng-model="main.password"> <br/>
+        <button ng-click="main.login(main.username, main.password)"> Login </button>
+      </form>
+    </div>
+    
+    <div ng-show="main.user"> 
+      <button ng-click="main.logout()"> Logout </button>
       <button ng-click="main.getRandomUser()"> Get User </button>
       <pre ng-bind="main.randomUser | json"></pre> 
     </div>

@@ -12,6 +12,14 @@
        vm.login = login; 
        vm.logout = logout;
 
+    //initialization
+    function getUser() {
+        UserFactory.getUser().then(function success(response) {
+            vm.user = response.data;
+        });
+    }
+
+     getUser();  
     function getRandomUser() {
         RandomUserFactory.getUser().then(function(response) {
            vm.randomUser = response.data;
@@ -38,7 +46,8 @@
 
 });
 
-   app.factory('RandomUserFactory', function($http, API_URL) {
+    
+    app.factory('RandomUserFactory', function($http, API_URL) {
        return {
            getUser: getUser
        };
@@ -48,11 +57,12 @@
        }
    });
 
-   app.factory('UserFactory', function UserFacatory($http, API_URL, AuthTokenFactory) {
+   app.factory('UserFactory', function UserFacatory($http, API_URL, AuthTokenFactory, $q) {
 
        return {
            login: login,
-           logout: logout
+           logout: logout,
+           getUser: getUser
        };
 
        function login(username, password) {
@@ -63,6 +73,14 @@
                AuthTokenFactory.setToken(success.data.token);
                return success.data;
            }); 
+       }
+
+       function getUser() {
+           if(AuthTokenFactory.getToken()) {
+               return $http.get(API_URL + '/me');
+           } else {
+                return $q.reject(new Error('User not Logged in'));
+           }
        }
 
        function logout() {
@@ -102,7 +120,7 @@
             var token = AuthTokenFactory.getToken();
             if(token) {
                 config.headers = config.headers || {}; 
-                config.headers.Authoriziation = 'Bearer ' + token;
+                config.headers.Authorization = 'Bearer ' + token;
                }
             return config;
         }

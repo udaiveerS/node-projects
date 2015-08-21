@@ -19,6 +19,10 @@ app.get('/random-user', function(req, res) {
     res.json(user);
 });
 
+app.get('/me', function(req, res) { 
+    res.json(user); 
+});
+
 app.post('/login', authenticate, function(req, res, next) {
     var token = jwt.sign({
         username: user.username
