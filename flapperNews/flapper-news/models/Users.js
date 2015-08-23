@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var crypto = require('crypto'); 
+var jwt = require('jsonwebtoken'); 
 
 var UserSchema = new mongoose.Schema({
     username: {type: String, lowercase: true, unique: true},
@@ -19,5 +20,20 @@ UserSchema.methods.validatePassword = function(password) {
     return this.hash == hash; 
 };
 
-mongoose.model('Post', PostSchema);
+UserSchema.methods.generateJwt = function() {
+    var today = new Date(); 
+    var exp = new Date(today); 
+    exp.setDate(today.getDate() + 60); 
+    console.log('today ' + today.DateString()); 
+    console.log('exp ' + exp.DateString()); 
+    console.log('exp in sec ' + exp.getTime()/1000); 
+
+    return jwt.sign({
+        _id: this._id,
+        username: this.username,
+        exp: parseInt(exp.getTime() / 1000), 
+    }, 'Seret'); 
+}; 
+
+mongoose.model('User', UserSchema);
 
