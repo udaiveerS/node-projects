@@ -20,8 +20,10 @@ var users = require('./routes/users');
 
 var app = express();
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
+// view engine setup is not needed becasue i am serving via sendFile
+// No view engines are being used because it does not have linting 
+// support via html lint in vim
+//app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 // uncomment after placing your favicon in /public
@@ -29,22 +31,15 @@ app.set('view engine', 'ejs');
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
+//Jwt not cookies needed
+//app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(passport.initialize());
 
 app.use('/', routes);
-app.use('/users', users);
+app.use('/', users);
 
-/*
-app.get('/partials/:name', function(req, res, next) {
-    var name = req.params.name; 
-    console.log(name + " in router. get file");
-    res.sendFile(path.join(process.cwd(), '/views/partials/', name +'.html'));
-});
-**/
 
-console.log(__dirname + " dirname in app.js");
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found' + ' it vanished ');
