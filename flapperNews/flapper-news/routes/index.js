@@ -1,14 +1,23 @@
 var express = require('express');
 var router = express.Router();
 var path = require('path');
+var jwt = require('express-jwt'); 
+var auth = jwt({secret: 'Secret', userProperty: 'payload'});
 
+
+
+//get access to the models defined in the models folder  
+var mongoose = require('mongoose');
+var Post = mongoose.model('Post');
+var Comment = mongoose.model('Comment');
+var passport = require('passport'); 
+var User = mongoose.model('User'); 
 
 /**
  * This option sets the manual path for the 
  * html files that are requested by the Angular
  * app and sent through Express 
  * */
-
 var options = {
     root: path.join(process.cwd(), '/views/')
 };
@@ -39,10 +48,6 @@ router.get('/partials/:name', function(req, res, next) {
 });
 
 
-//get access to the models defined in the models folder  
-var mongoose = require('mongoose');
-var Post = mongoose.model('Post');
-var Comment = mongoose.model('Comment');
 
 var myModels = {'comment': Comment, 'post': Post}; 
 
@@ -57,8 +62,9 @@ router.get('/posts', function (req, res, next) {
 });
 
 /** add a post to database */ 
-router.post('/posts', function(req, res, next) {
+router.post('/posts', auth, function(req, res, next) {
     var post = new Post(req.body);
+    post.author = req.payload.username;
 
     post.save(function(err, post) { 
         if(err) { return next(err); }
@@ -108,7 +114,7 @@ router.delete('/posts/:post', function(req, res, next) {
 /**
 * increment upvote of post by 1
 */
-router.put('/posts/:post/upvote', function(req, res, next) {
+router.put('/posts/:post/upvote', auth, function(req, res, next) {
     req.post.upvote(function(err, post) { 
         if(err) { return next(err); } 
 
@@ -119,7 +125,7 @@ router.put('/posts/:post/upvote', function(req, res, next) {
 /**
 * and a comment to a post object  
 */
-router.post('/posts/:post/comments', function(req, res, next) {
+router.post('/posts/:post/comments', auth, function(req, res, next) {
     console.log(req.body);
     var comment = new Comment(req.body);
     comment.post = req.post; 
@@ -164,7 +170,9 @@ router.param('comment', function(req, res, next, id) {
 /**
 * uses :post and :upvote to upvote a comment 
 */
-router.put('/posts/:post/comments/:comment/upvotes', function(req, res, next) {
+router.put('/posts/:post/comments/:comment/upvotes', 
+           auth,
+           function(req, res, next) {
     req.comment.upvote(function(err, comm) {
         if(err) { next(err); } 
         

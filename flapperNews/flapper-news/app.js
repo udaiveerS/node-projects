@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var passport = require('passport'); 
+//var jwt = require('express-jwt'); 
 
 // Mongo db settings 
 mongoose.connect('mongodb://localhost/news');
