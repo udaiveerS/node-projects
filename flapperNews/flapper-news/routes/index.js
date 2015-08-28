@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var path = require('path');
 var jwt = require('express-jwt'); 
-var auth = jwt({secret: 'Secret', userProperty: 'payload'});
+var auth = jwt({secret: 'Seret', userProperty: 'payload'});
 
 
 
@@ -115,6 +115,7 @@ router.delete('/posts/:post', function(req, res, next) {
 * increment upvote of post by 1
 */
 router.put('/posts/:post/upvote', auth, function(req, res, next) {
+    console.log(req); 
     req.post.upvote(function(err, post) { 
         if(err) { return next(err); } 
 
@@ -126,7 +127,6 @@ router.put('/posts/:post/upvote', auth, function(req, res, next) {
 * and a comment to a post object  
 */
 router.post('/posts/:post/comments', auth, function(req, res, next) {
-    console.log(req.body);
     var comment = new Comment(req.body);
     comment.post = req.post; 
 

@@ -56,7 +56,7 @@ angular.module('flapperNews', ['ui.router'])
 
         $urlRouterProvider.otherwise('/home');
     }])
-    .factory('posts', ['$http', '$state' , function($http, $state) {
+    .factory('posts', ['$http', '$state', 'auth', function($http, $state, auth) {
 
         var obj = {
             posts: []
@@ -70,14 +70,17 @@ angular.module('flapperNews', ['ui.router'])
         };
 
         obj.create = function(post) { 
-            return $http.post('/posts', post).success(function(data) {
+            return $http.post('/posts', post, {
+                    headers: {Authorization: 'Bearer ' + auth.getToken() }
+            }).success(function(data) {
                 obj.posts.push(data);
             });
         };
 
        obj.upvote = function(post) { 
-           return $http.put('/posts/' + post._id + '/upvote')
-            .success(function(data) { 
+           return $http.put('/posts/' + post._id + '/upvote', null, {
+                    headers: {Authorization: 'Bearer ' + auth.getToken() }
+            }).success(function(data) { 
                 post.upvotes += 1; 
             }).error(function(err) {
                 console.log(err) ;
@@ -97,12 +100,15 @@ angular.module('flapperNews', ['ui.router'])
        };
 
        obj.addComment = function(id, comment) { 
-           return $http.post('/posts/' + id + '/comments', comment);
+           return $http.post('/posts/' + id + '/comments', comment, {
+                    headers: {Authorization: 'Bearer ' + auth.getToken() }
+            });
        };
 
        obj.upvoteComment = function(post, comment) { 
-           return $http.put('/posts/' + post._id + '/comments/' + comment._id + '/upvotes')
-            .success(function(data) {
+           return $http.put('/posts/' + post._id + '/comments/' + comment._id + '/upvotes', null, {
+                    headers: {Authorization: 'Bearer ' + auth.getToken() }
+            }).success(function(data) {
                 comment.upvotes += 1;
             });
        };
@@ -113,7 +119,7 @@ angular.module('flapperNews', ['ui.router'])
         var auth = {}; 
         var key = 'flappy-key'; 
         auth.saveToken = function(token) { 
-            $window.localStorage.set(key,token);
+            $window.localStorage.setItem(key,token);
         };
 
         auth.getToken = function() { 
@@ -135,7 +141,7 @@ angular.module('flapperNews', ['ui.router'])
         auth.currentUser = function() { 
             if(auth.isLoggedIn()) {
                 var token = auth.getToken(); 
-                var payload = JSON.parse($windw.atob(token.split('.')[1]));
+                var payload = JSON.parse($window.atob(token.split('.')[1]));
 
                 return payload.username; 
             }
@@ -153,6 +159,9 @@ angular.module('flapperNews', ['ui.router'])
             }); 
         }; 
 
+        auth.logOut = function(){
+              $window.localStorage.removeItem(key);
+        };
         return auth; 
     }])
     .controller('AuthCtrl', [
@@ -178,7 +187,8 @@ angular.module('flapperNews', ['ui.router'])
             });
         }; 
     }])
-    .controller('MainCtrl', ['$scope', 'posts', function($scope, posts){
+    .controller('MainCtrl', ['$scope', 'posts', 'auth', function($scope, posts, auth) {
+        $scope.isLoggedIn = auth.isLoggedIn; 
         $scope.posts = posts.posts; 
 
         $scope.addPost = function() {
@@ -199,10 +209,11 @@ angular.module('flapperNews', ['ui.router'])
         $scope.currentUser = auth.currentUser; 
         $scope.logOut = auth.logOut; 
     }])
-    .controller('PostCtrl', ['$scope', 'post', 'posts', '$state', '$q', 
-                function($scope, post, posts, $state, $q) {
+    .controller('PostCtrl', ['$scope', 'post', 'posts', '$state', '$q', 'auth', 
+                function($scope, post, posts, $state, $q, auth) {
             //redirect if user ever tries to get acces to undefined / comment
             //$state.go('home');
+            $scope.isLoggedIn = auth.isLoggedIn; 
             $scope.post = post;       
             $scope.incrementUpvotes = function(comment) {
                 posts.upvoteComment(post, comment);
