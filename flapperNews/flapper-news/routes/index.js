@@ -63,8 +63,11 @@ router.get('/posts', function (req, res, next) {
 
 /** add a post to database */ 
 router.post('/posts', auth, function(req, res, next) {
+    console.log(req.body);
     var post = new Post(req.body);
+    console.log(post);
     post.author = req.payload.username;
+    console.log(post);
 
     post.save(function(err, post) { 
         if(err) { return next(err); }

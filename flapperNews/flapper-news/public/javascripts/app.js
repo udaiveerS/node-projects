@@ -196,6 +196,7 @@ angular.module('flapperNews', ['ui.router'])
             posts.create({
                 title: $scope.title, 
                 link: $scope.link,
+                author: auth.currentUser()
             });
             $scope.title = '';
             $scope.link = '';
