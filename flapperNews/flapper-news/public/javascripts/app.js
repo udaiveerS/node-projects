@@ -32,6 +32,26 @@ angular.module('flapperNews', ['ui.router'])
                         }
                     }]
                 }
+            })
+            .state('login', { 
+                url: '/login', 
+                templateUrl: '/partials/login',
+                controller: 'AuthCtrl', 
+                onEnter: ['$state', 'auth', function($state, auth) { 
+                    if(auth.isLoggedIn()) {
+                        $state.go('home'); 
+                    }
+                }]
+            })
+            .state('register', { 
+                url: '/register', 
+                templateUrl: '/partials/register',
+                controller: 'AuthCtrl', 
+                onEnter: ['$state', 'auth', function($state, auth) { 
+                    if(auth.isLoggedIn()) { 
+                        $state.go('home'); 
+                    }
+                }]
             });
 
         $urlRouterProvider.otherwise('/home');
@@ -91,16 +111,16 @@ angular.module('flapperNews', ['ui.router'])
     }])
     .factory('auth', ['$http', '$window', function($http, $window) {
         var auth = {}; 
-        
+        var key = 'flappy-key'; 
         auth.saveToken = function(token) { 
-            $window.localStorage['flapper-news-tolken'] = token;
+            $window.localStorage.set(key,token);
         };
 
         auth.getToken = function() { 
-            return $window.localStorgae['flapper-news-token'];
+            return $window.localStorage.getItem(key);
         };
 
-        auth.isLoggedin = function() { 
+        auth.isLoggedIn = function() { 
             var token = auth.getToken(); 
             
             if(token) { 
@@ -135,6 +155,29 @@ angular.module('flapperNews', ['ui.router'])
 
         return auth; 
     }])
+    .controller('AuthCtrl', [
+    '$scope', 
+    '$state', 
+    'auth',
+    function($scope, $state, auth) { 
+        $scope.user = {}; 
+
+        $scope.register = function() {
+            auth.register($scope.user).error(function(error) {
+                $scope.error = error; 
+            }).then(function() {
+                $state.go('home'); 
+            });
+        }; 
+
+        $scope.logIn = function() { 
+            auth.logIn($scope.user).error(function(error) { 
+                $scope.error = error; 
+            }).then(function() { 
+                $state.go('home');
+            });
+        }; 
+    }])
     .controller('MainCtrl', ['$scope', 'posts', function($scope, posts){
         $scope.posts = posts.posts; 
 
@@ -150,6 +193,11 @@ angular.module('flapperNews', ['ui.router'])
         $scope.incrementUpvotes = function(post) {
            posts.upvote(post); 
         };
+    }])
+    .controller('NavCtrl', ['$scope', 'auth', function($scope, auth) { 
+        $scope.isLoggedIn = auth.isLoggedIn; 
+        $scope.currentUser = auth.currentUser; 
+        $scope.logOut = auth.logOut; 
     }])
     .controller('PostCtrl', ['$scope', 'post', 'posts', '$state', '$q', 
                 function($scope, post, posts, $state, $q) {
