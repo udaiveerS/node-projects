@@ -10,7 +10,6 @@ try {
 
 if(socket !== undefined) { 
     console.log("ok");
-
     
     socket.on('output', function(data) {
         data.forEach(function(elem) {
@@ -49,7 +48,9 @@ $('#login').submit(function(event) {
     var regx =  /^[a-zA-z0-9]{5,12}$/; 
 
     if(user.match(regx) && pass.match(regx)) {
-        alert('login valid' + user + " " + pass);
+        $.post("api/login/", function(data) {
+        });
+
     } else {
         alert('must be letter and numbers 5 <= len <= 12');
     }
