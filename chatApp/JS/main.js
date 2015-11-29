@@ -1,3 +1,16 @@
+//var ip = '54.183.2.118:9000';
+var ip = '127.0.0.1:8080';
+
+try {
+    var socket = io.connect('http://'+ ip);
+} catch(std) {
+    // set status to warn user
+}
+
+if(socket !== undefined) { 
+    console.log("ok")
+}
+
 $('#inputline').keydown(function(event) {
     if (event.keyCode == 13) {
         if(this.value !== "") {
@@ -8,6 +21,7 @@ $('#inputline').keydown(function(event) {
      }
 }).focus(function(){
     if(this.value == "Write your comment here..."){
+        this.value = "";
     }
 
 }).blur(function(){

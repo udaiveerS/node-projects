@@ -9,6 +9,8 @@
   "author": "udaiveer singh",
   "license": "MIT",
   "dependencies": {
-    "forever": "^0.15.1"
+    "forever": "^0.15.1",
+    "mongodb": "^2.0.49",
+    "socket.io": "^1.3.7"
   }
 }
