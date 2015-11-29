@@ -20,8 +20,8 @@ module.exports = function(key) {
      * and return a hash(head + "." + body,secret)  
      */
     function checkSumGen(head, body) {
-        var checkSumStr = head + "." + body; 
-        var hash = crypto.createHmac('sha256',key);
+        var checkSumStr = head + "." + body + key; 
+        var hash = crypto.createHash('sha256');
         var checkSum = hash.update(checkSumStr)
             .digest('base64').toString('utf8');
         return checkSum;
@@ -33,38 +33,29 @@ module.exports = function(key) {
         encode:(obj) => {
             var result = "";
             var header = encodeBase64(stringify(alg));
-            console.log(header);
+            console.log("head is: " + [header);
             result += header + ".";
             var body = encodeBase64(stringify(obj));
-            console.log(body);
             result += body + ".";
 
-            var checkSum = checkSumGen(header,body);
+            var checkSum = checkSumGen(head,body);
             result += checkSum; 
             return result;
         },
         decode:(str) => {
             var jwtArr = str.split("."); 
-            console.log(decodeBase64(jwtArr[0]));
             console.log(decodeBase64(jwtArr[1]));
-
-            var head = jwtArr[0];
-            var body = jwtArr[1];
-            var hash = jwtArr[2];
-
-            var checkSum = checkSumGen(head,body); 
-
-            if(hash === checkSum) {
-                console.log("jwt hash: " + hash);
-                console.log("gen hash: " + checkSum);
-                console.log('JWT was authenticated');
-                return JSON.parse(decodeBase64(body));
+            console.log(decodeBase64(jwtArr[2]));
+            var head = jwtArr[1] 
+            var checkSum = checkSumGen(
+            if(jwtArr[0] === stringify(alg)) {
+                console.log(decodeBase64(jwtArr[0]));
             } else {
-                console.log('JWT was not authenticated');
-                console.log("jwt hash: " + hash);
-                console.log("gen hash: " + checkSum);
-                return false;
+                consol.log('bad header');
             }
+
+
+
         }
     };
 };
