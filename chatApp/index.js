@@ -9,9 +9,19 @@ var obj = {
           "admin": true
 };
 
-client.on('connection', function(socket) {
-    console.log('someone has connected');
+mongo.connect('mongodb://127.0.0.1/chat', function(err,db) {
+    if(err) throw err;
+    
+    console.log("no erron on mongo");
+    client.on('connection', function(socket) {
+        console.log('a connection made');
+        socket.on('input', function(data) {
+            var col = db.collection('messages');
+                console.log(data);
+        });
+    });
 });
+
 
 var encodedString = jwt.encode(obj);
 console.log("encoded string is: " + encodedString);

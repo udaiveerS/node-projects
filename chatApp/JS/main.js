@@ -1,14 +1,17 @@
 //var ip = '54.183.2.118:9000';
 var ip = '127.0.0.1:8080';
-
+var suffix = '/socket.io/socket.io.js';
 try {
     var socket = io.connect('http://'+ ip);
 } catch(std) {
     // set status to warn user
+    console.log("not connected");
 }
 
 if(socket !== undefined) { 
-    console.log("ok")
+    console.log("ok");
+} else {
+    console.log("not ok");
 }
 
 $('#inputline').keydown(function(event) {
@@ -51,9 +54,14 @@ $('#login').submit(function(event) {
 function addComment(event){
     room = $('#central_room'); 
     message = $('#inputline').val();
-    console.log(message); 
     comment = $('.lineA:first').clone();
-    comment.find('.message').text(message);
+    var cmtStr = comment.find('.message').text(message).val();
     room.append(comment); 
+
+    socket.emit('input', {
+        msg: message, jwt: 'sample-jwt'
+    });
+
+    console.log(message); 
     message = $('#inputline').val('');
 }
