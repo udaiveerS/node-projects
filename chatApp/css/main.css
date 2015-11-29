@@ -34,10 +34,14 @@ a {
   left: 152px;
 }
 
-#login {
+#login1 {
     position: absolute;
     right: 60px;
-    top: 0px;
+    top: 10px;
+}
+
+label {
+    padding: 2px;
 }
 
 #login2 {
