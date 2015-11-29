@@ -12,12 +12,36 @@ var obj = {
 mongo.connect('mongodb://127.0.0.1/chat', function(err,db) {
     if(err) throw err;
     
-    console.log("no erron on mongo");
     client.on('connection', function(socket) {
         console.log('a connection made');
+        var col = db.collection('messages');
+
+        var sendStatus = (s) => {
+            socket.emit('status',s);
+        };
+
+        col.find().limit(50).sort({_id: 1}).toArray(function(err, res) {
+            if(err) throw err; 
+            socket.emit('output',res);
+        });
+
         socket.on('input', function(data) {
-            var col = db.collection('messages');
+
+            if(false) {
+                // check for jwt auth 
+            } else {
                 console.log(data);
+                var newData = {message: data.msg, jwt: data.jwt};
+                client.emit('output', [newData]);
+                col.insert(newData,function(err, res) {
+                    if(err) console.log("error storing in db");
+                    else {
+                      sendStatus({
+                                message: "Message sent",
+                      });
+                    }
+                });
+            }
         });
     });
 });

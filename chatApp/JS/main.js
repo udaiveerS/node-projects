@@ -10,6 +10,15 @@ try {
 
 if(socket !== undefined) { 
     console.log("ok");
+
+    
+    socket.on('output', function(data) {
+        data.forEach(function(elem) {
+            console.log(elem);
+            appendComment(elem.message);
+        });
+    });
+        
 } else {
     console.log("not ok");
 }
@@ -17,7 +26,7 @@ if(socket !== undefined) {
 $('#inputline').keydown(function(event) {
     if (event.keyCode == 13) {
         if(this.value !== "") {
-            addComment(event);
+            emmitComment(event);
         }
         event.preventDefault();
         return false;
@@ -50,13 +59,16 @@ $('#login').submit(function(event) {
     event.preventDefault();
 });
 
-
-function addComment(event){
-    room = $('#central_room'); 
-    message = $('#inputline').val();
-    comment = $('.lineA:first').clone();
-    var cmtStr = comment.find('.message').text(message).val();
+function appendComment(str) {
+    console.log('appending ' + str);
+    var room = $('#central_room'); 
+    var comment = $('.lineA:first').clone();
+    var cmtStr = comment.find('.message').text(str);
     room.append(comment); 
+}
+ 
+function emmitComment(event){
+    var message = $('#inputline').val();
 
     socket.emit('input', {
         msg: message, jwt: 'sample-jwt'
