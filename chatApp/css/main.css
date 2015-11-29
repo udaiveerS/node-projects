@@ -160,6 +160,14 @@ label {
   right: 0;
   left: 0;
 }
+
+.lineA {
+  padding: 0 10px;
+  border-bottom: 1px dashed #292929;
+  font-size: 14px;
+  clear: both;
+}
+
 .line {
   padding: 0 10px;
   border-bottom: 1px dashed #292929;
