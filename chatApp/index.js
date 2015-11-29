@@ -10,4 +10,4 @@ var obj = {
 var encodedString = jwt.encode(obj);
 
 console.log("encoded string is: " + encodedString);
-console.log("decoded string is: " + jwt.decode(encodedString).name);
+console.log("decoded string is: " + jwt.decode(encodedString));

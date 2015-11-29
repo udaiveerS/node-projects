@@ -45,8 +45,6 @@ module.exports = function(key) {
         },
         decode:(str) => {
             var jwtArr = str.split("."); 
-            console.log(decodeBase64(jwtArr[0]));
-            console.log(decodeBase64(jwtArr[1]));
 
             var head = jwtArr[0];
             var body = jwtArr[1];
