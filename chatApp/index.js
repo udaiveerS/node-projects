@@ -7,15 +7,33 @@ var client = require('socket.io').listen(app).sockets;
 var url = require('url'); 
 var fs = require('fs');
 var path = require('path');
+var qs = require('querystring');
+
 
 app.listen(8080, () => { console.log('listening to port 8080'); });
-//routing stuff 
+
+// simple router implementation
 var routes = {
-    'GET': {
-        '/': (req,res) => {
-            res.writeHead(200, {'content-type': 'text/html'});
-            res.end('<h1>Hello world</h1>');
-        }
+    'GET': (req,res) => {
+            var filePath = req.filePath; 
+            console.log(filePath);
+            fs.access(filePath, fs.F_OK, (error) => {
+            if(!error) {
+                fs.readFile(filePath, (error, content) => {
+                    if(!error) {
+                        var contentType = mimes[path.extname(filePath)];
+                        res.writeHead(200, {'Content-type': contentType});
+                        res.end(content, 'utf-8');
+                    } else {
+                        res.writeHead(500);
+                        res.end("<h1>File not found</h1>");
+                    }
+                });
+            } else {
+                res.writeHead(404);
+                res.end('Content not found!');
+            }
+        });
     },
     'POST': { 
         '/api/login/': (req, res) => {
@@ -24,7 +42,7 @@ var routes = {
                 body += data; 
             });
 
-            req.on('end', data => {
+            req.on('end', () => {
                 console.log(body);
                 res.end();
             });
@@ -33,7 +51,12 @@ var routes = {
     'NA': (req,res) => {
         res.writeHead(404);
         res.end('Content not found!');
+    },
+    'NO': (req,res) => {
+        res.writeHead(500);
+        res.end('shit it broken =(' );
     }
+
 };
 
 var mimes = {
@@ -48,24 +71,22 @@ var mimes = {
 //do all website routing for serving the staic files
 function router(req,res) {
     var baseURI = url.parse(req.url, true);
-    var filePath = __dirname + (baseURI.pathname === '/' ? '/index.html' : baseURI.pathname);
-    console.log(filePath);
-    fs.access(filePath, fs.F_OK, (error) => {
-        if(!error) {
-            fs.readFile(filePath, (error, content) => {
-                if(!error) {
-                    var contentType = mimes[path.extname(filePath)];
-                    res.writeHead(200, {'Content-type': contentType});
-                    res.end(content, 'utf-8');
-                } else {
-                    res.writeHead(500);
-                    res.end("<h1>File not found</h1>");
-                }
-            });
+    try {
+        if(req.method === 'GET') {
+            var filePath = __dirname + (baseURI.pathname === '/' ? '/index.html' : baseURI.pathname);
+            req.filePath = filePath;
+            console.log(req.filePath);
+            routes.GET(req,res);
+        }else if(req.method === 'POST') {
+            console.log(baseURI);
+            console.log(baseURI.pathname);
+            routes.POST[baseURI.pathname](req,res);
         } else {
-            throw error; 
+            routes.NA(req,res);
         }
-    });
+    } catch(e) {
+        routes.NA(req,res);
+    }
 }
 
 
@@ -82,7 +103,7 @@ console.log("decoded string is: " + jwt.decode(encodedString));
 
 
 //socket.io 
-mongo.connect('mongodb://127.0.0.1/chat', function(err,db) {
+mongo.connect('mongodb://localhost/chat', function(err,db) {
     if(err) throw err;
     
     client.on('connection', function(socket) {

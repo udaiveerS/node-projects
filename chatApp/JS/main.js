@@ -1,5 +1,5 @@
 //var ip = '54.183.2.118:9000';
-var ip = '127.0.0.1:8080';
+var ip = 'localhost:8080';
 var suffix = '/socket.io/socket.io.js';
 try {
     var socket = io.connect('http://'+ ip);
@@ -46,11 +46,19 @@ $('#login').submit(function(event) {
     var user = $('#User').val();
     var pass = $('#password').val();
     var regx =  /^[a-zA-z0-9]{5,12}$/; 
-
+    
+    var data = {username: user, password: pass};
     if(user.match(regx) && pass.match(regx)) {
-        $.post("api/login/", function(data) {
+        $.ajax({
+                type: 'POST',
+                data: JSON.stringify(data),
+                contentType: 'application/json',
+                url: 'http://localhost:8080/api/login/',                      
+                success: function(data) {
+                    console.log('success');
+                    console.log(JSON.stringify(data));
+                }
         });
-
     } else {
         alert('must be letter and numbers 5 <= len <= 12');
     }
