@@ -104,20 +104,26 @@ var routes = {
                             if(err) throw err;
                             var collection = db.collection('users');
                             return new Promise(function(resolve, reject) {
-                                var someErr;
-                                collection.findOne({'userName' : data.username}, function(err,user) {
-                                    someErr = err;
+                                collection.findOne({'username' : data.username}, function(err,userPerson) {
+                                    console.log('find one ' + err);
+                                    console.log(userPerson);
+                                    if(!userPerson) {
+                                        collection.insert({'username' : data.username, 'password': data.password, 'type': 'user' }, function(err,user) {
+                                                console.log('here is the user returned');
+                                                console.log(user);
+                                                res.writeHead(200, {'Content-type': mimes['.json']});
+                                                res.end(JSON.stringify(user));
+                                        });
+                                    }
+                                    else {
+                                            res.writeHead(400, {'Content-type': mimes['.json']});
+                                            res.end(JSON.stringify("user exists"));
+                                        }
+                                    });
+
                                 });
                                 
-                                collection.insert({'username' : data.username, 'password': data.password, 'type': 'user' }, function(err,user) {
-                                    if(err | !someErr) throw err;
-                                    res.writeHead(200, {'Content-type': mimes['.json']});
-                                    //res.end(JSON.stringify({'msg' : "Sugnup success"}));
-                                    res.end(JSON.stringify(user));
-                                    resolve('success');
-                                });
-                            }).catch(ex => { console.log('dammm');});
-                        });
+                            });
                     });
                 }).catch((exception) => {
                         res.writeHead(400, {'Content-type': mimes['.json']});
