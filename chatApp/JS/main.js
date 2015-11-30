@@ -1,5 +1,5 @@
 //var ip = '54.183.2.118:9000';
-var ip = 'localhost:8080';
+var ip = 'localhost:9000';
 var suffix = '/socket.io/socket.io.js';
 try {
     var socket = io.connect('http://'+ ip);
@@ -53,7 +53,7 @@ $('#login').submit(function(event) {
                 type: 'POST',
                 data: JSON.stringify(data),
                 contentType: 'application/json',
-                url: 'http://localhost:8080/api/login/',                      
+                url: 'http://localhost:9000/api/login/',                      
                 success: function(data) {
                     console.log('success');
                     console.log(data);
@@ -80,7 +80,7 @@ $('#signup-form').submit(function(event) {
                 type: 'POST',
                 data: JSON.stringify(data),
                 contentType: 'application/json',
-                url: 'http://localhost:8080/api/signup/',                      
+                url: 'http://localhost:9000/api/signup/',                      
                 success: function(data) {
                     console.log('signup success');
                     console.log(data);
