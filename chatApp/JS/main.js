@@ -56,7 +56,7 @@ $('#login').submit(function(event) {
                 url: 'http://localhost:8080/api/login/',                      
                 success: function(data) {
                     console.log('success');
-                    console.log(JSON.stringify(data));
+                    console.log(data);
                 }
         });
     } else {

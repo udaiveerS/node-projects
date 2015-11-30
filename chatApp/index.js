@@ -11,6 +11,17 @@ var qs = require('querystring');
 
 
 app.listen(8080, () => { console.log('listening to port 8080'); });
+var connectionString = 'mongodb://localhost:27017/chat';
+var mimes = {
+    '.html' :   'text/html',
+    '.css'  :   'text/css',
+    '.js'   :   'text/javascript',
+    '.gif'  :   'image/gif',
+    '.jpg'  :   'image/jpeg',
+    '.png'  :   'image/png',
+    '.json' :   'application/json'
+};
+
 
 // simple router implementation
 var routes = {
@@ -41,10 +52,36 @@ var routes = {
             req.on('data', data => {
                 body += data; 
             });
-
             req.on('end', () => {
                 console.log(body);
-                res.end();
+                var data = JSON.parse(body);
+                console.log(data);
+                mongo.connect(connectionString, function(err,db) {
+                    if(!err) {
+                       var collection = db.collection('users');
+                       collection.findOne({ username : data.username}, function(err,user) {
+                            if(!err) {
+                                console.log("after the query");
+                                if(user && (user.password === data.password)) {
+                                    delete user.password;
+                                    user.jwt = jwt.encode(user);
+                                    console.log('users was found' + user);
+                                    res.writeHead(200, {'Content-type': mimes['.json']});
+                                    res.end(JSON.stringify({'jwt' : user.jwt}));
+                                } else {
+                                    res.writeHead(400, {'Content-type': mimes['.json']});
+                                    res.end(JSON.stringify({'err' : 'bad information'}));
+                                }
+                            } else {
+                                res.writeHead(400, {'Content-type': mimes['.json']});
+                                res.end(JSON.stringify({'err' : 'resource not found'}));
+                            }
+                        });
+                    } else {
+                        console.log('error in POST /api/login');
+                    }
+                });
+                console.log('in login after datable connect');
             });
         }
     },
@@ -53,19 +90,10 @@ var routes = {
         res.end('Content not found!');
     },
     'NO': (req,res) => {
-        res.writeHead(500);
-        res.end('shit it broken =(' );
+        res.writeHead(504);
+        res.end('Content not found!');
     }
 
-};
-
-var mimes = {
-    '.html' :   'text/html',
-    '.css'  :   'text/css',
-    '.js'   :   'text/javascript',
-    '.gif'  :   'image/gif',
-    '.jpg'  :   'image/jpeg',
-    '.png'  :   'image/png'
 };
 
 //do all website routing for serving the staic files
@@ -92,9 +120,9 @@ function router(req,res) {
 
 //all jwt stuff
 var obj = {
-      "sub": "1234567890",
-        "name": "John mambo",
-          "admin": true
+      sub: "1234567890",
+      name: "John mambo",
+      admin: true
 };
 
 var encodedString = jwt.encode(obj);
@@ -103,7 +131,7 @@ console.log("decoded string is: " + jwt.decode(encodedString));
 
 
 //socket.io 
-mongo.connect('mongodb://localhost/chat', function(err,db) {
+mongo.connect(connectionString, function(err,db) {
     if(err) throw err;
     
     client.on('connection', function(socket) {
