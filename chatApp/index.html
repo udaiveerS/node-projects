@@ -61,15 +61,16 @@
 
     !<-- Signup modal -->
     <div class="messagepop pop">
-        <form method="post" id="new_message" action="/messages">
+        <form method="post" id="signup-form" action="#">
             <p>
-                <label for="reg_email">Your email or name</label>
-                <input type="text" size="30" name="reg_email" id="regEmail" />
+                <label for="regUname">username</label>
+                <input type="text" size="30" name="regUname" id="regUname" />
             </p>
             <p>
-                <label for="reg_password">Your email or name</label>
-                <input type="password" size="30" name="reg_password" id="regPassword" />
+                <label for="regPassword">password</label>
+                <input type="password" size="30" name="regPassword" id="regPassword" />
             </p>
+            <input type="submit" name="sign" id="signupButton" class="botton" value="Sign-up" />
             <a id="close" href="/">Cancel</a>
       </form>
     </div>

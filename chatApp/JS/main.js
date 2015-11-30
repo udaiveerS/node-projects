@@ -68,6 +68,34 @@ $('#login').submit(function(event) {
     event.preventDefault();
 });
 
+$('#signup-form').submit(function(event) {
+    var user = $('#regUname').val();
+    var pass = $('#regPassword').val();
+    var regx =  /^[a-zA-z0-9]{5,12}$/; 
+     
+    event.preventDefault();
+    var data = {username: user, password: pass};
+    if(user.match(regx) && pass.match(regx)) {
+        $.ajax({
+                type: 'POST',
+                data: JSON.stringify(data),
+                contentType: 'application/json',
+                url: 'http://localhost:8080/api/signup/',                      
+                success: function(data) {
+                    console.log('signup success');
+                    console.log(data);
+                }
+        });
+    } else {
+        alert('must be letter and numbers 5 <= len <= 12');
+    }
+
+    $('#User').val('');
+    $('#password').val('');
+});
+
+
+
 function appendComment(str) {
     console.log('appending ' + str);
     var room = $('#central_room'); 

@@ -83,7 +83,49 @@ var routes = {
                 });
                 console.log('in login after datable connect');
             });
-        }
+        },
+        '/api/signup/' : (req,res) => {
+            var body = '';
+            req.on('data', data => {
+                body += data; 
+                console.log('body');
+            });
+
+            req.on('end', () => {
+                console.log("got into the" + body);
+                new Promise(function(resolve,reject) {
+                    var data = JSON.parse(body);
+                    console.log(data);
+                    resolve(data);
+                }).then(function(data) {
+                    console.log(data);
+                    return new Promise(function() {
+                        mongo.connect(connectionString, function(err,db) {
+                            if(err) throw err;
+                            var collection = db.collection('users');
+                            return new Promise(function(resolve, reject) {
+                                var someErr;
+                                collection.findOne({'userName' : data.username}, function(err,user) {
+                                    someErr = err;
+                                });
+                                
+                                collection.insert({'username' : data.username, 'password': data.password, 'type': 'user' }, function(err,user) {
+                                    if(err | !someErr) throw err;
+                                    res.writeHead(200, {'Content-type': mimes['.json']});
+                                    //res.end(JSON.stringify({'msg' : "Sugnup success"}));
+                                    res.end(JSON.stringify(user));
+                                    resolve('success');
+                                });
+                            }).catch(ex => { console.log('dammm');});
+                        });
+                    });
+                }).catch((exception) => {
+                        res.writeHead(400, {'Content-type': mimes['.json']});
+                        res.end(JSON.stringify({'err' : 'resource not found'}));
+                });
+            });
+            console.log('exit');
+        },
     },
     'NA': (req,res) => {
         res.writeHead(404);
