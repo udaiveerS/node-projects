@@ -1,8 +1,13 @@
 //var ip = '54.183.2.118:9000';
-var ip = 'localhost:9000';
 var suffix = '/socket.io/socket.io.js';
+var host = 'localhost';
+//var servo = '54.183.2.118';
+var servo = '';
+var ip = 'http://' + (servo||host) + ':9000';
+
+console.log('the ip is' + ip);
 try {
-    var socket = io.connect('http://'+ ip);
+    var socket = io.connect(ip);
 } catch(std) {
     // set status to warn user
     console.log("not connected");
@@ -53,7 +58,7 @@ $('#login').submit(function(event) {
                 type: 'POST',
                 data: JSON.stringify(data),
                 contentType: 'application/json',
-                url: 'http://localhost:9000/api/login/',                      
+                url: ip + '/api/login/',                      
                 success: function(data) {
                     console.log('success');
                     console.log(data);
@@ -80,7 +85,7 @@ $('#signup-form').submit(function(event) {
                 type: 'POST',
                 data: JSON.stringify(data),
                 contentType: 'application/json',
-                url: 'http://localhost:9000/api/signup/',                      
+                url: ip + '/api/signup/',                      
                 success: function(data) {
                     console.log('signup success');
                     console.log(data);

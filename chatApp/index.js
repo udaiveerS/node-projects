@@ -8,10 +8,13 @@ var url = require('url');
 var fs = require('fs');
 var path = require('path');
 var qs = require('querystring');
-
+//var server_ip = '54.183.2.118'
+var server_ip = '';
+var host = 'localhost'; 
 
 app.listen(9000, () => { console.log('listening to port 9000'); });
-var connectionString = 'mongodb://localhost:27017/chat';
+var connectionString = 'mongodb://'+ (server_ip || host) + ':27017/chat';
+console.log(connectionString); 
 var mimes = {
     '.html' :   'text/html',
     '.css'  :   'text/css',
