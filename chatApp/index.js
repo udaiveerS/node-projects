@@ -131,7 +131,34 @@ var routes = {
                 });
             });
             console.log('exit');
-        },
+        },'/api/auth/' :(req,res) => {
+            var body = '';
+            req.on('data', data => {
+                    body += data; 
+                    console.log(body);
+            });
+            
+            req.on('end', () => {
+                //try {
+                    console.log(body);
+                    var ajwt = JSON.parse(body);
+                    console.log(ajwt.jwt);
+                    if(ajwt && jwt.decode(ajwt.jwt) === false) {
+                        res.writeHead(404);
+                        res.end('bad signature');
+                    } else {
+                        res.writeHead(200, {'Content-type': mimes['.json']});
+                        res.end(body);
+                    }
+                //}
+                /*
+                catch(e) {
+                        res.writeHead(404);
+                        res.end('exception thrown');
+                }
+                */
+            });
+        }
     },
     'NA': (req,res) => {
         res.writeHead(404);
@@ -147,7 +174,7 @@ var routes = {
 //do all website routing for serving the staic files
 function router(req,res) {
     var baseURI = url.parse(req.url, true);
-    try {
+    //try {
         if(req.method === 'GET') {
             var filePath = __dirname + (baseURI.pathname === '/' ? '/index.html' : baseURI.pathname);
             req.filePath = filePath;
@@ -160,9 +187,9 @@ function router(req,res) {
         } else {
             routes.NA(req,res);
         }
-    } catch(e) {
+    /*} catch(e) {
         routes.NA(req,res);
-    }
+    }*/
 }
 
 //all jwt stuff

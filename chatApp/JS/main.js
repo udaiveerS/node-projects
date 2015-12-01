@@ -8,6 +8,41 @@ var host = 'localhost';
 //var servo = '54.153.87.38';
 var servo = '';
 var ip = 'http://' + (servo||host) + ':9000';
+//auto-login 
+function autolog() {
+    if(getJWT() !== null) {
+        $.ajax({
+                type: 'POST',
+                data: JSON.stringify(getJWT()),
+                contentType: 'application/json',
+                url: ip + '/api/auth/',                      
+                success: function(data) {
+                    console.log('jwt authenticated');
+                    var jwt = data.jwt.split(".");
+                    console.log(jwt);
+                    __USER = JSON.parse(atob(jwt[1])).username; 
+                    __ISLOGGEDIN = true;                    
+                    //set the uername
+                   localStorage.setItem('jwt',JSON.stringify(data)); 
+                    $('#login1').hide();
+                    $('#logout-container').show();
+                },error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                    __ISLOGGEDIN = false;                    
+                    appendComment("server>>","Incorrect jwt signature ");
+                    removeJWT();
+                    $('#login1').show();
+                    $('#logout-container').hide();
+                } 
+            });
+    } 
+
+    if(__ISLOGGEDIN === false) {
+        $('#login1').show();
+        $('#logout-container').hide();
+    }
+}
+$(autolog());
+
 
 try {
     var socket = io.connect(ip);
@@ -29,40 +64,6 @@ if(socket !== undefined) {
 } else {
     console.log("not ok");
 }
-
-//auto-login 
-$(function autolog() {
-    if(getJWT() !== null) {
-        $.ajax({
-                type: 'POST',
-                data: JSON.stringify(getJWT()),
-                contentType: 'application/json',
-                url: ip + '/api/auth/',                      
-                success: function(data) {
-                    console.log('jwt authenticated');
-                    console.log(data);
-                    __ISLOGGEDIN = true;                    
-                    //set the uername
-                   localStorage.setItem('jwt',JSON.stringify(data)); 
-                   appendComment("server>>", "JWT is now stored in local storage");
-                   appendComment("server>>", "close tabs and try to log in again");
-                    $('#login1').hide();
-                    $('logout-container').show();
-                },error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                    __ISLOGGEDIN = false;                    
-                    appendComment("server>>","Incorrect jwt signature ");
-                    removeJWT();
-                    $('#login1').show();
-                    $('#logout-container').hide();
-                } 
-            });
-    } 
-
-    if(__ISLOGGEDIN === false) {
-        $('#login1').show();
-        $('#logout-container').hide();
-    }
-});
 
 
 //logout 
@@ -103,7 +104,6 @@ $('#login').submit(function(event) {
                         $('#login1').hide();
                         $('#logout-container').show();
                        localStorage.setItem('jwt',JSON.stringify(data)); 
-                       appendComment("server>>", "Login successful!");
                        appendComment("server>>", "JWT is now stored in local storage");
                        appendComment("server>>", "close tabs and try to log in again or open a new tab while logged in");
                     },error: function(XMLHttpRequest, textStatus, errorThrown) { 
@@ -202,7 +202,7 @@ $('#inputline').keydown(function(event) {
     if (event.keyCode == 13) {
         if(this.value !== "") {
             if(__ISLOGGEDIN === true) {
-                emmitComment(event);
+                    emmitComment(event);
             } else {
                 appendComment("server>>", "must login to comment");
                 this.value = "";

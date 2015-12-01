@@ -45,8 +45,9 @@ module.exports = function(key) {
         },
         decode:(str) => {
             var jwtArr = str.split("."); 
-            var body = atob(jwtArr[1]);
-            __USER = body.username;
+            var head = jwtArr[0];
+            var body = jwtArr[1];
+            var hash = jwtArr[2];
             var checkSum = checkSumGen(head,body); 
 
             if(hash === checkSum) {
