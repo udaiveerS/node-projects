@@ -1,8 +1,8 @@
 //var ip = '54.183.2.118:9000';
 var suffix = '/socket.io/socket.io.js';
 var host = 'localhost';
-var servo = '54.153.87.38';
-//var servo = '';
+//var servo = '54.153.87.38';
+var servo = '';
 var ip = 'http://' + (servo||host) + ':9000';
 
 console.log('the ip is' + ip);
@@ -74,29 +74,36 @@ $('#login').submit(function(event) {
 });
 
 $('#signup-form').submit(function(event) {
-    var user = $('#regUname').val();
-    var pass = $('#regPassword').val();
-    var regx =  /^[a-zA-z0-9]{5,12}$/; 
-     
-    event.preventDefault();
-    var data = {username: user, password: pass};
-    if(user.match(regx) && pass.match(regx)) {
-        $.ajax({
-                type: 'POST',
-                data: JSON.stringify(data),
-                contentType: 'application/json',
-                url: ip + '/api/signup/',                      
-                success: function(data) {
-                    console.log('signup success');
-                    console.log(data);
-                }
-        });
-    } else {
-        alert('must be letter and numbers 5 <= len <= 12');
+    if($(this).attr('value') !== 'cancle') {
+        event.preventDefault();
+        deselect($('#signup'));
+        return false;
     }
+        var user = $('#regUname').val();
+        var pass = $('#regPassword').val();
+        var regx =  /^[a-zA-z0-9]{5,12}$/; 
+         
+        var data = {username: user, password: pass};
+        if(user.match(regx) && pass.match(regx)) {
+            $.ajax({
+                    type: 'POST',
+                    data: JSON.stringify(data),
+                    contentType: 'application/json',
+                    url: ip + '/api/signup/',                      
+                    success: function(data) {
+                        console.log('signup success');
+                        console.log(data);
+                    }
+            });
+        } else {
+            alert('must be letter and numbers 5 <= len <= 12');
+        }
 
-    $('#User').val('');
-    $('#password').val('');
+        $('#User').val('');
+        $('#password').val('');
+    
+    event.preventDefault();
+    return false;
 });
 
 
@@ -119,3 +126,5 @@ function emmitComment(event){
     console.log(message); 
     message = $('#inputline').val('');
 }
+
+

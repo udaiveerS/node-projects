@@ -60,28 +60,32 @@
     </div>
 
     !<-- Signup modal -->
-    <div class="messagepop pop">
-        <form method="post" id="signup-form" action="#">
-            <p>
-                <label for="regUname">username</label>
-                <input type="text" size="30" name="regUname" id="regUname" />
-            </p>
-            <p>
-                <label for="regPassword">password</label>
-                <input type="password" size="30" name="regPassword" id="regPassword" />
-            </p>
-            <input type="submit" name="sign" id="signupButton" class="botton" value="Sign-up" />
-            <a id="close" href="/">Cancel</a>
-      </form>
+    <div id="sign-up-container">
+      <div class="messagepop pop">
+          <form method="post" id="signup-form" action="#">
+              <p>
+                  <label for="regUname">username</label>
+                  <input type="text" size="30" name="regUname" id="regUname" />
+              </p>
+              <p>
+                  <label for="regPassword">password</label>
+                  <input type="password" size="30" name="regPassword" id="regPassword" />
+              </p>
+              <input type="submit" name="sign" class="botton" value="signup" />
+              <input type="submit" name="sign" class="botton" value="cancle" />
+        </form>
+      </div>
     </div>
 
     !<-- jwt modal -->
-    <div class="messagepop2 pop2" >
-        <h2> Your JWT Value </h2>
-        <p>
-          <span id="jwt"></span>
-        </p>
-        <a class="close2" href="/">Cancel</a>
+    <div id="jwt-container">
+      <div class="messagepop2 pop2" >
+          <h2> Your JWT Value </h2>
+          <p>
+            <span id="jwt"></span>
+          </p>
+          <button id="close2" >Cancel</button>
+      </div>
     </div>
 
 
