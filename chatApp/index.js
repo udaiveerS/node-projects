@@ -8,12 +8,10 @@ var url = require('url');
 var fs = require('fs');
 var path = require('path');
 var qs = require('querystring');
-//var server_ip = '54.183.2.118'
-var server_ip = '';
 var host = 'localhost'; 
 
 app.listen(9000, () => { console.log('listening to port 9000'); });
-var connectionString = 'mongodb://'+ (server_ip || host) + ':27017/chat';
+var connectionString = 'mongodb://'+ (host) + ':27017/chat';
 console.log(connectionString); 
 var mimes = {
     '.html' :   'text/html',
@@ -24,7 +22,6 @@ var mimes = {
     '.png'  :   'image/png',
     '.json' :   'application/json'
 };
-
 
 // simple router implementation
 var routes = {
@@ -168,7 +165,6 @@ function router(req,res) {
     }
 }
 
-
 //all jwt stuff
 var obj = {
       sub: "1234567890",
@@ -179,7 +175,6 @@ var obj = {
 var encodedString = jwt.encode(obj);
 console.log("encoded string is: " + encodedString);
 console.log("decoded string is: " + jwt.decode(encodedString));
-
 
 //socket.io 
 mongo.connect(connectionString, function(err,db) {

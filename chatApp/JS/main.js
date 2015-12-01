@@ -1,8 +1,8 @@
 //var ip = '54.183.2.118:9000';
 var suffix = '/socket.io/socket.io.js';
 var host = 'localhost';
-//var servo = '54.183.2.118';
-var servo = '';
+var servo = '54.153.87.38';
+//var servo = '';
 var ip = 'http://' + (servo||host) + ':9000';
 
 console.log('the ip is' + ip);
