@@ -43,7 +43,7 @@ function autolog() {
 }
 $(autolog());
 
-
+setInterval(function() { $('#jwt').text(JSON.stringify(getJWT() || "no value avaliable"));}, 5000);
 try {
     var socket = io.connect(ip);
 } catch(std) {

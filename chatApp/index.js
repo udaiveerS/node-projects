@@ -27,7 +27,7 @@ var mimes = {
 var routes = {
     'GET': (req,res) => {
             var filePath = req.filePath; 
-            console.log(filePath);
+            //console.log(filePath);
             fs.access(filePath, fs.F_OK, (error) => {
             if(!error) {
                 fs.readFile(filePath, (error, content) => {
@@ -53,19 +53,16 @@ var routes = {
                 body += data; 
             });
             req.on('end', () => {
-                console.log(body);
+                //console.log(body);
                 var data = JSON.parse(body);
-                console.log(data);
                 mongo.connect(connectionString, function(err,db) {
                     if(!err) {
                        var collection = db.collection('users');
                        collection.findOne({ username : data.username}, function(err,user) {
                             if(!err) {
-                                console.log("after the query");
                                 if(user && (user.password === data.password)) {
                                     delete user.password;
                                     user.jwt = jwt.encode(user);
-                                    console.log('users was found' + user);
                                     res.writeHead(200, {'Content-type': mimes['.json']});
                                     res.end(JSON.stringify({'jwt' : user.jwt}));
                                 } else {
@@ -78,39 +75,39 @@ var routes = {
                             }
                         });
                     } else {
-                        console.log('error in POST /api/login');
+                 //       console.log('error in POST /api/login');
                     }
                 });
-                console.log('in login after datable connect');
+               // console.log('in login after datable connect');
             });
         },
         '/api/signup/' : (req,res) => {
             var body = '';
             req.on('data', data => {
                 body += data; 
-                console.log('body');
+                //console.log('body');
             });
 
             req.on('end', () => {
-                console.log("got into the" + body);
+                //console.log("got into the" + body);
                 new Promise(function(resolve,reject) {
                     var data = JSON.parse(body);
-                    console.log(data);
+                    //console.log(data);
                     resolve(data);
                 }).then(function(data) {
-                    console.log(data);
+                    //console.log(data);
                     return new Promise(function() {
                         mongo.connect(connectionString, function(err,db) {
                             if(err) throw err;
                             var collection = db.collection('users');
                             return new Promise(function(resolve, reject) {
                                 collection.findOne({'username' : data.username}, function(err,userPerson) {
-                                    console.log('find one ' + err);
-                                    console.log(userPerson);
+                                    //console.log('find one ' + err);
+                                    //console.log(userPerson);
                                     if(!userPerson) {
                                         collection.insert({'username' : data.username, 'password': data.password, 'type': 'user' }, function(err,user) {
-                                                console.log('here is the user returned');
-                                                console.log(user);
+                                                //console.log('here is the user returned');
+                                                //console.log(user);
                                                 res.writeHead(200, {'Content-type': mimes['.json']});
                                                 res.end(JSON.stringify(user));
                                         });
@@ -130,19 +127,19 @@ var routes = {
                         res.end(JSON.stringify({'err' : 'resource not found'}));
                 });
             });
-            console.log('exit');
+            //console.log('exit');
         },'/api/auth/' :(req,res) => {
             var body = '';
             req.on('data', data => {
                     body += data; 
-                    console.log(body);
+                    //console.log(body);
             });
             
             req.on('end', () => {
-                //try {
-                    console.log(body);
+                try {
+                    //console.log(body);
                     var ajwt = JSON.parse(body);
-                    console.log(ajwt.jwt);
+                    //console.log(ajwt.jwt);
                     if(ajwt && jwt.decode(ajwt.jwt) === false) {
                         res.writeHead(404);
                         res.end('bad signature');
@@ -150,13 +147,11 @@ var routes = {
                         res.writeHead(200, {'Content-type': mimes['.json']});
                         res.end(body);
                     }
-                //}
-                /*
+                }
                 catch(e) {
                         res.writeHead(404);
                         res.end('exception thrown');
                 }
-                */
             });
         }
     },
@@ -178,11 +173,10 @@ function router(req,res) {
         if(req.method === 'GET') {
             var filePath = __dirname + (baseURI.pathname === '/' ? '/index.html' : baseURI.pathname);
             req.filePath = filePath;
-            console.log(req.filePath);
+            //console.log(req.filePath);
             routes.GET(req,res);
         }else if(req.method === 'POST') {
-            console.log(baseURI);
-            console.log(baseURI.pathname);
+            //console.log(baseURI);
             routes.POST[baseURI.pathname](req,res);
         } else {
             routes.NA(req,res);
@@ -200,7 +194,6 @@ var obj = {
 };
 
 var encodedString = jwt.encode(obj);
-console.log("encoded string is: " + encodedString);
 console.log("decoded string is: " + jwt.decode(encodedString));
 
 //socket.io 
@@ -208,7 +201,6 @@ mongo.connect(connectionString, function(err,db) {
     if(err) throw err;
     
     client.on('connection', function(socket) {
-        console.log('a connection made');
         var col = db.collection('messages');
 
         var sendStatus = (s) => {
@@ -225,7 +217,6 @@ mongo.connect(connectionString, function(err,db) {
             if(false) {
                 // check for jwt auth 
             } else {
-                console.log(data);
                 var newData = {message: data.msg, jwt: data.jwt, user: data.user, time: data.time};
                 client.emit('output', [newData]);
                 col.insert(newData,function(err, res) {
