@@ -54,8 +54,12 @@ var routes = {
             });
             req.on('end', () => {
                 console.log(body);
+		try {
                 var data = JSON.parse(body);
-                console.log(data);
+		} catch(e) {
+			res.writeHead(400, {'Content-type': mimes['.json']});
+			res.end(JSON.stringify({'err' : 'resource not found'}));
+		}
                 mongo.connect(connectionString, function(err,db) {
                     if(!err) {
                        var collection = db.collection('users');
