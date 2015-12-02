@@ -5,13 +5,9 @@ var __USER = '';
 
 var suffix = '/socket.io/socket.io.js';
 var host = 'localhost';
-<<<<<<< HEAD
 var servo = '54.183.2.118';
 //var servo = '';
-=======
 //var servo = '54.153.87.38';
-var servo = '';
->>>>>>> 4c0cfb0220e7ec67067f1271c7a8c6fa1449a99b
 var ip = 'http://' + (servo||host) + ':9000';
 //auto-login 
 function autolog() {
