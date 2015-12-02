@@ -1,4 +1,3 @@
-
 body {
   background-color: #111;
   color: #ddd;
@@ -36,10 +35,16 @@ a {
 
 #login1 {
     position: absolute;
-    right: 60px;
+    right: 130px;
     top: 10px;
 }
 
+#logout-container {
+    position: absolute;
+    right: 60px;
+    top: 11px;
+}
+    
 label {
     padding: 2px;
 }
@@ -67,8 +72,6 @@ label {
   color: #FFF;
   font-size: 10px;
 }
-
-
 
 .button-link{
   height: 50px;
@@ -176,8 +179,9 @@ label {
 }
 .line .timestamp {
   float: left;
+  margin-right: 10px;
   display: inline-block;
-  width: 50px;
+  width: 80px;
   color: #aaa;
 }
 .system.line {

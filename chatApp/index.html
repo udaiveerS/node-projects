@@ -29,22 +29,18 @@
       </div>
       <div id="central">
         <div id="userlist">
-          <ul>
-            <li>Someone</li>
-            <li>Another</li>
-            <li>and more</li>
-            <li>lurker</li>
+          <ul id="loggers">
           </ul>
         </div>
         <div id="messagespanel">
           <div id="messages">
             <div id="central_room">
               <div class="line system">
-                <span class="timestamp">10:12</span>
+                <span class="timestamp">d:mm:dd:yyyy</span>
                 <span class="message">test</span>
               </div>
               <div class="lineA">
-                <span class="timestamp">10:12</span>
+                <span class="timestamp">d:mm:dd:yyyy</span>
                 <span class="user">server</span>
                 <span class="message">test</span>
               </div>
@@ -60,34 +56,50 @@
     </div>
 
     !<-- Signup modal -->
-    <div class="messagepop pop">
-        <form method="post" id="signup-form" action="#">
-            <p>
-                <label for="regUname">username</label>
-                <input type="text" size="30" name="regUname" id="regUname" />
-            </p>
-            <p>
-                <label for="regPassword">password</label>
-                <input type="password" size="30" name="regPassword" id="regPassword" />
-            </p>
-            <input type="submit" name="sign" id="signupButton" class="botton" value="Sign-up" />
-            <a id="close" href="/">Cancel</a>
-      </form>
+    <div id="sign-up-container">
+      <div class="messagepop pop">
+          <form method="post" id="signup-form" action="#">
+              <p>
+                  <label for="regUname">username</label>
+                  <input type="text" size="30" name="regUname" id="regUname" />
+              </p>
+              <p>
+                  <label for="regPassword">password</label>
+                  <input type="password" size="30" name="regPassword" id="regPassword" />
+              </p>
+              <input type="submit" name="sign" class="botton" value="signup" />
+              <input type="submit" name="sign" class="botton" value="cancel" />
+        </form>
+      </div>
     </div>
 
     !<-- jwt modal -->
-    <div class="messagepop2 pop2" >
-        <h2> Your JWT Value </h2>
-        <p>
-          <span id="jwt"></span>
-        </p>
-        <a class="close2" href="/">Cancel</a>
+    <div id="jwt-container">
+      <div class="messagepop2 pop2"  >
+        <div style='padding: 3px; width: 300px; word-break: break-all; word-wrap: break-word;'>
+           <h2> Your JWT Value </h2>
+          <p id ="jwt">
+          </p>
+        </div>
+          <button id="close2" >Cancel</button>
+      </div>
     </div>
 
+    <div id="logout-container">
+      <div class="logout">
+        <form method="post" id="logout-form" action="#">
+            <input type="submit" name="logout" class="boutton" value="logout" />
+        </form>
+      </div>
+    </div>
 
     <script src="http://localhost:9000/socket.io/socket.io.js"></script>
     <script src="http://54.153.87.38:9000/socket.io/socket.io.js"></script>
+<<<<<<< HEAD
     <script src="http://54.183.2.118:9000/socket.io/socket.io.js"></script>
+=======
+    <script src="./JS/time.js"></script>
+>>>>>>> 4c0cfb0220e7ec67067f1271c7a8c6fa1449a99b
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="./JS/main.js"></script>
     <script src="./JS/modal.js"></script>
