@@ -25,7 +25,7 @@ var mimes = {
 
 // simple router implementation
 var routes = {
-    'GET':  (req,res) => {
+    'GET': (req,res) => {
             var filePath = req.filePath; 
             //console.log(filePath);
             fs.access(filePath, fs.F_OK, (error) => {
@@ -42,7 +42,7 @@ var routes = {
                 });
             } else {
                 res.writeHead(404);
-                res.end('file not found!');
+                res.end('Content not found!');
             }
         });
     },
@@ -99,7 +99,6 @@ var routes = {
                 //console.log("got into the" + body);
                 new Promise(function(resolve,reject) {
                     var data = JSON.parse(body);
-		    
                     //console.log(data);
                     resolve(data);
                 }).then(function(data) {
@@ -165,11 +164,11 @@ var routes = {
     },
     'NA': (req,res) => {
         res.writeHead(404);
-        res.end('stuff not found!');
+        res.end('Content not found!');
     },
     'NO': (req,res) => {
         res.writeHead(504);
-        res.end('no access found!');
+        res.end('Content not found!');
     }
 
 };
@@ -215,7 +214,7 @@ mongo.connect(connectionString, function(err,db) {
             socket.emit('status',s);
         };
 
-        col.find().sort({_id: 1}).toArray(function(err, res) {
+        col.find().limit(50).sort({_id: 1}).toArray(function(err, res) {
             if(err) throw err; 
             socket.emit('output',res);
         });
