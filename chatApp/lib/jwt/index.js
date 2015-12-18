@@ -1,15 +1,15 @@
 
-const crypto = require('crypto');
+var crypto = require('crypto');
 
 module.exports = function(key) {
     this.key = key; 
     
     function encodeBase64(str) {
-        return new Buffer(str).toString('base64').toString('utf8');
+        return new Buffer(str).toString('base64').toString();
     }
 
     function decodeBase64(str) {
-        return new Buffer(str, 'base64').toString('utf8');
+        return new Buffer(str, 'base64').toString();
     }
     
     function stringify(obj) {
@@ -23,7 +23,7 @@ module.exports = function(key) {
         var checkSumStr = head + "." + body; 
         var hash = crypto.createHmac('sha256',key);
         var checkSum = hash.update(checkSumStr)
-            .digest('base64').toString('utf8');
+                .digest('base64').toString('utf8');
         return checkSum;
     }
 

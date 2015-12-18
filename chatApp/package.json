@@ -12,5 +12,12 @@
     "forever": "^0.15.1",
     "mongodb": "^2.0.49",
     "socket.io": "^1.3.7"
-  }
+  },
+  "bundledDependencies": [
+    "auth",
+    "login",
+    "signup",
+    "jwt"
+  ]
 }
+

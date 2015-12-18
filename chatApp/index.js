@@ -1,4 +1,4 @@
-var Jwt = require('./jwt'); 
+var Jwt = require('./lib/jwt');
 var jwt = new Jwt("secret");
 var mongo = require('mongodb').MongoClient;
 var http = require('http'); 
@@ -7,8 +7,8 @@ var client = require('socket.io').listen(app).sockets;
 var url = require('url'); 
 var fs = require('fs');
 var path = require('path');
-var qs = require('querystring');
-var host = 'localhost'; 
+
+var host = 'localhost';
 
 app.listen(9000, () => { console.log('listening to port 9000'); });
 var connectionString = 'mongodb://'+ (host) + ':27017/chat';
@@ -189,22 +189,9 @@ function router(req,res) {
         } else {
             routes.NA(req,res);
         }
-    /*} catch(e) {
-        routes.NA(req,res);
-    }*/
 }
 
-//all jwt stuff
-var obj = {
-      sub: "1234567890",
-      name: "John mambo",
-      admin: true
-};
 
-var encodedString = jwt.encode(obj);
-console.log("decoded string is: " + jwt.decode(encodedString));
-
-//socket.io 
 mongo.connect(connectionString, function(err,db) {
     if(err) throw err;
     
