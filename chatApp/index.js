@@ -10,6 +10,7 @@ var path = require('path');
 
 var host = 'localhost';
 
+// Custom modules under lib
 app.listen(9000, () => { console.log('listening to port 9000'); });
 var connectionString = 'mongodb://'+ (host) + ':27017/chat';
 
@@ -23,30 +24,16 @@ var mimes = {
     '.json' :   'application/json'
 };
 
+var staticFiles = require('./lib/static');
+    staticFiles = new staticFiles(mimes);
+
 // simple router implementation
 var routes = {
-    'GET':  (req,res) => {
-            var filePath = req.filePath; 
-            //console.log(filePath);
-            fs.access(filePath, fs.F_OK, (error) => {
-            if(!error) {
-                fs.readFile(filePath, (error, content) => {
-                    if(!error) {
-                        var contentType = mimes[path.extname(filePath)];
-                        res.writeHead(200, {'Content-type': contentType});
-                        res.end(content, 'utf-8');
-                    } else {
-                        res.writeHead(500);
-                        res.end("<h1>File not found</h1>");
-                    }
-                });
-            } else {
-                res.writeHead(404);
-                res.end('file not found!');
-            }
-        });
+    'GET': (req,res) => {
+        "use strict";
+        staticFiles.serveFiles(req,res);
     },
-    'POST': { 
+    'POST': {
         '/api/login/': (req, res) => {
             var body = '';
             req.on('data', data => {

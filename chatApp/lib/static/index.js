@@ -43,11 +43,11 @@ module.exports = function(mimes) {
      * @param res
      */
         serveFiles: (req, res) => {
-            mimes = req.mimes;
             var filePath = req.filePath;
+            console.log(filePath);
             getFileContent(filePath).then((content) => {
                 "use strict";
-                var contentType = mimes[path.extname(filePath)];
+                var contentType = this.mimes[path.extname(filePath)];
                 res.writeHead(200, {'Content-type': contentType});
                 res.end(content, 'utf-8');
             }).catch((err) => {
