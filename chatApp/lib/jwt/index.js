@@ -5,11 +5,11 @@ module.exports = function(key) {
     this.key = key; 
     
     function encodeBase64(str) {
-        return new Buffer(str).toString('base64').toString();
+        return new Buffer(str).toString('base64').toString("utf-8");
     }
 
     function decodeBase64(str) {
-        return new Buffer(str, 'base64').toString();
+        return new Buffer(str, 'base64').toString("utf-8");
     }
     
     function stringify(obj) {

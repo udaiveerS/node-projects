@@ -12,7 +12,7 @@ var host = 'localhost';
 
 app.listen(9000, () => { console.log('listening to port 9000'); });
 var connectionString = 'mongodb://'+ (host) + ':27017/chat';
-console.log(connectionString); 
+
 var mimes = {
     '.html' :   'text/html',
     '.css'  :   'text/css',
