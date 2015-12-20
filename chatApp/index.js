@@ -41,13 +41,12 @@ var routes = {
             });
             req.on('end', () => {
                 console.log(body);
-		try {
-                var data = JSON.parse(body);
-		} catch(e) {
-			res.writeHead(400, {'Content-type': mimes['.json']});
-			res.end(JSON.stringify({'err' : 'resource not found'}));
-		}
-                //console.log(body);
+                try {
+                        var data = JSON.parse(body);
+                } catch(e) {
+                    res.writeHead(400, {'Content-type': mimes['.json']});
+                    res.end(JSON.stringify({'err' : 'resource not found'}));
+                }
                 var data = JSON.parse(body);
                 mongo.connect(connectionString, function(err,db) {
                     if(!err) {
