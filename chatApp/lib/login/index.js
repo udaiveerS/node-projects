@@ -3,7 +3,6 @@ var mongo = require('mongodb').MongoClient;
 
 module.exports = function(connectionString) {
     // connection string is the URL for the mongoDB connection
-    this.connectionString = connectionString;
     /**
      * Finds if user exists by a given username and return a cursor
      * @param loginData
@@ -12,17 +11,20 @@ module.exports = function(connectionString) {
     function findUserExists(loginData) {
         "use strict";
         return new Promise((resolve, reject) => {
-            mongo.connect(this.connectionString, function (err, db) {
+            mongo.connect(connectionString, function (err, db) {
                 if (err) {
                     reject(err);
                 } else {
                     var collection = db.collection('users');
-                    var aUserCursor = collection.find({username: loginData.username}).limit(1);
-                    if(aUserCursor.size() === 1) {
-                        resolve(aUserCursor);
-                    } else {
-                        reject(new Error("a user does not exist in the database"));
-                    }
+                    var aUserCursor = collection.find({username: loginData.username});
+                     aUserCursor.count(true).then((val) => {
+                         console.log('size is ' + val);
+                         if(val === 1) {
+                             resolve(aUserCursor);
+                         } else {
+                             reject(new Error("a user does not exist in the database"));
+                         }
+                     });
                 }
             });
         });
@@ -40,7 +42,11 @@ module.exports = function(connectionString) {
         "use strict";
         return new Promise((resolve) => {
            if(aUserCursor.hasNext()) {
-               resolve(aUserCursor.next().password === loginData.password);
+               var aUser =aUserCursor.next();
+               aUser.then(val => {
+                   console.log(val)
+                   resolve(val.password === loginData.password);
+               })
            } else {
                resolve(false);
            }

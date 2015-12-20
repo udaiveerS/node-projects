@@ -24,10 +24,14 @@ var mimes = {
     '.json' :   'application/json'
 };
 
+// serves all static files for website
 var staticFiles = require('./lib/static');
     staticFiles = new staticFiles(mimes);
+// deal with all login authentication
+var loginModule = require('./lib/login');
+    loginModule = new loginModule(connectionString);
 
-// simple router implementation
+
 var routes = {
     'GET': (req,res) => {
         "use strict";
@@ -39,39 +43,29 @@ var routes = {
             req.on('data', data => {
                 body += data; 
             });
+
             req.on('end', () => {
                 console.log(body);
                 try {
-                        var data = JSON.parse(body);
+                    var data = JSON.parse(body);
                 } catch(e) {
                     res.writeHead(400, {'Content-type': mimes['.json']});
-                    res.end(JSON.stringify({'err' : 'resource not found'}));
+                    res.end(JSON.stringify({'err' : 'bad Json sent to login'}));
                 }
-                var data = JSON.parse(body);
-                mongo.connect(connectionString, function(err,db) {
-                    if(!err) {
-                       var collection = db.collection('users');
-                       collection.findOne({ username : data.username}, function(err,user) {
-                            if(!err) {
-                                if(user && (user.password === data.password)) {
-                                    delete user.password;
-                                    user.jwt = jwt.encode(user);
-                                    res.writeHead(200, {'Content-type': mimes['.json']});
-                                    res.end(JSON.stringify({'jwt' : user.jwt}));
-                                } else {
-                                    res.writeHead(400, {'Content-type': mimes['.json']});
-                                    res.end(JSON.stringify({'err' : 'bad information'}));
-                                }
-                            } else {
-                                res.writeHead(400, {'Content-type': mimes['.json']});
-                                res.end(JSON.stringify({'err' : 'resource not found'}));
-                            }
-                        });
-                    } else {
-                 //       console.log('error in POST /api/login');
-                    }
-                });
-               // console.log('in login after datable connect');
+                loginModule.login(data)
+                    .then((isLoggedIn) => {
+                    "use strict";
+                        console.log(isLoggedIn);
+                        if(isLoggedIn) {
+                            delete data.password;
+                            var aJwt = jwt.encode(data);
+                            res.writeHead(200, {'Content-type': mimes['.json']});
+                            res.end(JSON.stringify({'jwt' : aJwt}));
+                        } else {
+                            res.writeHead(400, {'Content-type': mimes['.json']});
+                            res.end(JSON.stringify({'err' : 'resource not found'}));
+                        }
+                    });
             });
         },
         '/api/signup/' : (req,res) => {
