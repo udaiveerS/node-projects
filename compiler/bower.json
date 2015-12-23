@@ -1,0 +1,31 @@
+{
+  "name": "compiler",
+  "description": "online compiler for test script",
+  "main": "/bin/www",
+  "authors": [
+    "Udaiveer <uda4000@hotmail.com>"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "compilers",
+    "java",
+    "js"
+  ],
+  "homepage": "https://github.com/udaiveerS/node-projects",
+  "moduleType": [
+    "es6",
+    "node"
+  ],
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.4",
+    "bootstrap": "~3.3.6"
+  }
+}
