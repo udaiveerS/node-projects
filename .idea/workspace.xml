@@ -3,9 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="e2fa5520-abb2-40c5-8653-e3ecfa75ffbd" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/chatApp/lib/login/index.js" afterPath="$PROJECT_DIR$/chatApp/lib/login/index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/chatApp/lib/signup/index.js" afterPath="$PROJECT_DIR$/chatApp/lib/signup/index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/chatApp/lib/signup/package.json" afterPath="$PROJECT_DIR$/chatApp/lib/signup/package.json" />
     </list>
     <ignored path="node-projects.iws" />
     <ignored path=".idea/workspace.xml" />
