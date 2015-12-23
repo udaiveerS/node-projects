@@ -13,3 +13,4 @@ This was a port of a security project where I implements my own bare minimum JWT
 * Socket.io
 * Hosting: EC2 AWS Ubuntu 
 * 
+compiler

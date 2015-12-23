@@ -1,6 +1,5 @@
 var mongo = require('mongodb').MongoClient;
 
-
 module.exports = function(connectionString) {
     // connection string is the URL for the mongoDB connection
     /**
@@ -74,6 +73,7 @@ module.exports = function(connectionString) {
                 console.log("error thrown in login/index.js login function: "+ err.message);
                 return false;
             });
-        }
+        },
+        userExists: findUserExists
     };
 };
