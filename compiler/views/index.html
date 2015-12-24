@@ -19,56 +19,21 @@
     <![endif]-->
 </head>
 <body>
+    {{> nav}}
+
     <div class="container">
-        <div class="row">
-            <nav id="top-nav" class="navbar navbar-default navbar-static-top">
-            <div class="container">
-                <!-- Brand and toggle get grouped for better mobile display -->
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#ts-navbar" aria-expanded="false">
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                        <a class="navbar-brand" href="#">Test Script Compiler</a>
-                    </div>
-
-                    <!-- Collect the nav links, forms, and other content for toggling -->
-                    <div class="collapse navbar-collapse" id="ts-navbar">
-                        <ul class="nav navbar-nav">
-                            <li class="active"><a href="#">Compiler<span class="sr-only">(current)</span></a></li>
-                            <li><a href="#">About</a></li>
-                        </ul>
-                    </div><!-- /.navbar-collapse -->
-                </div><!-- /.container -->
-            </nav>
-        </div>
-    </div><!-- /.container -->
-
-    <div class="container-fluid">
        <div class="row">
-           <div class="col-lg-3 col-lg-offset-1">
-               <h2> some content here</h2>
-               <h2> some content here</h2>
-               <h2> some content here</h2>
-               <h2> some content here</h2>
-               <h2> some content here</h2>
-               <h2> some content here</h2>
+           <div class="col-lg-4">
+            <h2> Sample Programs</h2>
+            {{> programList}}
            </div>
-           <div class="col-lg-7">
-               <p><span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. At corporis dolores itaque, porro quam recusandae sapiente. Ab consectetur deserunt eaque et illo itaque nam, necessitatibus porro quas, quia reiciendis tempore.</span><span>Accusamus accusantium aliquam aliquid aperiam aspernatur aut cum distinctio dolorum ducimus eos esse et ex expedita in ipsa iure laboriosam modi nesciunt non nostrum placeat praesentium ratione reiciendis, sed voluptas.</span><span>Accusantium alias, amet consequuntur deserunt dicddta ducimus esse eum fuga fugiat id illum incidunt ipsum magnam molestiae molestias nemo nihil odit quae quis quisquam, similique suscipit veritatis voluptatum. Dignissimos, necessitatibus.</span>
-               </p>
+           <div class="col-lg-8">
+               <textarea class="form-control" rows="20"></textarea>
            </div>
-           <div class="col-lg-1"></div>
        </div>
     </div>
 
-    <div class="container">
-            <nav id="footer" class="navbar navbar-default navbar-fixed-bottom">
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cumque, dolorem?
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eligendi, voluptates?</p>
-            </nav>
-    </div>
+    {{> footer}}
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="/jquery/dist/jquery.min.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
