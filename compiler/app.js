@@ -21,6 +21,7 @@ app.set('view engine', 'html');
 app.engine('html', require('hbs').__express);
 hbs.registerPartials(__dirname + '/views/partials');
 hbs.registerPartials(__dirname + '/views/partials/compiler');
+hbs.registerPartials(__dirname + '/views/partials/about');
 
 
 // uncomment after placing your favicon in /public

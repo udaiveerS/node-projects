@@ -60,5 +60,7 @@ button:hover
     margin-bottom:0px;
 }
 
-
-
+/* about page image */
+#uml {
+    width: 100%;
+}

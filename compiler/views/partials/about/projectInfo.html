@@ -1,0 +1,49 @@
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <h2>Compiler Overview</h2>
+            <p>We chose to write a procedural
+                    implementation of a TypeScript compiler. TypeScript is simply
+                    Javascript, but with types and advanced class-related features. The
+                    class-related features are not present in our implementation due to the
+                    fact that it is a procedural-style implementation.</p>
+            <p class="c3 c8"><span class="c2"></span></p>
+            <p class="c3"><span class="c2">Our implementation includes support for
+                    arithmetic operations, control structures in the form of an if
+                    statement and a while statement, functions, and print statements
+                    capable of printing strings,numbers, and booleans. Numerical types are
+                    as they are in TypeScript: they are all floating point
+                    values.</span></p>
+            <p class="c3 c8"><span class="c2"></span></p>
+            <p class="c3"><span class="c2">Notes about where our implementation
+                    deviates from TypeScript:</span></p>
+            <ol class="c0 lst-kix_zhem4beu4699-0 start" start="1">
+                    <li class="c3 c7"><span class="c2">Lexical scoping is not currently
+                        implemented. The function parse lexical scopes, but they variables
+                        are declared statically</span></li>
+                    <li class="c3 c7"><span class="c2">Type checking is not fully
+                        implemented, but types of variables must still be declared (one of
+                        the features of TypeScript).</span></li>
+                    <li class="c3 c7"><span class="c2">Our language’s string type is
+                        called “char”, whereas TypeScript calls it “string”.</span></li>
+                    <li class="c3 c7"><span class="c2">TypeScript’s print function -
+                        ‘console.log’ - is called ‘println’ in our implementation. The
+                        print function is overloaded and can infer the type of the object
+                        being printed (boolean, char, number).</span></li>
+                    <li class="c3 c7"><span class="c2">Our implementation parses
+                        function parameters, but function parameter code generation is not
+                        implemented due to lack of time.</span></li>
+                    <li class="c3 c7"><span class="c2">String operations are not
+                        implemented in our language. They exist only to be assigned to
+                        variables and printed by our “println” function.</span></li>
+            </ol>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-offset-2">
+                <img id="uml" src="http://i.imgur.com/e2WoPXo.png?1" class="image-fluid" alt="TestScript UML diagram">
+            </div>
+        </div>
+    </div>
+</div>
