@@ -10,12 +10,17 @@ var users = require('./routes/users');
 var hbs = require('hbs');
 var app = express();
 
+// set up env variable
+app.set('env', "development");
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 
+//register all partials
 app.set('view engine', 'html');
 app.engine('html', require('hbs').__express);
 hbs.registerPartials(__dirname + '/views/partials');
+hbs.registerPartials(__dirname + '/views/partials/compiler');
 
 
 // uncomment after placing your favicon in /public
