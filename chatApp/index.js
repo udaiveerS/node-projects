@@ -1,5 +1,3 @@
-var Jwt = require('./lib/jwt');
-var jwt = new Jwt("secret");
 var mongo = require('mongodb').MongoClient;
 var http = require('http'); 
 var app = http.createServer(router);
@@ -24,21 +22,48 @@ var mimes = {
     '.json' :   'application/json'
 };
 
+/**
+ * All custom modules imported from /lib
+ * @type {*|exports|module.exports}
+ */
 // serves all static files for website
-var staticFiles = require('./lib/static');
-    staticFiles = new staticFiles(mimes);
+var StaticFiles = require('./lib/static'),
+    staticFiles = new StaticFiles(mimes);
 // deal with all login authentication
-var loginModule = require('./lib/login');
-    loginModule = new loginModule(connectionString);
+var LoginModule = require('./lib/login'),
+    loginModule = new LoginModule(connectionString);
 // deal with signup databse / validity checks
-var signupModule = require('./lib/signup');
-    signupModule = new signupModule(connectionString);
+var SignupModule = require('./lib/signup'),
+    signupModule = new SignupModule(connectionString);
+// auth module takes key for JWT as paramater Key should be assigned via env varables
+var Jwt = require('./lib/jwt'),
+    jwt = new Jwt("secret");
 
+/**
+ * Function as the bare bones router for chat application
+ * handels GET/POST and 404 errors. All request handlers
+ * are sored as a routes object
+ * @param req
+ * @param res
+ */
+function router(req,res) {
+    var baseURI = url.parse(req.url, true);
+    if(req.method === 'GET') {
+        var filePath = __dirname + (baseURI.pathname === '/' ? '/index.html' : baseURI.pathname);
+        req.filePath = filePath;
+        //console.log(req.filePath);
+        routes.GET(req,res);
+    }else if(req.method === 'POST') {
+        //console.log(baseURI);
+        routes.POST[baseURI.pathname](req,res);
+    } else {
+        routes.NA(req,res);
+    }
+}
 
 var routes = {
     'GET': (req,res) => {
-        "use strict";
-        staticFiles.serveFiles(req,res);
+       staticFiles.serveFiles(req,res);
     },
     'POST': {
         '/api/login/': (req, res) => {
@@ -64,7 +89,7 @@ var routes = {
                             res.writeHead(200, {'Content-type': mimes['.json']});
                             res.end(JSON.stringify({'jwt' : aJwt}));
                         } else {
-          ;                  res.writeHead(400, {'Content-type': mimes['.json']});
+                            res.writeHead(400, {'Content-type': mimes['.json']});
                             res.end(JSON.stringify({'err' : 'resource not found'}));
                         }
                     })
@@ -94,7 +119,7 @@ var routes = {
                         res.end(JSON.stringify(userCredentials));
                 }).catch((exception) => {
                         res.writeHead(400, {'Content-type': mimes['.json']});
-                        res.end(JSON.stringify({'err' : 'resource not found'}));
+                        res.end(JSON.stringify({'err' : 'resource not found during signup'}));
                 });
             });
             //console.log('exit');
@@ -120,49 +145,27 @@ var routes = {
                 }
                 catch(e) {
                         res.writeHead(404);
-                        res.end('exception thrown');
+                        res.end('error in authentication during session');
                 }
             });
         }
     },
     'NA': (req,res) => {
         res.writeHead(404);
-        res.end('stuff not found!');
-    },
-    'NO': (req,res) => {
-        res.writeHead(504);
-        res.end('no access found!');
+        res.end('the route was not found!');
     }
-
 };
 
-//do all website routing for serving the staic files
-function router(req,res) {
-    var baseURI = url.parse(req.url, true);
-    //try {
-        if(req.method === 'GET') {
-            var filePath = __dirname + (baseURI.pathname === '/' ? '/index.html' : baseURI.pathname);
-            req.filePath = filePath;
-            //console.log(req.filePath);
-            routes.GET(req,res);
-        }else if(req.method === 'POST') {
-            //console.log(baseURI);
-            routes.POST[baseURI.pathname](req,res);
-        } else {
-            routes.NA(req,res);
-        }
-}
 
-
+/**
+ * Socket.io message event handeling all done
+ * inside the mongo connection callback
+ */
 mongo.connect(connectionString, function(err,db) {
     if(err) throw err;
     
     client.on('connection', function(socket) {
         var col = db.collection('messages');
-
-        var sendStatus = (s) => {
-            socket.emit('status',s);
-        };
 
         col.find().sort({_id: 1}).toArray(function(err, res) {
             if(err) throw err; 
@@ -170,21 +173,9 @@ mongo.connect(connectionString, function(err,db) {
         });
 
         socket.on('input', function(data) {
-
-            if(false) {
-                // check for jwt auth 
-            } else {
-                var newData = {message: data.msg, jwt: data.jwt, user: data.user, time: data.time};
-                client.emit('output', [newData]);
-                col.insert(newData,function(err, res) {
-                    if(err) console.log("error storing in db");
-                    else {
-                      sendStatus({
-                                message: "Message sent",
-                      });
-                    }
-                });
-            }
+            var newData = {message: data.msg, jwt: data.jwt, user: data.user, time: data.time};
+            client.emit('output', [newData]);
+            col.insert(newData);
         });
     });
 });
