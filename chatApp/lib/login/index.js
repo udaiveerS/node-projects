@@ -41,16 +41,19 @@ module.exports = function(connectionString) {
         "use strict";
         return new Promise((resolve) => {
            if(aUserCursor.hasNext()) {
-               var aUser =aUserCursor.next();
+               var aUser = aUserCursor.next();
                aUser.then(val => {
                    console.log(val)
-                   resolve(val.password === loginData.password);
+                   if (val.password === loginData.password) {
+                       resolve(aUser)
+                   }
                })
            } else {
                resolve(false);
            }
         });
     }
+
 
     return {
         /**
@@ -66,7 +69,7 @@ module.exports = function(connectionString) {
                 "use strict";
                 return confirmPassword(aUserCursor, loginData);
             }).then((aBoolean) => {
-                "use strict";
+                "use strict"
                 return aBoolean;
             }).catch((err) => {
                 "use strict";

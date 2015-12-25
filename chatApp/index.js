@@ -30,6 +30,9 @@ var staticFiles = require('./lib/static');
 // deal with all login authentication
 var loginModule = require('./lib/login');
     loginModule = new loginModule(connectionString);
+// deal with signup databse / validity checks
+var signupModule = require('./lib/signup');
+    signupModule = new signupModule(connectionString);
 
 
 var routes = {
@@ -47,24 +50,27 @@ var routes = {
             req.on('end', () => {
                 console.log(body);
                 try {
-                    var data = JSON.parse(body);
+                    var user_password= JSON.parse(body);
                 } catch(e) {
                     res.writeHead(400, {'Content-type': mimes['.json']});
                     res.end(JSON.stringify({'err' : 'bad Json sent to login'}));
                 }
-                loginModule.login(data)
-                    .then((isLoggedIn) => {
-                    "use strict";
-                        console.log(isLoggedIn);
-                        if(isLoggedIn) {
-                            delete data.password;
-                            var aJwt = jwt.encode(data);
+                loginModule.login(user_password)
+                    .then((aUser) => {
+                        if(aUser) {
+                            delete aUser.password;
+                            console.log(aUser);
+                            var aJwt = jwt.encode(aUser);
                             res.writeHead(200, {'Content-type': mimes['.json']});
                             res.end(JSON.stringify({'jwt' : aJwt}));
                         } else {
-                            res.writeHead(400, {'Content-type': mimes['.json']});
+          ;                  res.writeHead(400, {'Content-type': mimes['.json']});
                             res.end(JSON.stringify({'err' : 'resource not found'}));
                         }
+                    })
+                    .catch((err) => {
+                        res.writeHead(400, {'Content-type': mimes['.json']});
+                        res.end(JSON.stringify({'err' : 'login not successful'}));
                     });
             });
         },
@@ -72,44 +78,20 @@ var routes = {
             var body = '';
             req.on('data', data => {
                 body += data; 
-                //console.log('body');
             });
 
             req.on('end', () => {
-                //console.log("got into the" + body);
-                new Promise(function(resolve,reject) {
+                console.log("got into the" + body);
+                new Promise(function(resolve) {
                     var data = JSON.parse(body);
-		    
-                    //console.log(data);
                     resolve(data);
                 }).then(function(data) {
-                    //console.log(data);
-                    return new Promise(function() {
-                        mongo.connect(connectionString, function(err,db) {
-                            if(err) throw err;
-                            var collection = db.collection('users');
-                            return new Promise(function(resolve, reject) {
-                                collection.findOne({'username' : data.username}, function(err,userPerson) {
-                                    //console.log('find one ' + err);
-                                    //console.log(userPerson);
-                                    if(!userPerson) {
-                                        collection.insert({'username' : data.username, 'password': data.password, 'type': 'user' }, function(err,user) {
-                                                //console.log('here is the user returned');
-                                                //console.log(user);
-                                                res.writeHead(200, {'Content-type': mimes['.json']});
-                                                res.end(JSON.stringify(user));
-                                        });
-                                    }
-                                    else {
-                                            res.writeHead(400, {'Content-type': mimes['.json']});
-                                            res.end(JSON.stringify("user exists"));
-                                        }
-                                    });
-
-                                });
-                                
-                            });
-                    });
+                    console.log("got into 2nd then " + data);
+                    return signupModule.signup(data);
+                }).then((userCredentials) => {
+                        delete userCredentials.password;
+                        res.writeHead(200, {'Content-type': mimes['.json']});
+                        res.end(JSON.stringify(userCredentials));
                 }).catch((exception) => {
                         res.writeHead(400, {'Content-type': mimes['.json']});
                         res.end(JSON.stringify({'err' : 'resource not found'}));
