@@ -16,7 +16,7 @@ app.set('env', "development");
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 
-//register all partials
+//register all hbs partials/ tmplates
 app.set('view engine', 'html');
 app.engine('html', require('hbs').__express);
 hbs.registerPartials(__dirname + '/views/partials');
