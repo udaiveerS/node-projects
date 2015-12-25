@@ -49,9 +49,7 @@ var Jwt = require('./lib/jwt'),
 function router(req,res) {
     var baseURI = url.parse(req.url, true);
     if(req.method === 'GET') {
-        var filePath = __dirname + (baseURI.pathname === '/' ? '/index.html' : baseURI.pathname);
-        req.filePath = filePath;
-        //console.log(req.filePath);
+        req.filePath = __dirname + (baseURI.pathname === '/' ? '/index.html' : baseURI.pathname);
         routes.GET(req,res);
     }else if(req.method === 'POST') {
         //console.log(baseURI);
@@ -93,7 +91,7 @@ var routes = {
                             res.end(JSON.stringify({'err' : 'resource not found'}));
                         }
                     })
-                    .catch((err) => {
+                    .catch(() => {
                         res.writeHead(400, {'Content-type': mimes['.json']});
                         res.end(JSON.stringify({'err' : 'login not successful'}));
                     });
@@ -117,24 +115,20 @@ var routes = {
                         delete userCredentials.password;
                         res.writeHead(200, {'Content-type': mimes['.json']});
                         res.end(JSON.stringify(userCredentials));
-                }).catch((exception) => {
+                }).catch(() => {
                         res.writeHead(400, {'Content-type': mimes['.json']});
                         res.end(JSON.stringify({'err' : 'resource not found during signup'}));
                 });
             });
-            //console.log('exit');
         },'/api/auth/' :(req,res) => {
             var body = '';
             req.on('data', data => {
                     body += data; 
-                    //console.log(body);
             });
             
             req.on('end', () => {
                 try {
-                    //console.log(body);
                     var ajwt = JSON.parse(body);
-                    //console.log(ajwt.jwt);
                     if(ajwt && jwt.decode(ajwt.jwt) === false) {
                         res.writeHead(404);
                         res.end('bad signature');
