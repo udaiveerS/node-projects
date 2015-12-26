@@ -1,0 +1,24 @@
+{
+  "name": "chatapp",
+  "description": "chat app with JWT implementation",
+  "main": "index.js",
+  "authors": [
+    "udaiveer singh"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/udaiveerS/node-projects",
+  "moduleType": [],
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "app/components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.6",
+    "jquery": "~2.1.4"
+  }
+}
