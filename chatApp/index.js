@@ -71,7 +71,6 @@ var routes = {
             });
 
             req.on('end', () => {
-                console.log(body);
                 try {
                     var user_password= JSON.parse(body);
                 } catch(e) {

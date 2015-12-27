@@ -7,5 +7,6 @@
     <orderEntry type="library" name="jQuery-2.0.0" level="application" />
     <orderEntry type="library" name="Node core Modules" level="project" />
     <orderEntry type="library" name="Custom Modules" level="project" />
+    <orderEntry type="library" name="bower" level="project" />
   </component>
 </module>
