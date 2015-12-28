@@ -11,6 +11,7 @@
     <link href="../app/components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <link href="../css/style.css" rel="stylesheet">
+    <link href="../css/foundation-icons.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -21,29 +22,34 @@
     <![endif]-->
 </head>
 <body>
-    <nav id="nav-wrapper-right" class="navbar navbar-default col-lg-4">
+    <nav id="nav-wrapper-right" class="navbar navbar-default col-xs-4 col-sm-4 col-md-4 col-lg-4">
         <div class="container-fluid">
-            <div class="navbar-header navbar-left-header">
+            <div class="navbar-header navbar-left navbar-left-header">
                 <div class="logo">
                     <img alt="Brand" src="../img/logo-2.svg">
                 </div>
             </div>
-            <ul id="right-icons" class="nav navbar-nav nabvar-right">
-                <li><a href="#"><i class="fa fa-inverse fa-comment fa-lg"></i></a></li>
-                <li><a href="#"><i class="fa  fa-inverse fa-bell fa-lg"></i></a></li>
-                <li><a href="#"><i class="fa  fa-inverse fa-star-o fa-lg"></i></a></li>
-                <li><a href="#"><i class="fa  fa-inverse fa-pie-chart fa-lg"></i></a></li>
-                <li><a href="#"><i class="fa  fa-inverse fa-th fa-lg"></i></a></li>
-            </ul>
+            <div class = "navbar-header">
+            <button type = "button" class = "navbar-toggle"
+                    data-toggle = "collapse" data-target = "#example-navbar-collapse">
+                <span class = "sr-only">Toggle navigation</span>
+                <span class = "icon-bar"></span>
+                <span class = "icon-bar"></span>
+                <span class = "icon-bar"></span>
+            </button>
+
+            <div class="collapse navbar-collapse">
+                <ul id="right-icons" class="nav navbar-nav nabvar-right">
+                    <li><a href="#"><i class="step fi-arrow-down size-18"></i></li>
+                    <li><a href="#"><i class="step fi-arrow-down size-18"></i></li>
+                    <li><a href="#"><i class="step fi-arrow-down size-18"></i></li>
+                    <li><a href="#"><i class="step fi-arrow-down size-18"></i></li>
+                </ul>
+            </div>
         </div>
     </nav>
-    <nav id="nav-wrapper-left" class="navbar navbar-default col-lg-8">
+    <nav id="nav-wrapper-left" class="navbar navbar-default  col-xs-8 col-sm-8 col-md-8 col-lg-8">
         <div class="container-fluid">
-            <div class="navbar-header">
-                <div class="logo logo-place-holder">
-                    <img alt="Brand" src="../img/logo-2.svg">
-                </div>
-            </div>
             <div class="hv-align">
                 <span id="username">Udaiveer Singh</span>
                 <br>
@@ -58,8 +64,14 @@
                 <li><a href="#"><i class="fa  fa-inverse fa-wrench fa-lg"></i></a></li>
                 <li><a href="#"><i class="fa  fa-inverse fa-bars fa-lg"></i></a></li>
             </ul>
+            <div class="navbar-header navbar-right">
+                <div class="logo logo-place-holder">
+                    <img alt="Brand" src="../img/logo-2.svg">
+                </div>
+            </div>
         </div>
     </nav>
+
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>

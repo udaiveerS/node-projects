@@ -4,12 +4,15 @@ body {
 }
 
 .logo {
+    height: 100px;
     width: 100px;
+    max-width: 100px;
 }
 
 .logo-place-holder {
     visibility: hidden;
     border-width:0 !important;
+    width: 1px;
 }
 
 .navbar {
@@ -20,6 +23,10 @@ body {
     margin: 0;
 }
 
+i {
+    width: 50px;
+    max-width:50px;
+}
 #nav-wrapper-right {
     background-color: #5A847E;
     opacity: .8;
