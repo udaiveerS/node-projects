@@ -7,6 +7,7 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>Bootstrap 101 Template</title>
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script><!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <!-- Bootstrap -->
     <link href="../app/components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
@@ -20,6 +21,25 @@
     <script src="../app/components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+
+    <!-- To make screen take same width based on view port -->
+    <script>
+        $(document).ready(function(){
+            var headerHeight = $(".header").height() + 1;
+            var height = $(window).height();
+            var main_body_height = height - headerHeight;
+            console.log("height = " + main_body_height)
+            $(".main-body-wrapper "+ ".row " + "[class*=\"col-\"]").height(main_body_height);
+            $(window).resize(function(){
+                //set the body height to maintain scroll capiblilty
+                var headerHeight = $(".header").height() + 1;
+                var height = $(window).height();
+                var main_body_height = height - headerHeight;
+                console.log("height = " + main_body_height)
+                $(".main-body-wrapper "+ ".row " + "[class*=\"col-\"]").height(main_body_height);
+            });
+        });
+    </script>
 </head>
 <body>
     <div class="container-fluid">
@@ -109,65 +129,28 @@
     <hr class="body-seperator-hr">
 
     <div class="container-fluid  main-body-wrapper">
-        <div class="row">
+        <div class="row body-row">
             <div class="nav-wrapper-right col-xs-4">
                 <div class="container-fluid">
                 </div>
                 <div class="row active-user-row">
                     <div class="active-users-info col-xs-12">
-                        <div class="pull-left">
+                        <div class="pull-left vertical-align-div">
                             <span id="active-users-message">Active Users</span>
                         </div>
-                        <div class="pull-right">
-                            <span id="active-users-number"> 5</span>
+                        <div class="hidden-xs pull-right vertical-align-div">
+                            <span id="active-users-number">415</span>
                         </div>
                     </div>
                     <div class="active-user col-xs-12">
-                        <div class="margin-left pull-left">
-                            <span class="a-user">Uda400</span>
+                        <div class="hidden-xs pull-left a-user-avatar vertical-align-div">
+                            <img src="https://avatars2.githubusercontent.com/u/12993700?v=3&s=460" alt="avatar">
                         </div>
-                        <div class="margin-right pull-right">
-                            <svg height="20" width="20">
-                                <circle cx="10" cy="10" r="5" stroke="none" fill="#A8C65D" > </circle>
-                            </svg>
+                        <div class="a-user pull-left vertical-align-div">
+                            <span>Uda400</span>
                         </div>
-                    </div>
-                    <div class="active-user col-xs-12">
-                        <div class="margin-left pull-left">
-                            <span class="a-user">User 2</span>
-                        </div>
-                        <div class="margin-right pull-right">
-                            <svg height="20" width="20">
-                                <circle cx="10" cy="10" r="5" stroke="none" fill="#A8C65D" > </circle>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="active-user col-xs-12">
-                        <div class="margin-left pull-left">
-                            <span class="a-user">User 2</span>
-                        </div>
-                        <div class="margin-right pull-right">
-                            <svg height="20" width="20">
-                                <circle cx="10" cy="10" r="5" stroke="none" fill="#A8C65D" > </circle>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="active-user col-xs-12">
-                        <div class="margin-left pull-left">
-                            <span class="a-user">User 2</span>
-                        </div>
-                        <div class="margin-right pull-right">
-                            <svg height="20" width="20">
-                                <circle cx="10" cy="10" r="5" stroke="none" fill="#A8C65D" > </circle>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="active-user col-xs-12">
-                        <div class="margin-left pull-left">
-                            <span class="a-user">User 2</span>
-                        </div>
-                        <div class="margin-right pull-right">
-                            <svg height="20" width="20">
+                        <div class="hidden-xs a-user-ball pull-right vertical-align-div">
+                            <svg  height="20" width="20">
                                 <circle cx="10" cy="10" r="5" stroke="none" fill="#A8C65D" > </circle>
                             </svg>
                         </div>
@@ -175,8 +158,69 @@
                 </div>
             </div>
             <div class="nav-wrapper-left col-xs-8">
-                <div class="row messages-column col-xs-12">
+                <div class="row">
+                    <div class="col-xs-12 messages-container">
+                        <div class="message">
+                            <div class="time-stamp">
+                                <span class="time-stamp">8:30 PM</span>
+                            </div>
+                            <div class="pull-left a-user-avatar-message">
+                                <img src="https://avatars2.githubusercontent.com/u/12993700?v=3&s=460" alt="avatar">
+                                <br>
+                                <div class="username">bruce510</div>
+                            </div>
+                            <div class="message-string pull-right">
+                                <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi, optio!</span>
+                                <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi, optio!</span>
+                                <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi, optio!</span>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
 
+                        <div class="message">
+                            <div class="time-stamp">
+                                <span class="time-stamp">8:30 PM</span>
+                            </div>
+                            <div class="pull-left a-user-avatar-message">
+                                <img src="https://avatars2.githubusercontent.com/u/12993700?v=3&s=460" alt="avatar">
+                                <br>
+                                <div class="username">bruce510</div>
+                            </div>
+                            <div class="message-string pull-right">
+                                <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi, optio!</span>
+                                <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi, optio!</span>
+                                <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi, optio!</span>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+
+                        <div class="message">
+                            <div class="time-stamp">
+                                <span class="time-stamp">8:30 PM</span>
+                            </div>
+                            <div class="pull-left a-user-avatar-message">
+                                <img src="https://avatars2.githubusercontent.com/u/12993700?v=3&s=460" alt="avatar">
+                                <br>
+                                <div class="username">bruce510</div>
+                            </div>
+                            <div class="message-string pull-right">
+                                <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi, optio!</span>
+                                <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi, optio!</span>
+                                <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi, optio!</span>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="message-input">
+                            <form>
+                                <div class="form-group row">
+                                    <div class="col-xs-8">
+                                        <input type="email" class="form-control" id="inputEmail3" placeholder="Message....">
+                                    </div>
+                                    <button id="message-button" type="submit" class="col-xs-3 btn btn-primary">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -184,8 +228,5 @@
 
 
 
-<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<!-- Include all compiled plugins (below), or include individual files as needed -->
 </body>
 </html>

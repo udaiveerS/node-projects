@@ -1,6 +1,6 @@
 html,body {
-    height: 100vh;
-    max-width: 1500px;
+    height: 84vh;
+    max-width: 100%;
     margin: 0 auto;
     padding-top: 00px;
 }
@@ -86,10 +86,9 @@ body {
 }
 
 .icons-inline-block {
-    margin-top: .7em;
-    margin-left: 1em;
-    margin-right: -2em;
     width: 50%;
+    margin-right: -1.7em;
+    margin-top: 1em;
 }
 
 .center-block {
@@ -101,16 +100,20 @@ body {
 .right-icons {
     margin-left: 4.5em;
 }
+
 .right-icons li{
     margin-top: .5em;
 }
 
-.main-body-wrapper .row [class*="col-"] {
-    /*height: 84vh;*/
-    height: 700px;
+.main-body-wrapper  .row [class*="col-"] {
+    height: 500px;
     overflow: auto;
-    /*margin: 0;*/
-    /*padding: 0;*/
+}
+
+.vertical-align-div {
+    position: relative;
+    top: 50%;
+    transform: 			translateY(-50%);
 }
 
 #body-seperator-hr {
@@ -118,38 +121,80 @@ body {
     paddin: 0;
 }
 
+.active-users-row {
+   font-size: 15px;
+}
 
 .active-users-info {
-    margin: 0;
-    padding: 0;
     height: 70px !important;
     background-color: #375A56;
-    vertical-align: middle;
+    display: inline;
 }
 
 #active-users-message {
     color: whitesmoke;
-    font-size: 3em;
-    margin-left: .5em;
 }
 
 #active-users-number {
     color: #9CC059;
-    font-size: 3em;
-    margin-right: .5em;
 }
 
-.body-margin-left {
-    margin-left: 1em;
-}
+.active-users-info {
 
-.body-margin-right {
-    margin-right: 1em;
 }
 
 .active-user {
-    margin: 0;
-    padding: 0;
-    height: 70px !important;
-    vertical-align: middle;
+    display: inline;
+    color: whitesmoke;
+    height: 80px !important;
+    border-bottom: 1px solid #9CC059;
+    border-top: 1px solid #9CC059;
+    overflow: hidden;
 }
+
+.a-user {
+    margin-left: .5em;
+}
+
+.a-user-avatar-message img, .a-user-avatar img {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+}
+
+/* Messages Class */
+.message {
+    margin-bottom: 1em;
+}
+
+.a-user-avatar-message {
+    width: 30%;
+}
+
+.username {
+    color: whitesmoke;
+    margin-bottom: .3em;
+    width: 80px;
+}
+
+.time-stamp {
+    color: #0095CC;
+    margin-bottom: .3em;
+}
+
+.message-string {
+    display: inline;
+    padding-left: 2em;
+    color: whitesmoke;
+    width: 70%;
+}
+
+.divclear {
+    clear: both;
+}
+
+#message-button{
+    height: 34px !important;
+}
+
+
