@@ -19,7 +19,8 @@ var mimes = {
     '.gif'  :   'image/gif',
     '.jpg'  :   'image/jpeg',
     '.png'  :   'image/png',
-    '.json' :   'application/json'
+    '.json' :   'application/json',
+    '.svg' :   'image/svg+xml'
 };
 
 /**
@@ -49,7 +50,7 @@ var Jwt = require('./lib/jwt'),
 function router(req,res) {
     var baseURI = url.parse(req.url, true);
     if(req.method === 'GET') {
-        req.filePath = __dirname + (baseURI.pathname === '/' ? '/index.html' : baseURI.pathname);
+        req.filePath = __dirname + (baseURI.pathname === '/' ? '/views/index-2.html' : baseURI.pathname);
         routes.GET(req,res);
     }else if(req.method === 'POST') {
         //console.log(baseURI);

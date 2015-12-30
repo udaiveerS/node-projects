@@ -60,7 +60,7 @@ if(socket !== undefined) {
     socket.on('output', function(data) {
         data.forEach(function(elem) {
             console.log(elem);
-            appendComment(elem.user + ' →', elem.message);
+            appendComment(elem.user, elem.message);
         });
     });
         
