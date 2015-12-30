@@ -29,19 +29,30 @@
             var height = $(window).height();
             var main_body_height = height - headerHeight;
             console.log("height = " + main_body_height)
-            $(".main-body-wrapper "+ ".row " + "[class*=\"col-\"]").height(main_body_height);
+            $(".left-panel").height(main_body_height);
+            $(".right-panel").height(main_body_height);
+            var comment_size= $(".message-input").height();
+            $(".messages-container").css(
+                    'max-height', main_body_height - comment_size
+                );
             $(window).resize(function(){
-                //set the body height to maintain scroll capiblilty
+                //set the body height to maintain scroll capability
                 var headerHeight = $(".header").height() + 1;
                 var height = $(window).height();
                 var main_body_height = height - headerHeight;
                 console.log("height = " + main_body_height)
-                $(".main-body-wrapper "+ ".row " + "[class*=\"col-\"]").height(main_body_height);
+                $(".left-panel").height(main_body_height);
+                $(".right-panel").height(main_body_height);
+                var comment_size= $(".message-input").height();
+                $(".messages-container").css(
+                        'max-height', main_body_height - comment_size
+                );
             });
         });
     </script>
 </head>
 <body>
+
     <div class="container-fluid">
         <div class="row header" >
             <div class="nav-wrapper-right col-xs-4">
@@ -122,7 +133,7 @@
                         </svg>
                     </div>
                 </div>
-            </div>
+            </div><!-- right wrapper row closed -->
         </div><!-- end of row && header -->
     </div><!-- container fluid -->
 
@@ -130,7 +141,7 @@
 
     <div class="container-fluid  main-body-wrapper">
         <div class="row body-row">
-            <div class="nav-wrapper-right col-xs-4">
+            <div class="right-panel nav-wrapper-right col-xs-4">
                 <div class="container-fluid">
                 </div>
                 <div class="row active-user-row">
@@ -157,7 +168,7 @@
                     </div>
                 </div>
             </div>
-            <div class="nav-wrapper-left col-xs-8">
+            <div class="right-panel nav-wrapper-left col-xs-8">
                 <div class="row">
                     <div class="col-xs-12 messages-container">
                         <div class="message">
@@ -210,23 +221,21 @@
                             </div>
                             <div class="clearfix"></div>
                         </div>
-                        <div class="message-input">
-                            <form>
-                                <div class="form-group row">
-                                    <div class="col-xs-8">
-                                        <input type="email" class="form-control" id="inputEmail3" placeholder="Message....">
-                                    </div>
-                                    <button id="message-button" type="submit" class="col-xs-3 btn btn-primary">Submit</button>
-                                </div>
-                            </form>
-                        </div>
+                    </div>
+                    <div class="message-input col-xs-12">
+                        <form class="row comment-submit">
+                            <div  class="col-xs-8">
+                                <label for="exampleTextarea"></label>
+                                <textarea  id="message-form" class="form-control" id="exampleTextarea" rows="2"></textarea>
+                            </div>
+                            <button id="message-button" type="submit" class="col-xs-3 btn btn-primary ">Submit</button>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-
-
 </body>
 </html>
+
+

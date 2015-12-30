@@ -106,7 +106,6 @@ body {
 }
 
 .main-body-wrapper  .row [class*="col-"] {
-    height: 500px;
     overflow: auto;
 }
 
@@ -193,8 +192,32 @@ body {
     clear: both;
 }
 
-#message-button{
-    height: 34px !important;
+/*.message-container {*/
+/*}*/
+
+.message-input {
+    position: fixed;
+    bottom: 0;
+    right: 10px;
+    width: 60%;
+    height: 95px !important;
 }
 
+.form-group {
+    height: 150px !important;
+}
+
+#message-button {
+    margin-top: 2.14em;
+    padding: auto 0;
+}
+
+/*.comment-submit {*/
+    /*position: fixed;*/
+    /*bottom: 0;*/
+/*}*/
+
+#message-form {
+    resize: none;
+}
 
