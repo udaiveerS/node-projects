@@ -5,6 +5,7 @@ var client = require('socket.io').listen(app).sockets;
 var url = require('url'); 
 var fs = require('fs');
 var path = require('path');
+var faker = require('faker');
 
 var host = 'localhost';
 
@@ -60,6 +61,27 @@ function router(req,res) {
     }
 }
 
+
+function getAvatar(newData) {
+    return new Promise(function(resolve) {
+        console.log("in get Avatar");
+        if(newData.default) {
+            console.log("in get Avatar 2");
+            newData.title = faker.fake('{{name.jobTitle}}');
+            newData.avatar = faker.fake('{{image.imageUrl}}');
+            console.log(newData.title);
+            console.log(newData.test1);
+            console.log(newData.avatar);
+            newData.default = false;
+            resolve(newData);
+        } else {
+            console.log("in get Avatar 3");
+            console.log(newData);
+            resolve(newData);
+        }
+    });
+}
+
 var routes = {
     'GET': (req,res) => {
        staticFiles.serveFiles(req,res);
@@ -109,11 +131,17 @@ var routes = {
                     var data = JSON.parse(body);
                     resolve(data);
                 }).then(function(data) {
-                    console.log("got into 2nd then " + data);
-                    return signupModule.signup(data);
+                    console.log("got before avater" + data);
+                    data.default = true;                 // initialize for faker
+                    return getAvatar(data).then((newData) => {
+                        console.log("got into avatar");
+                        console.log(newData);
+                        return signupModule.signup(newData);
+                    });
                 }).then((userCredentials) => {
                         delete userCredentials.password;
                         res.writeHead(200, {'Content-type': mimes['.json']});
+                        console.log(userCredentials);
                         res.end(JSON.stringify(userCredentials));
                 }).catch(() => {
                         res.writeHead(400, {'Content-type': mimes['.json']});
@@ -151,6 +179,8 @@ var routes = {
 };
 
 
+var users_loggedin = {};
+
 /**
  * Socket.io message event handeling all done
  * inside the mongo connection callback
@@ -160,17 +190,50 @@ mongo.connect(connectionString, function(err,db) {
     
     client.on('connection', function(socket) {
         var col = db.collection('messages');
+        console.log(socket.id) ;
+        users_loggedin[socket.id] = "some user";
+
+        console.log(users_loggedin);
+
+        client.on('login', function(data) {
+           client.emit('client-login', "client logged in");
+        });
+
+        client.on('logout', function(data) {
+            client.emit('client-logout', "client logged");
+        });
+
+        socket.on('disconnect', function(){
+            console.log('user disconnected');
+            console.log(socket.id);
+            delete users_loggedin[socket.id];
+            console.log(users_loggedin);
+            client.emit('client-logout', "a client disconnected");
+        });
 
         col.find().sort({_id: 1}).toArray(function(err, res) {
             if(err) throw err; 
             socket.emit('output',res);
         });
+        //Array is not needed. Sockets.io provides a socket.id that persists until socket is disconnect.
 
         socket.on('input', function(data) {
-            var newData = {message: data.msg, jwt: data.jwt, user: data.user, time: data.time};
-            client.emit('output', [newData]);
-            col.insert(newData);
-        });
+            console.log("date recieved" + data);
+
+           var newData = {
+                msg: data.msg,
+                jwt: data.jwt,
+                user: data.user,
+                time: data.time,
+                title: data.title,
+                avatar: data.avatar
+            };
+
+               client.emit('output', [newData]);
+               console.log(data);
+               col.insert(data);
+       });
+
     });
 });
 

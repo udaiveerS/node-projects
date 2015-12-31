@@ -1,6 +1,6 @@
 {
   "name": "chatapp",
-  "version": "0.1.0",
+  "version": "1.8.0",
   "description": "chat app with JWT implementation",
   "main": "index.js",
   "scripts": {
@@ -10,6 +10,7 @@
   "license": "MIT",
   "dependencies": {
     "bower": "^1.7.1",
+    "faker": "^3.0.1",
     "forever": "^0.15.1",
     "mongodb": "^2.0.49",
     "socket.io": "^1.3.7"

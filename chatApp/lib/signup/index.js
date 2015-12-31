@@ -22,8 +22,12 @@ module.exports = function(connectionString) {
                     var userObject = {
                         username: userCredentials.username,
                         password: userCredentials.password,
+                        default: userCredentials.default,
+                        title: userCredentials.title,
+                        avatar: userCredentials.avatar,
                         type: 'user'
-                    }
+                    };
+
                     collection.insert(userObject, function(err,user) {
                         if(err) {
                             reject(new Error("a user does not exist in the database"));
