@@ -17,7 +17,7 @@ module.exports = function(connectionString) {
                     var collection = db.collection('users');
                     var aUserCursor = collection.find({username: loginData.username});
                      aUserCursor.count(true).then((val) => {
-                         console.log('size is ' + val);
+                         //console.log('size is ' + val);
                          if(val === 1) {
                              resolve(aUserCursor);
                          } else {
@@ -43,7 +43,7 @@ module.exports = function(connectionString) {
            if(aUserCursor.hasNext()) {
                var aUser = aUserCursor.next();
                aUser.then(val => {
-                   console.log(val)
+                   //console.log(val)
                    if (val.password === loginData.password) {
                        resolve(aUser)
                    }
@@ -73,7 +73,7 @@ module.exports = function(connectionString) {
                 return aBoolean;
             }).catch((err) => {
                 "use strict";
-                console.log("error thrown in login/index.js login function: "+ err.message);
+                //console.log("error thrown in login/index.js login function: "+ err.message);
                 return false;
             });
         },

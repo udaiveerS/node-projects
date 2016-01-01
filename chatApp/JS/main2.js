@@ -20,44 +20,71 @@ try {
     var socket = io.connect(ip);
 } catch(std) {
     // set status to warn user
-    console.log("not connected");
+    //console.log("not connected");
 }
 
 
 if(socket !== undefined) {
-    console.log("ok");
+    //console.log("ok");
+
     // register the callback for displaying all messages
-    // when a user logs in
     socket.on('output', function(data) {
         data.forEach(function(elem) {
-            console.log(elem);
+            //console.log(elem);
             appendComment(elem.user , elem.msg, elem.avatar);
         });
     });
 
-    socket.on("client-login", function(data){
-        data.forEach(function(elem) {
+    //callback to get list of all users online
+    socket.on("login-list", function(datum) {
+        console.log("client connected: login list [");
+        for (var elem in datum) {
             console.log(elem);
-            appendComment(elem.user, elem.msg, elem.avatar);
-        });
+        }
+        console.log("]");
     });
 
-    socket.on("client-logout", function(data) {
-        console.log(data.username);
-        console.log(data.avatar);
+    //when client logs-in
+    socket.on("client_login", function(elem){
+            console.log("client logged in");
+            console.log(elem);
+    });
+
+    //callback when client logs out
+    socket.on("client-logout", function(elem) {
+        console.log("logout");
+        console.log(elem);
+    });
+
+    socket.on("client-invalidate", function() {
+        //will check current session
+        var checkValidSession = true;
+        autolog(checkValidSession);
     });
 
 } else {
-    console.log("not ok");
+        //console.log("not ok");
 }
 
-
+/**
+ * Called each time user is successfully logged in.
+ * @param username
+ */
 function emitLogin(username) {
     socket.emit('login', {username: username});
 }
 
-function emitLogout(username) {
-    socket.emit('logout', {username: username});
+/**
+ * Only called when user clicks logout
+ * changes state of server loginList object
+ */
+function emitLogout() {
+    var userJWT = getJWT();
+    if(userJWT != null) {
+        var userObj = JSON.parse(atob(userJWT.jwt.split(".")[1]));
+        socket.emit('logout', {username: userObj.username});
+        removeJWT();
+    }
 }
 
 $('#message-button').click(function(event) {
@@ -75,9 +102,11 @@ $('#message-button').click(function(event) {
 /**
  * Auto login script check if JWT is saved authenticates
  * the JWT in local storage and logs user in and
- * toggles login/signup button
+ * toggles login/signup button also used to check
+ * if user can be to check session authenticity and
+ * presence of JWT
 */
-function autolog() {
+function autolog(checkValidSession) {
     if (getJWT() !== null) {
         $.ajax({
             type: 'POST',
@@ -85,19 +114,27 @@ function autolog() {
             contentType: 'application/json',
             url: ip + '/api/auth/',                     //endpoint for JWT auth
             success: function (data) {
-                console.log('jwt authenticated');
+                //console.log('jwt authenticated');
                 var jwt = data.jwt.split(".");
-                console.log(jwt);
+                //console.log(jwt);
                 __USER = JSON.parse(atob(jwt[1])).username; //save username
                 __ISLOGGEDIN = true;                        // set logged in flag
                 localStorage.setItem('jwt', JSON.stringify(data));  //set JWT
-                emitLogin(__USER);
-                loggedIn();
+
+                if(checkValidSession) {
+                    loggedIn();
+                } else {
+                    emitLogin(__USER);
+                    loggedIn();
+                }
             }, error: function (XMLHttpRequest, textStatus, errorThrown) {
                 __ISLOGGEDIN = false;
                 __USER = "Guest";
                 removeJWT();
                 loggedOut();
+                if(checkValidSession) {
+                    location.reload();
+                }
             }
         });
     }
@@ -114,12 +151,11 @@ $(autolog());
 //setInterval(function() { $('#jwt').text(JSON.stringify(getJWT() || "no value avaliable"));}, 5000);
 
 $('#logout').click(function(event) {
-    removeJWT();
+    emitLogout();
     //appendComment("server>>", "you are now logged out");
     __ISLOGGEDIN = false;
     __USER = "Guest";
     loggedOut();
-    emitLogout();
     this.blur();
     $('#myModal').modal('hide')
     event.preventDefault();
@@ -139,8 +175,8 @@ $('#login').click(function(event) {
                     contentType: 'application/json',
                     url: ip + '/api/login/',
                     success: function(data) {
-                        console.log('success');
-                        console.log(data);
+                        //console.log('success');
+                        //console.log(data);
                         __ISLOGGEDIN = true;
                         var jwt = data.jwt.split(".");
                         __USER = JSON.parse(atob(jwt[1])).username;
@@ -186,7 +222,7 @@ $('#sign-up').click(function(event) {
                     success: function(data) {
                         //console.log('signup success');
                         //appendComment("server>>","Account has been created now you can login");
-                        console.log(data);
+                        //console.log(data);
                         //deselect($('#signup'));
                         __ISLOGGEDIN = false;
                         $('#username').val('');
@@ -248,8 +284,8 @@ function addSlashes(string) {
  */
 function appendComment(usr,str, randomAvatar) {
     usr = addSlashes(usr);
-    console.log('appending in appendComment ' + str);
-    console.log(usr);
+    //console.log('appending in appendComment ' + str);
+    //console.log(usr);
     if(str == null || !str) str = "Message must have gotten lost in the Internets =(";
 
     var defaultAvatar = "https://avatars2.githubusercontent.com/u/12993700?v=3&s=460"; // just a backup url
@@ -288,7 +324,7 @@ function emitComment(event) {
     if(message !== "") {
         socket.emit('input', {
             msg: message,
-            jwt: 'sample-jwt',
+            jwt: (userJWT.jwt || "none"),
             user: (__USER || "admin"),
             avatar: avatar,
             title: title
@@ -308,12 +344,7 @@ function loggedOut() {
 
     var userJWT = getJWT();
 
-    if(! (userJWT == null)) {
-        var userJWT = getJWT();
-        var userObj = JSON.parse(atob(userJWT.jwt.split(".")[1]));
-        emitLogout(userObj.username);
-    }else if (__USER !== "") {
-        emitLogout(__USER);
+   if (__USER !== "") {
         __USER = "";
     }
 

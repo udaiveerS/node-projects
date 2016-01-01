@@ -33,10 +33,10 @@ module.exports = function(key) {
         encode:(obj) => {
             var result = "";
             var header = encodeBase64(stringify(alg));
-            console.log(header);
+            //console.log(header);
             result += header + ".";
             var body = encodeBase64(stringify(obj));
-            console.log(body);
+            //console.log(body);
             result += body + ".";
 
             var checkSum = checkSumGen(header,body);
@@ -51,14 +51,14 @@ module.exports = function(key) {
             var checkSum = checkSumGen(head,body); 
 
             if(hash === checkSum) {
-                console.log("jwt hash: " + hash);
-                console.log("gen hash: " + checkSum);
-                console.log('JWT was authenticated');
+                //console.log("jwt hash: " + hash);
+                //console.log("gen hash: " + checkSum);
+                //console.log('JWT was authenticated');
                 return JSON.parse(decodeBase64(body));
             } else {
-                console.log('JWT was not authenticated');
-                console.log("jwt hash: " + hash);
-                console.log("gen hash: " + checkSum);
+                //console.log('JWT was not authenticated');
+                //console.log("jwt hash: " + hash);
+                //console.log("gen hash: " + checkSum);
                 return false;
             }
         }

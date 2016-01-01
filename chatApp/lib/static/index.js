@@ -44,7 +44,7 @@ module.exports = function(mimes) {
      */
         serveFiles: (req, res) => {
             var filePath = req.filePath;
-            console.log(filePath);
+            //console.log(filePath);
             getFileContent(filePath).then((content) => {
                 "use strict";
                 var contentType = this.mimes[path.extname(filePath)];

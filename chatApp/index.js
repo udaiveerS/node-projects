@@ -64,18 +64,18 @@ function router(req,res) {
 
 function getAvatar(newData) {
     return new Promise(function(resolve) {
-        console.log("in get Avatar");
+        //console.log("in get Avatar");
         if(newData.default) {
-            console.log("in get Avatar 2");
+            //console.log("in get Avatar 2");
             newData.title = faker.fake('{{name.jobTitle}}');
             newData.avatar = faker.fake('{{image.imageUrl}}');
-            console.log(newData.title);
-            console.log(newData.test1);
-            console.log(newData.avatar);
+            //console.log(newData.title);
+            //console.log(newData.test1);
+            //console.log(newData.avatar);
             newData.default = false;
             resolve(newData);
         } else {
-            console.log("in get Avatar 3");
+            //console.log("in get Avatar 3");
             console.log(newData);
             resolve(newData);
         }
@@ -104,7 +104,7 @@ var routes = {
                     .then((aUser) => {
                         if(aUser) {
                             delete aUser.password;
-                            console.log(aUser);
+                            //console.log(aUser);
                             var aJwt = jwt.encode(aUser);
                             res.writeHead(200, {'Content-type': mimes['.json']});
                             res.end(JSON.stringify({'jwt' : aJwt}));
@@ -126,22 +126,22 @@ var routes = {
             });
 
             req.on('end', () => {
-                console.log("got into the" + body);
+                //console.log("got into the" + body);
                 new Promise(function(resolve) {
                     var data = JSON.parse(body);
                     resolve(data);
                 }).then(function(data) {
-                    console.log("got before avater" + data);
+                    //console.log("got before avater" + data);
                     data.default = true;                 // initialize for faker
                     return getAvatar(data).then((newData) => {
-                        console.log("got into avatar");
+                        //console.log("got into avatar");
                         console.log(newData);
                         return signupModule.signup(newData);
                     });
                 }).then((userCredentials) => {
                         delete userCredentials.password;
                         res.writeHead(200, {'Content-type': mimes['.json']});
-                        console.log(userCredentials);
+                        //console.log(userCredentials);
                         res.end(JSON.stringify(userCredentials));
                 }).catch(() => {
                         res.writeHead(400, {'Content-type': mimes['.json']});
@@ -179,62 +179,132 @@ var routes = {
 };
 
 
-var users_loggedin = {};
 
 /**
  * Socket.io message event handeling all done
  * inside the mongo connection callback
  */
+
+    var loginList = {};
+    var socketList = {};
+
+    function printStatus() {
+        console.log("====================================");
+        console.log(loginList);
+        console.log(socketList);
+        console.log("====================================");
+        console.log("");
+    }
+
+
+/**
+ * Takes a object with one to many mapping
+ * and return an array with the objects
+ */
+var invert = function (obj) {
+
+    var new_obj = {};
+
+    for (var prop in obj) {
+        if(obj.hasOwnProperty(prop)) {
+            if(new_obj.hasOwnProperty([obj[prop]] )){
+                new_obj[obj[prop]].push(prop);
+            } else {
+                new_obj[obj[prop]] = [prop];
+            }
+        }
+    }
+
+    return new_obj;
+};
+
 mongo.connect(connectionString, function(err,db) {
     if(err) throw err;
-    
+
     client.on('connection', function(socket) {
         var col = db.collection('messages');
-        console.log(socket.id) ;
-        users_loggedin[socket.id] = "some user";
 
-        console.log(users_loggedin);
+        socket.on('login', function(data) {
+            if(!socketList.hasOwnProperty(socket.id)) {
+                socketList[socket.id] = data.username;
+            }
 
-        client.on('login', function(data) {
-           client.emit('client-login', "client logged in");
+            if(loginList.hasOwnProperty(data.username)) {
+                loginList[data.username].liveConnections++;
+            } else {
+                loginList[data.username] = {username: data.username, liveConnections: 1};
+            }
+
+            console.log("client login ", loginList[data.username]);
+            printStatus();
+            client.emit('client_login', data.username);
         });
 
-        client.on('logout', function(data) {
-            client.emit('client-logout', "client logged");
+        socket.on('logout', function(data) {
+            if(loginList.hasOwnProperty(data.username)) {
+
+                var user = loginList[data.username];
+                user.liveConnections--;
+                console.log("in logout");
+                printStatus();
+                if(user.liveConnections === 0) {
+                    delete loginList[data.username];
+                    console.log("in logout no more active connections");
+                    printStatus();
+                    client.emit('client-logout', data.username);
+                }
+            }
         });
 
         socket.on('disconnect', function(){
-            console.log('user disconnected');
-            console.log(socket.id);
-            delete users_loggedin[socket.id];
-            console.log(users_loggedin);
-            client.emit('client-logout', "a client disconnected");
+            if(socketList.hasOwnProperty(socket.id)) {
+                var user = socketList[socket.id];
+                delete socketList[socket.id];
+
+                if (user && loginList.hasOwnProperty(user)) {
+                    var userConnection =  loginList[user];
+                    userConnection.liveConnections--;
+                    console.log("disconnected connection");
+                    printStatus();
+                    if (userConnection.liveConnections === 0) {
+                        delete loginList[user];
+                        console.log("deleting id " + socket.id)
+                        console.log("last disconnected connection");
+                        printStatus();
+                        client.emit('client-logout', user);
+                    }
+                }
+            }
         });
+
+
 
         col.find().sort({_id: 1}).toArray(function(err, res) {
             if(err) throw err; 
             socket.emit('output',res);
         });
+
+
         //Array is not needed. Sockets.io provides a socket.id that persists until socket is disconnect.
 
         socket.on('input', function(data) {
-            console.log("date recieved" + data);
+            //console.log("date recieved" + data);
+               if(jwt.decode(data.jwt) !== false) {
 
-           var newData = {
-                msg: data.msg,
-                jwt: data.jwt,
-                user: data.user,
-                time: data.time,
-                title: data.title,
-                avatar: data.avatar
-            };
+                   var newData = {
+                        msg: data.msg,
+                        jwt: data.jwt,
+                        user: data.user,
+                        time: data.time,
+                        title: data.title,
+                        avatar: data.avatar
+                    };
 
-               client.emit('output', [newData]);
-               console.log(data);
-               col.insert(data);
-       });
+                       client.emit('output', [newData]);
+                       //console.log(data);
+                       col.insert(data);
+            }
 
+        });
     });
 });
-
-
