@@ -53,7 +53,10 @@ if(socket !== undefined) {
 
     //callback when client logs out
     socket.on("client-logout", function(elem) {
-        console.log("logout");
+        var userNode = $('#' + elem);
+        if(userNode) {
+            $(userNode).remove();
+        }
         console.log(elem);
     });
 
