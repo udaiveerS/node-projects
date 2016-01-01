@@ -30,7 +30,7 @@ if(socket !== undefined) {
     socket.on('output', function(data) {
         data.forEach(function(elem) {
             //console.log(elem);
-            appendComment(elem.user , elem.msg, elem.avatar);
+            appendComment(elem.user , elem.msg, elem.avatar, elem.time);
         });
     });
 
@@ -143,7 +143,7 @@ function autolog(checkValidSession) {
                  * that were registered to the used in the current session on specific browser.
                  */
                 if(checkValidSession) {
-                    location.reload(true);
+                    location.reload();
                 }
             }
         });
@@ -153,7 +153,7 @@ function autolog(checkValidSession) {
         // destroy the connection associated with this session in backend
         // which were stored in sockets list
         if(checkValidSession) {
-            location.reload(true);
+            location.reload();
         }
 
         if(!__ISLOGGEDIN) {
@@ -282,16 +282,6 @@ function getJWT() {
 }
 
 
-function addSlashes(string) {
-    return string.replace(/\\/g, '\\\\').
-    replace(/\u0008/g, '\\b').
-    replace(/\t/g, '\\t').
-    replace(/\n/g, '\\n').
-    replace(/\f/g, '\\f').
-    replace(/\r/g, '\\r').
-    replace(/'/g, '\\\'').
-    replace(/"/g, '\\"');
-}
 
 /**
  * usr is the username  sanitized in the emitComment function
@@ -301,7 +291,7 @@ function addSlashes(string) {
  * @param str
  * @param randomAvatar - avatar url generate by backend
  */
-function appendComment(usr,str, randomAvatar) {
+function appendComment(usr,str, randomAvatar, time) {
     usr = addSlashes(usr);
     //console.log('appending in appendComment ' + str);
     //console.log(usr);
@@ -311,7 +301,7 @@ function appendComment(usr,str, randomAvatar) {
     var room = $('.messages-container');
     var comment = $('<div class="message wordwrap">' +
                             '<div class="time-stamp">' +
-                                '<span class="time-stamp">' + getTime()  +'</span>' +
+                                '<span class="time-stamp">' + (time ||getTime())  +'</span>' +
                             '</div>' +
                             '<div class="pull-left a-user-avatar-message">' +
                                 '<img src='+ '\"' + (randomAvatar || defaultAvatar) + '\"' + ' alt="avatar">' +
