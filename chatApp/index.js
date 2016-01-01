@@ -187,35 +187,28 @@ var routes = {
 
     var loginList = {};
     var socketList = {};
+    var userSocketList  = {};
 
     function printStatus() {
-        console.log("====================================");
+        console.log("==============login-list====================");
         console.log(loginList);
+        console.log("==============socket-list===================");
         console.log(socketList);
-        console.log("====================================");
+        console.log("==============user-socket-list==============");
+        console.log(userSocketList);
         console.log("");
     }
 
 
 /**
- * Takes a object with one to many mapping
- * and return an array with the objects
+ * Keeps track of all sockets a user is on
  */
-var invert = function (obj) {
-
-    var new_obj = {};
-
-    for (var prop in obj) {
-        if(obj.hasOwnProperty(prop)) {
-            if(new_obj.hasOwnProperty([obj[prop]] )){
-                new_obj[obj[prop]].push(prop);
-            } else {
-                new_obj[obj[prop]] = [prop];
-            }
-        }
+var addToSocketList = function (username, socketID) {
+    if(userSocketList.hasOwnProperty(username)) {
+        userSocketList[username].push(socketID);
+    } else {
+        userSocketList[username] = [socketID];
     }
-
-    return new_obj;
 };
 
 mongo.connect(connectionString, function(err,db) {
@@ -224,7 +217,12 @@ mongo.connect(connectionString, function(err,db) {
     client.on('connection', function(socket) {
         var col = db.collection('messages');
 
+        console.log("in connection ---------------------");
+        printStatus();
+        console.log("end connection ---------------------\n");
+
         socket.on('login', function(data) {
+
             if(!socketList.hasOwnProperty(socket.id)) {
                 socketList[socket.id] = data.username;
             }
@@ -235,6 +233,8 @@ mongo.connect(connectionString, function(err,db) {
                 loginList[data.username] = {username: data.username, liveConnections: 1};
             }
 
+            addToSocketList(data.username, socket.id);
+
             console.log("client login ", loginList[data.username]);
             printStatus();
             client.emit('client_login', data.username);
@@ -244,32 +244,51 @@ mongo.connect(connectionString, function(err,db) {
             if(loginList.hasOwnProperty(data.username)) {
 
                 var user = loginList[data.username];
-                user.liveConnections--;
+                //user.liveConnections--;
                 console.log("in logout");
+                //get an array of all connection that user is on
+                var userSocketConnectionArr = userSocketList[data.username];
+                console.log("all id for client logging out " + userSocketConnectionArr.toLocaleString());
+                //make all current connections re-validate and be destroyed by disconnect if function is not valid
+                userSocketConnectionArr.forEach(function(sID) {
+                    // invalidated all sockets that user is connected to an make them validate
+                        if(sID != socket.id) {
+                            socket.broadcast.to(sID).emit('client-invalidate', data.username);
+                        }
+                });
+
+                socket.emit('client-invalidate', data.username);
+
+                console.log("in logout no more active connections");
                 printStatus();
-                if(user.liveConnections === 0) {
-                    delete loginList[data.username];
-                    console.log("in logout no more active connections");
-                    printStatus();
-                    client.emit('client-logout', data.username);
-                }
+                client.emit('client-logout', data.username);
             }
         });
 
         socket.on('disconnect', function(){
             if(socketList.hasOwnProperty(socket.id)) {
                 var user = socketList[socket.id];
+                //remove socket from socket list
                 delete socketList[socket.id];
 
-                if (user && loginList.hasOwnProperty(user)) {
+                //remove socket from user-socket-list
+                if(userSocketList.hasOwnProperty(user)) {
+                    var index = userSocketList[user].indexOf(socket.id);
+                    if(index >= 0) {
+                        userSocketList[user].splice(index,1);
+                    }
+                }
+
+                //check if socket can be remove from login-list
+                if (loginList.hasOwnProperty(user)) {
                     var userConnection =  loginList[user];
                     userConnection.liveConnections--;
                     console.log("disconnected connection");
                     printStatus();
                     if (userConnection.liveConnections === 0) {
+                        delete userSocketList[user];
                         delete loginList[user];
-                        console.log("deleting id " + socket.id)
-                        console.log("last disconnected connection");
+                        console.log("deleting the last connection for user " + user);
                         printStatus();
                         client.emit('client-logout', user);
                     }

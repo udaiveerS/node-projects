@@ -25,7 +25,6 @@ try {
 
 
 if(socket !== undefined) {
-    //console.log("ok");
 
     // register the callback for displaying all messages
     socket.on('output', function(data) {
@@ -35,7 +34,7 @@ if(socket !== undefined) {
         });
     });
 
-    //callback to get list of all users online
+    //callback to get list of all current users online
     socket.on("login-list", function(datum) {
         console.log("client connected: login list [");
         for (var elem in datum) {
@@ -56,8 +55,11 @@ if(socket !== undefined) {
         console.log(elem);
     });
 
-    socket.on("client-invalidate", function() {
+    // client has logged out in browser and now all tabs in
+    // browser must validate
+    socket.on("client-invalidate", function(username) {
         //will check current session
+        console.log('client-invalidate', username)
         var checkValidSession = true;
         autolog(checkValidSession);
     });
@@ -121,6 +123,7 @@ function autolog(checkValidSession) {
                 __ISLOGGEDIN = true;                        // set logged in flag
                 localStorage.setItem('jwt', JSON.stringify(data));  //set JWT
 
+                //to gracefully check validity of session
                 if(checkValidSession) {
                     loggedIn();
                 } else {
@@ -132,17 +135,33 @@ function autolog(checkValidSession) {
                 __USER = "Guest";
                 removeJWT();
                 loggedOut();
+
+                //JWT should be gone, but if it is delayed
+                /**
+                 * user has logged out in browser and now force all open connection to reload.
+                 * Reload will destroy all unused socket.io socket connection in the backend
+                 * that were registered to the used in the current session on specific browser.
+                 */
                 if(checkValidSession) {
-                    location.reload();
+                    location.reload(true);
                 }
             }
         });
+    } else {
+
+        // JWT should not be present and a forced reload across all tabs will
+        // destroy the connection associated with this session in backend
+        // which were stored in sockets list
+        if(checkValidSession) {
+            location.reload(true);
+        }
+
+        if(!__ISLOGGEDIN) {
+            __USER = "Guest";
+            loggedOut();
+        }
     }
 
-    if(!__ISLOGGEDIN) {
-        __USER = "Guest";
-        loggedOut();
-    }
 }
 
 $(autolog());
