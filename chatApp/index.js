@@ -231,13 +231,13 @@ mongo.connect(connectionString, function(err,db) {
                 loginList[data.username].liveConnections++;
             } else {
                 loginList[data.username] = {username: data.username, liveConnections: 1};
+                client.emit('client_login', data.username);
             }
 
             addToSocketList(data.username, socket.id);
 
-            console.log("client login ", loginList[data.username]);
+            console.log("client login " + data.username);
             printStatus();
-            client.emit('client_login', data.username);
         });
 
         socket.on('logout', function(data) {

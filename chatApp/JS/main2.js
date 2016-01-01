@@ -38,6 +38,7 @@ if(socket !== undefined) {
     socket.on("login-list", function(datum) {
         console.log("client connected: login list [");
         for (var elem in datum) {
+            $('.active-user-row').append(generateUserNode(elem));
             console.log(elem);
         }
         console.log("]");
@@ -45,8 +46,9 @@ if(socket !== undefined) {
 
     //when client logs-in
     socket.on("client_login", function(elem){
-            console.log("client logged in");
-            console.log(elem);
+        console.log("client logged in");
+        $('.active-user-row').append(generateUserNode(elem));
+        console.log(elem);
     });
 
     //callback when client logs out
@@ -66,6 +68,32 @@ if(socket !== undefined) {
 
 } else {
         //console.log("not ok");
+}
+
+function generateUserNode(userID) {
+    var liveUser =
+            '<div ' + 'id="'+ userID+ '" ' + 'class="active-user col-xs-12">' +
+                '<div class="hidden-xs pull-left a-user-avatar vertical-align-div">'+
+                    '<img src="https://avatars2.githubusercontent.com/u/12993700?v=3&s=460" alt="avatar">' +
+                '</div>' +
+                '<div class="a-user pull-left vertical-align-div">' +
+                    '<span>' + userID +'</span>' +
+                '</div>' +
+                '<div class="hidden-xs a-user-ball pull-right vertical-align-div">' +
+                    '<svg  height="20" width="20">' +
+                        '<circle cx="10" cy="10" r="5" stroke="none" fill="#A8C65D" > </circle>'+
+                    '</svg>'+
+                '</div>' +
+            '</div>';
+    return liveUser;
+}
+
+function addLogger() {
+
+}
+
+function removeLogger() {
+
 }
 
 /**
@@ -265,24 +293,6 @@ $('#sign-up').click(function(event) {
     this.blur();
 });
 
-
-
-function removeJWT() {
-    if(localStorage.getItem("jwt") !== null) {
-        localStorage.removeItem('jwt');
-    }
-}
-
-function getJWT() {
-    if(localStorage.getItem("jwt") !== null) {
-        return JSON.parse(localStorage.getItem('jwt'));
-    } else {
-        return null;
-    }
-}
-
-
-
 /**
  * usr is the username  sanitized in the emitComment function
  * str is the message which was sanitized in emit comment function
@@ -341,6 +351,20 @@ function emitComment(event) {
     }
 
     message = textArea.val('');
+}
+
+function removeJWT() {
+    if(localStorage.getItem("jwt") !== null) {
+        localStorage.removeItem('jwt');
+    }
+}
+
+function getJWT() {
+    if(localStorage.getItem("jwt") !== null) {
+        return JSON.parse(localStorage.getItem('jwt'));
+    } else {
+        return null;
+    }
 }
 
 function getTime() {
