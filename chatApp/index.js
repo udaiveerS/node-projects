@@ -221,6 +221,10 @@ mongo.connect(connectionString, function(err,db) {
         printStatus();
         console.log("end connection ---------------------\n");
 
+        socket.on('fetch-login-list', function() {
+            client.emit("login-list", loginList);
+        });
+
         socket.on('login', function(data) {
 
             if(!socketList.hasOwnProperty(socket.id)) {
@@ -231,7 +235,7 @@ mongo.connect(connectionString, function(err,db) {
                 loginList[data.username].liveConnections++;
             } else {
                 loginList[data.username] = {username: data.username, liveConnections: 1};
-                client.emit('client_login', data.username);
+                client.emit('client-login', data.username);
             }
 
             addToSocketList(data.username, socket.id);

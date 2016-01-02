@@ -3,6 +3,7 @@ var __ISLOGGEDIN = false;
 // used to keep track of current user name
 var __USER = 'Guest';
 
+var activeUsers = 0;
 // socket.io endpoint
 var suffix = '/socket.io/socket.io.js';
 
@@ -24,8 +25,10 @@ try {
 }
 
 
-if(socket !== undefined) {
 
+if(socket !== undefined) {
+    // fetch all live users
+    socket.emit('fetch-login-list');
     // register the callback for displaying all messages
     socket.on('output', function(data) {
         data.forEach(function(elem) {
@@ -38,24 +41,36 @@ if(socket !== undefined) {
     socket.on("login-list", function(datum) {
         console.log("client connected: login list [");
         for (var elem in datum) {
-            $('.active-user-row').append(generateUserNode(elem));
+            var liveUser = $('#' + elem);
+            if(liveUser.length === 0) {
+                $('.active-user-row').append(generateUserNode(elem));
+                activeUsers++;
+                updateActiveUsers(activeUsers);
+            }
             console.log(elem);
         }
         console.log("]");
     });
 
     //when client logs-in
-    socket.on("client_login", function(elem){
+    socket.on("client-login", function(elem){
         console.log("client logged in");
-        $('.active-user-row').append(generateUserNode(elem));
+        var liveUser = $('#' + elem);
+        if(liveUser.length === 0) {
+            $('.active-user-row').append(generateUserNode(elem));
+            activeUsers++;
+            updateActiveUsers(activeUsers);
+        }
         console.log(elem);
     });
 
     //callback when client logs out
     socket.on("client-logout", function(elem) {
         var userNode = $('#' + elem);
-        if(userNode) {
+        if(userNode.length >= 1) {
             $(userNode).remove();
+            activeUsers--;
+            updateActiveUsers(activeUsers);
         }
         console.log(elem);
     });
@@ -71,6 +86,10 @@ if(socket !== undefined) {
 
 } else {
         //console.log("not ok");
+}
+
+function updateActiveUsers(numberOfUsers) {
+    $('#active-users-number').html(activeUsers);
 }
 
 function generateUserNode(userID) {
