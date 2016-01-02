@@ -155,11 +155,25 @@ body {
     margin-left: .5em;
 }
 
-.a-user-avatar-message img, .a-user-avatar img {
+.a-user-avatar img {
     border-radius: 50%;
     width: 50px;
     height: 50px;
 }
+
+.a-user-avatar-message img {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+}
+
+#user-logo-div {
+    position: relative;;
+    width: 70px;
+    margin: 0 auto;
+    text-align: center;
+}
+
 
 /* Messages Class */
 .message {
@@ -173,12 +187,13 @@ body {
 .username {
     color: whitesmoke;
     margin-bottom: .3em;
-    width: 80px;
+    width: 70px;
 }
 
 .time-stamp {
     color: #0095CC;
-    margin-bottom: .3em;
+    margin: 1em;
+    text-align: center;
 }
 
 .message-string {
@@ -224,8 +239,14 @@ body {
 .wordwrap {
     white-space: pre-wrap;      /* CSS3 */
     white-space: -moz-pre-wrap; /* Firefox */
-    white-space: -pre-wrap;     /* Opera <7 */
     white-space: -o-pre-wrap;   /* Opera 7 */
     word-wrap: break-word;      /* IE */
 }
 
+.modal-button {
+    margin-right: 1%;
+}
+
+.warning-row {
+    margin-top: 1%;
+}

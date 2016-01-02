@@ -270,12 +270,12 @@ $('#login').click(function(event) {
                         //appendComment("server>>","Incorrect login information");
                         __ISLOGGEDIN = false;
                         __USER = "Guest";
+                        formValidation("danger", 'invalid username or password');
                         loggedOut();
-                        alert('invalid username or password');
                     }
             });
         } else {
-            alert('invalid username or password');
+            formValidation("danger", 'invalid username or password');
         }
 
     }
@@ -307,7 +307,7 @@ $('#sign-up').click(function(event) {
                         __ISLOGGEDIN = false;
                         $('#username').val('');
                         $('#password').val('');
-                        alert("account created! you can now login")
+                        formValidation("success", "account created! you can now login")
                         loggedOut();
                     },
                     error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -316,11 +316,11 @@ $('#sign-up').click(function(event) {
                         $('#password').val('');
                         __ISLOGGEDIN = false;
                         loggedOut();
-                        alert('account exists');
+                        formValidation("warning" ,'account already exists');
                     }
             });
         } else {
-            alert('invalid username or account exists');
+            formValidation("danger",'invalid username');
         }
 
     this.blur();
@@ -347,9 +347,11 @@ function appendComment(usr,str, randomAvatar, time) {
                                 '<span class="time-stamp">' + (time ||getTime())  +'</span>' +
                             '</div>' +
                             '<div class="pull-left a-user-avatar-message">' +
-                                '<img src='+ '\"' + (randomAvatar || defaultAvatar) + '\"' + ' alt="avatar">' +
-                                '<br>' +
-                                '<div class="username">' + usr  + '</div>'+
+                                '<div '+ ' id="user-logo-div">' +
+                                    '<img src='+ '\"' + (randomAvatar || defaultAvatar) + '\"' + ' alt="avatar">' +
+                                    '<br>' +
+                                    '<div class="username"><span>' + usr  + '</span></div>'+
+                                '</div>' +
                             '</div>' +
                             '<div class="message-string pull-right">' +
                                 '<span>' + str + '</span>' +
@@ -379,7 +381,8 @@ function emitComment(event) {
             jwt: (userJWT.jwt || "none"),
             user: (__USER || "admin"),
             avatar: avatar,
-            title: title
+            title: title,
+            time: getTime()
         });
     }
 
@@ -401,8 +404,31 @@ function getJWT() {
 }
 
 function getTime() {
-        var today=new Date();
-        return today.format();
+    var mL = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    var dL = [  'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+    var d = new Date();
+    var hh = d.getHours();
+    var m = d.getMinutes();
+    var s = d.getSeconds();
+    var dd = "AM";
+    var h = hh;
+    if (h >= 12) {
+        h = hh-12;
+        dd = "PM";
+    }
+    if (h === 0) {
+        h = 12;
+    }
+    m = m<10?"0"+m:m;
+
+    s = s<10?"0"+s:s;
+
+    /* if you want 2 digit hours: */
+    h = h<10?"0"+h:h;
+
+    var pattern = new RegExp("0?"+hh+":"+m+":"+s);
+    return mL[d.getMonth()] + " " + dL[d.getDay()] + " " + h+":"+m+":"+s+" "+dd;
 }
 
 function loggedOut() {
@@ -444,16 +470,26 @@ function updateDisplays(isLogged){
 function formValidation(messageCode, message) {
     var formCodes = {danger: "danger", success: "success", warning: "warning"}
     var formAlert = $('#form-alert');
-    $(formAlert).show();
-    formAlert.removeClass();
-    formAlert.addClass("alert alert-" + (formCodes[messageCode]|| "info" ) );
-    formAlert.text(message);
+    if(formAlert.length >= 1) {
+        formAlert.removeClass();
+        formAlert.addClass("alert alert-" + (formCodes[messageCode]|| "info" ) );
+        formAlert.text(message);
+        $(formAlert).show();
+    }
 }
 
 function clearValidation() {
     var formAlert = $('#form-alert');
-    $(formAlert).hide();
+    if(formAlert.length >=1) {
+        $(formAlert).hide();
+    }
 }
+
+// clear all messages when closed
+$('#myModal').on('hidden.bs.modal', function (e) {
+    clearValidation();
+});
+
 
 
 function addSlashes(string) {

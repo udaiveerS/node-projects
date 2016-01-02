@@ -133,7 +133,7 @@
         </div><!-- end of row && header -->
     </div><!-- container fluid -->
 
-    <hr class="body-seperator-hr">
+    <hr class="body-seperator-hr"/>
 
     <div class="container-fluid  main-body-wrapper">
         <div class="row body-row">
@@ -174,12 +174,14 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                     <h4 class="modal-title" id="myModalLabel">Control Panel</h4>
                 </div>
                 <div class="modal-body">
-                    <form id="control-panel">
-                        <fieldset class="form-group">
+                    <form id="row control-panel">
+                        <fieldset class="col-xs-12 form-group">
                             <label for="username">Username</label>
                             <input type="text" class="form-control" id="username" maxlength="10" placeholder="some username">
                             <small class="text-muted">10 character limit</small>
@@ -187,15 +189,30 @@
                             <label for="password">Password</label>
                             <input type="password" class="form-control" id="password" maxlength="20" placeholder="Password">
                         </fieldset>
-
-                        <button type="submit"  id="login" value="login" class="pull-left btn btn-primary">Login</button>
-                        <button type="submit" id="sign-up" value="sign-up" class="pull-left btn btn-primary">Sign-up</button>
-                        <button type="submit" id="logout" value="logout" class="pull-left btn btn-primary">Logout</button>
                     </form>
-                </div>
-                <div class="alert" id="form-alert" role="alert"></div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="modal-button pull-left">
+                                <button type="submit"  id="login" value="login" class="btn btn-primary">Login</button>
+                            </div>
+                            <div class="modal-button pull-left">
+                                <button type="submit" id="sign-up" value="sign-up" class="btn btn-primary">Sign-up</button>
+                            </div>
+                            <div class="modal-button pull-left">
+                                <button type="submit" id="logout" value="logout" class="btn btn-primary">Logout</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row warning-row">
+                        <div class="alert" id="form-alert" role="alert">
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
                 </div>
             </div>
         </div>
