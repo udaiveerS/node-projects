@@ -41,13 +41,15 @@ if(socket !== undefined) {
     socket.on("login-list", function(datum) {
         console.log("client connected: login list [");
         for (var elem in datum) {
-            var liveUser = $('#' + elem);
-            if(liveUser.length === 0) {
-                $('.active-user-row').append(generateUserNode(elem));
-                activeUsers++;
-                updateActiveUsers(activeUsers);
+            var liveUser = $('#' + datum[elem].username);
+            if(liveUser) {
+                if (liveUser.length === 0) {
+                    $('.active-user-row').append(generateUserNode(datum[elem].username, datum[elem].avatar));
+                    activeUsers++;
+                    updateActiveUsers(activeUsers);
+                }
+                console.log(elem);
             }
-            console.log(elem);
         }
         console.log("]");
     });
@@ -55,13 +57,16 @@ if(socket !== undefined) {
     //when client logs-in
     socket.on("client-login", function(elem){
         console.log("client logged in");
-        var liveUser = $('#' + elem);
-        if(liveUser.length === 0) {
-            $('.active-user-row').append(generateUserNode(elem));
-            activeUsers++;
-            updateActiveUsers(activeUsers);
+        if(elem.username) {
+            var liveUser = $('#' + elem.username);
+
+            if (liveUser.length === 0) {
+                $('.active-user-row').append(generateUserNode(elem.username, elem.avatar));
+                activeUsers++;
+                updateActiveUsers(activeUsers);
+            }
+            console.log(elem);
         }
-        console.log(elem);
     });
 
     //callback when client logs out
@@ -92,11 +97,12 @@ function updateActiveUsers(numberOfUsers) {
     $('#active-users-number').html(activeUsers);
 }
 
-function generateUserNode(userID) {
+function generateUserNode(userID, userAvatar) {
     var liveUser =
             '<div ' + 'id="'+ userID+ '" ' + 'class="active-user col-xs-12">' +
                 '<div class="hidden-xs pull-left a-user-avatar vertical-align-div">'+
-                    '<img src="https://avatars2.githubusercontent.com/u/12993700?v=3&s=460" alt="avatar">' +
+                    '<img src="' + (userAvatar || 'https://avatars2.githubusercontent.com/u/12993700?v=3&s=460') +
+                        '" alt="avatar">' +
                 '</div>' +
                 '<div class="a-user pull-left vertical-align-div">' +
                     '<span>' + userID +'</span>' +
@@ -123,7 +129,11 @@ function removeLogger() {
  * @param username
  */
 function emitLogin(username) {
-    socket.emit('login', {username: username});
+    var userJWT = getJWT();
+    if(userJWT != null) {
+        var userObj = JSON.parse(atob(userJWT.jwt.split(".")[1]));
+        socket.emit('login', {username: username, avatar: userObj.avatar});
+    }
 }
 
 /**
@@ -147,6 +157,7 @@ $('#message-button').click(function(event) {
         this.value = "";
     }
 
+    this.blur();
     event.preventDefault();
     return false;
 });
@@ -328,7 +339,7 @@ function appendComment(usr,str, randomAvatar, time) {
     //console.log('appending in appendComment ' + str);
     //console.log(usr);
     if(str == null || !str) str = "Message must have gotten lost in the Internets =(";
-
+    str = str.split("\\n").join("<br />");
     var defaultAvatar = "https://avatars2.githubusercontent.com/u/12993700?v=3&s=460"; // just a backup url
     var room = $('.messages-container');
     var comment = $('<div class="message wordwrap">' +

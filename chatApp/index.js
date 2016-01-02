@@ -40,6 +40,7 @@ var SignupModule = require('./lib/signup'),
 // auth module takes key for JWT as paramater Key should be assigned via env varables
 var Jwt = require('./lib/jwt'),
     jwt = new Jwt("secret");
+var avatar = require('./lib/avatar');
 
 /**
  * Function as the bare bones router for chat application
@@ -61,14 +62,13 @@ function router(req,res) {
     }
 }
 
-
 function getAvatar(newData) {
     return new Promise(function(resolve) {
         //console.log("in get Avatar");
         if(newData.default) {
             //console.log("in get Avatar 2");
             newData.title = faker.fake('{{name.jobTitle}}');
-            newData.avatar = faker.fake('{{image.imageUrl}}');
+            newData.avatar = avatar.getAvatarPicture();
             //console.log(newData.title);
             //console.log(newData.test1);
             //console.log(newData.avatar);
@@ -234,8 +234,12 @@ mongo.connect(connectionString, function(err,db) {
             if(loginList.hasOwnProperty(data.username)) {
                 loginList[data.username].liveConnections++;
             } else {
-                loginList[data.username] = {username: data.username, liveConnections: 1};
-                client.emit('client-login', data.username);
+                loginList[data.username] = {
+                    username: data.username,
+                    liveConnections: 1,
+                    avatar: data.avatar
+                };
+                client.emit('client-login', data);
             }
 
             addToSocketList(data.username, socket.id);
