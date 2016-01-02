@@ -55,7 +55,7 @@ function router(req,res) {
         req.filePath = __dirname + (baseURI.pathname === '/' ? '/views/index-2.html' : baseURI.pathname);
         routes.GET(req,res);
     }else if(req.method === 'POST') {
-        console.log(baseURI);
+        //console.log(baseURI);
         routes.POST[baseURI.pathname](req,res);
     } else {
         routes.NA(req,res);
@@ -76,7 +76,7 @@ function getAvatar(newData) {
             resolve(newData);
         } else {
             //console.log("in get Avatar 3");
-            console.log(newData);
+            //console.log(newData);
             resolve(newData);
         }
     });
@@ -91,22 +91,22 @@ var routes = {
             var body = '';
             req.on('data', data => {
                 body += data;
-                console.log('ina data login '+ data);
+                //console.log('ina data login '+ data);
             });
 
             req.on('end', () => {
                 try {
                     var user_password= JSON.parse(body);
-                    console.log('in login object is ' + user_password);
+                    //console.log('in login object is ' + user_password);
                 } catch(e) {
                     res.writeHead(400, {'Content-type': mimes['.json']});
                     res.end(JSON.stringify({'err' : 'bad Json sent to login'}));
                 }
 
-                console.log('in login object is 1' + user_password);
+                //console.log('in login object is 1' + user_password);
                 loginModule.login(user_password)
                     .then((aUser) => {
-                        console.log("after the login module" + aUser);
+                        //console.log("after the login module" + aUser);
                         if(aUser) {
                             delete aUser.password;
                             //console.log(aUser);
@@ -114,13 +114,13 @@ var routes = {
                             res.writeHead(200, {'Content-type': mimes['.json']});
                             res.end(JSON.stringify({'jwt' : aJwt}));
                         } else {
-                            console.log('sent a 400 from login');
+                            //console.log('sent a 400 from login');
                             res.writeHead(400, {'Content-type': mimes['.json']});
                             res.end(JSON.stringify({'err' : 'resource not found'}));
                         }
                     })
                     .catch(() => {
-                        console.log('sent a 400 from login error');
+                        //console.log('sent a 400 from login error');
                         res.writeHead(400, {'Content-type': mimes['.json']});
                         res.end(JSON.stringify({'err' : 'login not successful'}));
                     });
@@ -142,7 +142,7 @@ var routes = {
                     data.default = true;                 // initialize for faker
                     return getAvatar(data).then((newData) => {
                         //console.log("got into avatar");
-                        console.log(newData);
+                        //console.log(newData);
                         return signupModule.signup(newData);
                     });
                 }).then((userCredentials) => {
@@ -197,13 +197,13 @@ var routes = {
     var userSocketList  = {};
 
     function printStatus() {
-        console.log("==============login-list====================");
-        console.log(loginList);
-        console.log("==============socket-list===================");
-        console.log(socketList);
-        console.log("==============user-socket-list==============");
-        console.log(userSocketList);
-        console.log("");
+        //console.log("==============login-list====================");
+        //console.log(loginList);
+        //console.log("==============socket-list===================");
+        //console.log(socketList);
+        //console.log("==============user-socket-list==============");
+        //console.log(userSocketList);
+        //console.log("");
     }
 
 
@@ -224,9 +224,9 @@ mongo.connect(connectionString, function(err,db) {
     client.on('connection', function(socket) {
         var col = db.collection('messages');
 
-        console.log("in connection ---------------------");
+        //console.log("in connection ---------------------");
         printStatus();
-        console.log("end connection ---------------------\n");
+        //console.log("end connection ---------------------\n");
 
         socket.on('fetch-login-list', function() {
             client.emit("login-list", loginList);
@@ -251,7 +251,7 @@ mongo.connect(connectionString, function(err,db) {
 
             addToSocketList(data.username, socket.id);
 
-            console.log("client login " + data.username);
+            //console.log("client login " + data.username);
             printStatus();
         });
 
@@ -260,10 +260,10 @@ mongo.connect(connectionString, function(err,db) {
 
                 var user = loginList[data.username];
                 //user.liveConnections--;
-                console.log("in logout");
+                //console.log("in logout");
                 //get an array of all connection that user is on
                 var userSocketConnectionArr = userSocketList[data.username];
-                console.log("all id for client logging out " + userSocketConnectionArr.toLocaleString());
+                //console.log("all id for client logging out " + userSocketConnectionArr.toLocaleString());
                 //make all current connections re-validate and be destroyed by disconnect if function is not valid
                 userSocketConnectionArr.forEach(function(sID) {
                     // invalidated all sockets that user is connected to an make them validate
@@ -274,7 +274,7 @@ mongo.connect(connectionString, function(err,db) {
 
                 socket.emit('client-invalidate', data.username);
 
-                console.log("in logout no more active connections");
+                //console.log("in logout no more active connections");
                 printStatus();
                 client.emit('client-logout', data.username);
             }
@@ -298,12 +298,12 @@ mongo.connect(connectionString, function(err,db) {
                 if (loginList.hasOwnProperty(user)) {
                     var userConnection =  loginList[user];
                     userConnection.liveConnections--;
-                    console.log("disconnected connection");
+                    //console.log("disconnected connection");
                     printStatus();
                     if (userConnection.liveConnections === 0) {
                         delete userSocketList[user];
                         delete loginList[user];
-                        console.log("deleting the last connection for user " + user);
+                        //console.log("deleting the last connection for user " + user);
                         printStatus();
                         client.emit('client-logout', user);
                     }
