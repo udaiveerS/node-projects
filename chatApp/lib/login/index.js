@@ -39,17 +39,24 @@ module.exports = function(connectionString) {
      */
     function confirmPassword(aUserCursor, loginData) {
         "use strict";
-        return new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
+            console.log("confirm pass 1");
            if(aUserCursor.hasNext()) {
                var aUser = aUserCursor.next();
-               aUser.then(val => {
+               console.log("confirm pass 2");
+               return aUser.then(val => {
                    //console.log(val)
                    if (val.password === loginData.password) {
+                       console.log("confirm pass 3");
                        resolve(aUser)
+                   } else {
+                       console.log("confirm pass 4");
+                       reject(false);
                    }
                })
            } else {
-               resolve(false);
+               console.log("confirm pass 5");
+               reject(false);
            }
         });
     }
@@ -66,15 +73,12 @@ module.exports = function(connectionString) {
         login: (loginData) => {
             return findUserExists(loginData)
             .then((aUserCursor) => {
+                console.log("got the ursosr");
                 "use strict";
                 return confirmPassword(aUserCursor, loginData);
             }).then((aBoolean) => {
                 "use strict"
                 return aBoolean;
-            }).catch((err) => {
-                "use strict";
-                //console.log("error thrown in login/index.js login function: "+ err.message);
-                return false;
             });
         },
         userExists: findUserExists

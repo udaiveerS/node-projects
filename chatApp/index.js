@@ -55,7 +55,7 @@ function router(req,res) {
         req.filePath = __dirname + (baseURI.pathname === '/' ? '/views/index-2.html' : baseURI.pathname);
         routes.GET(req,res);
     }else if(req.method === 'POST') {
-        //console.log(baseURI);
+        console.log(baseURI);
         routes.POST[baseURI.pathname](req,res);
     } else {
         routes.NA(req,res);
@@ -90,18 +90,23 @@ var routes = {
         '/api/login/': (req, res) => {
             var body = '';
             req.on('data', data => {
-                body += data; 
+                body += data;
+                console.log('ina data login '+ data);
             });
 
             req.on('end', () => {
                 try {
                     var user_password= JSON.parse(body);
+                    console.log('in login object is ' + user_password);
                 } catch(e) {
                     res.writeHead(400, {'Content-type': mimes['.json']});
                     res.end(JSON.stringify({'err' : 'bad Json sent to login'}));
                 }
+
+                console.log('in login object is 1' + user_password);
                 loginModule.login(user_password)
                     .then((aUser) => {
+                        console.log("after the login module" + aUser);
                         if(aUser) {
                             delete aUser.password;
                             //console.log(aUser);
@@ -109,11 +114,13 @@ var routes = {
                             res.writeHead(200, {'Content-type': mimes['.json']});
                             res.end(JSON.stringify({'jwt' : aJwt}));
                         } else {
+                            console.log('sent a 400 from login');
                             res.writeHead(400, {'Content-type': mimes['.json']});
                             res.end(JSON.stringify({'err' : 'resource not found'}));
                         }
                     })
                     .catch(() => {
+                        console.log('sent a 400 from login error');
                         res.writeHead(400, {'Content-type': mimes['.json']});
                         res.end(JSON.stringify({'err' : 'login not successful'}));
                     });
