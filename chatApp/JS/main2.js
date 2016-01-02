@@ -9,7 +9,7 @@ var suffix = '/socket.io/socket.io.js';
 
 var servo = '54.183.2.118';
 //var servo = '';
-//var host = 'localhost';
+var host = 'localhost';
 //socket up URI
 var ip = 'http://' + (servo||host) + ':9000';
 
@@ -149,7 +149,7 @@ function emitLogout() {
     }
 }
 
-$('#message-button').click(function(event) {
+$('#message-button').on('touchstart click', function(event) {
     if (__ISLOGGEDIN === true) {
         emitComment(event);
     } else {
@@ -230,7 +230,7 @@ $(autolog());
 // displaying JWT on an interval -- not relevent to project anymore
 //setInterval(function() { $('#jwt').text(JSON.stringify(getJWT() || "no value avaliable"));}, 5000);
 
-$('#logout').click(function(event) {
+$('#logout').on('touchstart click', function(event) {
     emitLogout();
     //appendComment("server>>", "you are now logged out");
     __ISLOGGEDIN = false;
@@ -241,7 +241,7 @@ $('#logout').click(function(event) {
     event.preventDefault();
 });
 
-$('#login').click(function(event) {
+$('#login').on('touchstart click', function(event) {
         if(__ISLOGGEDIN === false) {
         var user = $('#username').val();
         var pass = $('#password').val();
@@ -286,7 +286,7 @@ $('#login').click(function(event) {
     event.preventDefault();
 });
 
-$('#sign-up').click(function(event) {
+$('#sign-up').on('touchstart click', function(event) {
         event.preventDefault();
         var user = $('#username').val();
         var pass = $('#password').val();
