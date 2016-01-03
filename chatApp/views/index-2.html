@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>Bootstrap 101 Template</title>
 
@@ -29,7 +29,7 @@
         $(document).ready(function(){
             var headerHeight = $(".header").height() + 1;
             var height = $(window).height();
-            var main_body_height = height - headerHeight;
+            var main_body_height = height - headerHeight +1;
             console.log("height = " + main_body_height)
             $(".left-panel").height(main_body_height);
             $(".right-panel").height(main_body_height);
@@ -41,7 +41,7 @@
                 //set the body height to maintain scroll capability
                 var headerHeight = $(".header").height() + 1;
                 var height = $(window).height();
-                var main_body_height = height - headerHeight;
+                var main_body_height = height - headerHeight +1;
                 console.log("height = " + main_body_height);
                 $(".left-panel").height(main_body_height);
                 $(".right-panel").height(main_body_height);
@@ -64,11 +64,11 @@
                             </div>
                     </div>
                     <div class="visible-lg">
-                        <div class="col-xs-2 pull-right margin-headers margin-right-headers hidden-xs">
-                            <a type="button" class="" data-toggle="modal" data-target="#myModal">
-                                <i class="fa fa-inverse fa-th fa-2x"></i>
-                            </a>
-                        </div>
+                        <a role="button" class="" data-toggle="modal" data-target="#myModal">
+                          <div class="col-xs-2 pull-right margin-headers margin-right-headers hidden-xs">
+                                  <i class="fa fa-inverse fa-th fa-2x"></i>
+                          </div>
+                        </a>
                         <div class="col-xs-2 pull-right margin-headers hidden-xs">
                             <i class="fa fa-inverse fa-bell fa-2x"></i>
                         </div>
@@ -81,7 +81,7 @@
                     </div>
 
                     <div class="visible-sm visible-md">
-                        <a type="button" class="" data-toggle="modal" data-target="#myModal">
+                        <a role="button" class="" data-toggle="modal" data-target="#myModal">
                           <div class="col-xs-2 pull-right margin-headers margin-right-headers-1 hidden-xs">
                               <i class="fa fa-inverse fa-th fa-lg"></i>
                           </div>
@@ -218,7 +218,7 @@
     </div>
 
     <script src="http://localhost:9000/socket.io/socket.io.js"></script>
-    <script src="http://54.183.2.118:9000/socket.io/socket.io.js"></script>
+    <script src="http://q-apps.io/socket.io/socket.io.js"></script>
     <script src="/app/components/bootstrap/js/modal.js"></script>
     <script src="/JS/main2.js"></script>
 </body>

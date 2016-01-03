@@ -51,11 +51,27 @@ var avatar = require('./lib/avatar');
  */
 function router(req,res) {
     var baseURI = url.parse(req.url, true);
+
+    //console.log("a requet of type " + req.method + " with url " + req.filePath);
+    res.setHeader('Access-Control-Allow-Origin', '*');
+
+    // Request methods you wish to allow
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+
+    // Request headers you wish to allow
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    // Set to true if you need the website to include cookies in the requests sent
+    // to the API (e.g. in case you use sessions)
+    res.setHeader('Access-Control-Allow-Credentials', false);
+
+    res.setHeader('Access-Control-Allow-Headers', 'DNT,X-Mx-ReqToken,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type');
+
     if(req.method === 'GET') {
-        req.filePath = __dirname + (baseURI.pathname === '/' ? '/views/index-2.html' : baseURI.pathname);
+      req.filePath = __dirname + (baseURI.pathname === '/' ? '/views/index-2.html' : baseURI.pathname);
+
         routes.GET(req,res);
     }else if(req.method === 'POST') {
-        //console.log(baseURI);
+       // console.log(baseURI);
         routes.POST[baseURI.pathname](req,res);
     } else {
         routes.NA(req,res);
@@ -149,7 +165,7 @@ var routes = {
                         delete userCredentials.password;
                         res.writeHead(200, {'Content-type': mimes['.json']});
                         //console.log(userCredentials);
-                        res.end(JSON.stringify(userCredentials));
+                        res.end(JSON.stringify('signup was successful'));
                 }).catch(() => {
                         res.writeHead(400, {'Content-type': mimes['.json']});
                         res.end(JSON.stringify({'err' : 'resource not found during signup'}));
@@ -312,10 +328,9 @@ mongo.connect(connectionString, function(err,db) {
         });
 
 
-
-        col.find().sort({_id: 1}).toArray(function(err, res) {
+        col.find().sort({_id :-1}).limit(50).toArray(function(err, res) {
             if(err) throw err; 
-            socket.emit('output',res);
+            socket.emit('output',res.reverse());
         });
 
 

@@ -7,11 +7,12 @@ var activeUsers = 0;
 // socket.io endpoint
 var suffix = '/socket.io/socket.io.js';
 
-var servo = '54.183.2.118';
+var servo = 'q-apps.io';
 //var servo = '';
-var host = 'localhost';
+//var host = 'localhost';
 //socket up URI
-var ip = 'http://' + (servo||host) + ':9000';
+//var ip = 'http://' + (servo||host) + ':9000';
+var ip = 'http://' + (servo||host);
 
 /**
  * Try to conenct to socke.io
@@ -25,6 +26,12 @@ try {
 }
 
 
+$(window).scroll(
+        function() {
+                  if ($(window).scrollTop() + $(window).height() > $(document).height()) return;
+                          updateScroll(); // my own function to do my parallaxing stuff
+                              }
+    );
 
 if(socket !== undefined) {
     // fetch all live users
@@ -174,6 +181,7 @@ function autolog(checkValidSession) {
         $.ajax({
             type: 'POST',
             data: JSON.stringify(getJWT()),
+            crossDomain: true,
             contentType: 'application/json',
             url: ip + '/api/auth/',                     //endpoint for JWT auth
             success: function (data) {
@@ -252,6 +260,7 @@ $('#login').on('touchstart click', function(event) {
             $.ajax({
                     type: 'POST',
                     data: JSON.stringify(data),
+                    crossDomain: true,
                     contentType: 'application/json',
                     url: ip + '/api/login/',
                     success: function(data) {
@@ -298,6 +307,7 @@ $('#sign-up').on('touchstart click', function(event) {
                     type: 'POST',
                     data: JSON.stringify(data),
                     contentType: 'application/json',
+                    crossDomain: true,
                     url: ip + '/api/signup/',
                     success: function(data) {
                         //console.log('signup success');
@@ -335,11 +345,15 @@ $('#sign-up').on('touchstart click', function(event) {
  * @param randomAvatar - avatar url generate by backend
  */
 function appendComment(usr,str, randomAvatar, time) {
+  function encodeHTML(s) {
+        return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
+  }
     usr = addSlashes(usr);
     //console.log('appending in appendComment ' + str);
     //console.log(usr);
     if(str == null || !str) str = "Message must have gotten lost in the Internets =(";
-    str = str.split("\\n").join("<br />");
+    str = encodeHTML(str);
+    str = str.split("\n").join("<br />");
     var defaultAvatar = "https://avatars2.githubusercontent.com/u/12993700?v=3&s=460"; // just a backup url
     var room = $('.messages-container');
     var comment = $('<div class="message wordwrap">' +

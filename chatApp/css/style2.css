@@ -1,13 +1,13 @@
 html,body {
-    height: 84vh;
     max-width: 100%;
-    margin: 0 auto;
-    padding-top: 00px;
+    margin: 0;
 }
 
 body {
     background: url('http://cdn.magdeleine.co/wp-content/uploads/2015/02/YS4_5968_69_70-2-3-1400x933.jpg');
     background-color: rgba(33,36,32, .90);
+    background-size:cover;
+    overflow: hidden;
 }
 
 .nav-wrapper-left {
