@@ -21,7 +21,8 @@ var mimes = {
     '.jpg'  :   'image/jpeg',
     '.png'  :   'image/png',
     '.json' :   'application/json',
-    '.svg' :   'image/svg+xml'
+    '.svg'  :   'image/svg+xml',
+    '.ico'  :   'image/ico'
 };
 
 /**

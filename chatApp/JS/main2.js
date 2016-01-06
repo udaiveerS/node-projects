@@ -7,12 +7,12 @@ var activeUsers = 0;
 // socket.io endpoint
 var suffix = '/socket.io/socket.io.js';
 
-var servo = 'q-apps.io';
-//var servo = '';
-//var host = 'localhost';
+//var servo = 'q-apps.io';
+var servo = '';
+var host = 'localhost';
 //socket up URI
-//var ip = 'http://' + (servo||host) + ':9000';
-var ip = 'http://' + (servo||host);
+var ip = 'http://' + (servo||host) + ':9000';
+//var ip = 'http://' + (servo||host);
 
 /**
  * Try to conenct to socke.io
@@ -26,12 +26,14 @@ try {
 }
 
 
+/**
+ * Function so stop some funky scrolling on mobile
+ */
 $(window).scroll(
         function() {
-                  if ($(window).scrollTop() + $(window).height() > $(document).height()) return;
-                          updateScroll(); // my own function to do my parallaxing stuff
-                              }
-    );
+          if ($(window).scrollTop() + $(window).height() > $(document).height()) return;
+      }
+);
 
 if(socket !== undefined) {
     // fetch all live users
@@ -89,24 +91,20 @@ if(socket !== undefined) {
 
     // client has logged out in browser and now all tabs in
     // browser must validate
-    socket.on("client-invalidate", function(username) {
+    socket.on("client-invalidate", function() {
         //will check current session
-        console.log('client-invalidate', username)
         var checkValidSession = true;
         autolog(checkValidSession);
     });
 
-} else {
-        //console.log("not ok");
 }
 
-function updateActiveUsers(numberOfUsers) {
+function updateActiveUsers() {
     $('#active-users-number').html(activeUsers);
 }
 
 function generateUserNode(userID, userAvatar) {
-    var liveUser =
-            '<div ' + 'id="'+ userID+ '" ' + 'class="active-user col-xs-12">' +
+    return  '<div ' + 'id="'+ userID+ '" ' + 'class="active-user col-xs-12">' +
                 '<div class="hidden-xs pull-left a-user-avatar vertical-align-div">'+
                     '<img src="' + (userAvatar || 'https://avatars2.githubusercontent.com/u/12993700?v=3&s=460') +
                         '" alt="avatar">' +
@@ -120,16 +118,8 @@ function generateUserNode(userID, userAvatar) {
                     '</svg>'+
                 '</div>' +
             '</div>';
-    return liveUser;
 }
 
-function addLogger() {
-
-}
-
-function removeLogger() {
-
-}
 
 /**
  * Called each time user is successfully logged in.
@@ -245,7 +235,7 @@ $('#logout').on('touchstart click', function(event) {
     __USER = "Guest";
     loggedOut();
     this.blur();
-    $('#myModal').modal('hide')
+    $('#myModal').modal('hide');
     event.preventDefault();
 });
 
@@ -343,17 +333,15 @@ $('#sign-up').on('touchstart click', function(event) {
  * @param usr
  * @param str
  * @param randomAvatar - avatar url generate by backend
+ * @param time - the time of the comment
  */
 function appendComment(usr,str, randomAvatar, time) {
-  function encodeHTML(s) {
+    function encodeHTML(s) {
         return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
-  }
+    }
     usr = addSlashes(usr);
-    //console.log('appending in appendComment ' + str);
-    //console.log(usr);
     if(str == null || !str) str = "Message must have gotten lost in the Internets =(";
     str = encodeHTML(str);
-    str = str.split("\n").join("<br />");
     var defaultAvatar = "https://avatars2.githubusercontent.com/u/12993700?v=3&s=460"; // just a backup url
     var room = $('.messages-container');
     var comment = $('<div class="message wordwrap">' +
@@ -441,14 +429,12 @@ function getTime() {
     /* if you want 2 digit hours: */
     h = h<10?"0"+h:h;
 
-    var pattern = new RegExp("0?"+hh+":"+m+":"+s);
     return mL[d.getMonth()] + " " + dL[d.getDay()] + " " + h+":"+m+":"+s+" "+dd;
 }
 
 function loggedOut() {
     updateDisplays(false);
 
-    var userJWT = getJWT();
 
    if (__USER !== "") {
         __USER = "";
@@ -482,7 +468,7 @@ function updateDisplays(isLogged){
 }
 
 function formValidation(messageCode, message) {
-    var formCodes = {danger: "danger", success: "success", warning: "warning"}
+    var formCodes = {danger: "danger", success: "success", warning: "warning"};
     var formAlert = $('#form-alert');
     if(formAlert.length >= 1) {
         formAlert.removeClass();
@@ -500,7 +486,7 @@ function clearValidation() {
 }
 
 // clear all messages when closed
-$('#myModal').on('hidden.bs.modal', function (e) {
+$('#myModal').on('hidden.bs.modal', function () {
     clearValidation();
 });
 
