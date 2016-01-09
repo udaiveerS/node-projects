@@ -5,12 +5,14 @@ Master is all the project folders in one repository
 ## 1. Chat Server
 ## 2. Online TestScript Compiler
 
-## Chat Server 
+## [Chat Server](http://www.q-apps.io)
 The Chat server is a project that is built in node.js and Socket.io using the bare minimum libraries. 
 For this project I did not used express of mongoose, instead I used the connection library provided 
 by mongoDB and I built my own way to do routing. 
 
-Chat server has a working online demo at [q-apps.io](q-apps.io) The url could later change to chat.q-app.io. 
+Chat server has a working online demo at [q-apps.io](http://www.q-apps.io) The url could later change to chat.q-app.io. 
+
+[This link](http://example.net/) 
 #### Features
 * Self Syc chat with socket.io
 * Account Creation 
