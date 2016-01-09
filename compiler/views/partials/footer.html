@@ -1,0 +1,25 @@
+<nav id="footer" class="navbar navbar-default navbar-static-bottom">
+    <div class="container">
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cumque, dolorem?
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eligendi, voluptates?</p>
+    </div>
+</nav>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="/jquery/dist/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="bootstrap/dist/js/bootstrap.min.js"></script>
+
+
+<script>
+    $(document).ready(function() {
+
+        var docHeight = $(window).height();
+        var footerHeight = $('#footer').height();
+        var footerTop = $('#footer').position().top + footerHeight;
+
+        if (footerTop < docHeight) {
+            $('#footer').css('margin-top', 10+ (docHeight - footerTop) + 'px');
+        }
+    });
+</script>

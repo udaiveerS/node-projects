@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {{> headers}}
+</head>
+<body>
+    {{> nav}}
+
+    <!-- compiler programs + compilerTextEditor -->
+    <div class="container">
+        <div class="row">
+           <div class="col-xs-12 col-sm-3 col-md-4 col-lg-4 align_center_text">
+               {{> programList}}
+           </div>
+           <div class="col-xs-12 col-sm-9 col-md-8 col-lg-8">
+               {{> compilerButtons}}
+               {{> compilerTextEditor}}
+           </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12 col-sm-5 col-md-5 col-lg-4">
+               {{> compilerOutput}}
+            </div>
+            <div class="col-xs-12 col-sm-7 col-md-7 col-lg-8">
+                {{> jasmineOutput}}
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/ace.js"></script>
+    <script src="/js/ace_editor_config.js"></script>
+
+    <!-- footer Jquery + bootstrap -->
+    {{> footer}}
+
+</body>
+</html>
+

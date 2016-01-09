@@ -1,0 +1,66 @@
+/*buttons*/
+
+/*button group width for programs*/
+.btn-programs-group {
+    width:100%;
+    margin-bottom: 1em;
+}
+
+/*remove all border highlight from buttons*/
+textarea:hover,
+input:hover,
+textarea:active,
+input:active,
+textarea:focus,
+input:focus,
+button:focus,
+button:active,
+button:hover
+{
+    outline:0px !important;
+    -webkit-appearance:none;
+}
+
+/* Program list */
+.align_center_text {
+    text-align: center;
+}
+
+/** output **/
+.output-container {
+    text-align: left;
+}
+
+#output {
+    height: 400px;
+    max-height: 400px;
+}
+
+/* provide margin from navbar */
+.editor-container {
+}
+
+/* comple / stop buttons */
+.editor-buttons-width {
+    width: 110px;
+    margin: 5px 1px 5px 1px;
+
+}
+/* Ace Editor CSS */
+.ace_editor {
+
+    border: 1px solid lightgray;
+    margin: auto;
+    width: 100%;
+}
+
+/* make footer stick to bottom of page*/
+#footer{
+    margin-top:10px;
+    margin-bottom:0px;
+}
+
+/* about page image */
+#uml {
+    width: 100%;
+}
