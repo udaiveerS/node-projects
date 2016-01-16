@@ -8,7 +8,6 @@ var mongoose = require('mongoose');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
-var myHttp  = require('./lib/myHttp');
 
 var app = express();
 
