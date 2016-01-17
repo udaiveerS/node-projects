@@ -12,7 +12,6 @@ var users = require('./routes/users');
 var app = express();
 
 var mongoConnectString = "mongodb://localhost/template";
-
 mongoose.connect(mongoConnectString);
 
 var instaToken = '1539375414.31aeb77.fb6ade7acfce42719298f3745c4791be';
