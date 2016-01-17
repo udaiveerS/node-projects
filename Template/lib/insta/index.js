@@ -89,42 +89,47 @@ function getCurrentImages(lat, lang, distance, req, res, updateDatabse) {
     if(!distance) {
         distance = 1000;
     }
-    request(
-        {
-            method: 'GET',
-            uri: 'https://api.instagram.com/v1/media/search?' +
-            'lat='+ lat
-            + '&lng=' + lang
-            + '&distance' + distance
-            +'&access_token=' + instaToken
-            ,
-            gzip: false
-        }
-        , function (error, response, body) {
-            console.log('server encoded the data as: ' + (response.headers['content-encoding'] || 'identity'))
-            if(!updateDatabse) {
-                try {
-                    var json = JSON.parse(body);
-                    res.json(json.data);
-                } catch (e) {
-                    res.status(400).send("instagram could not send data");
-                }
-            } else {
+
+    if(updateDatabse) {
+        request(
+            {
+                method: 'GET',
+                uri: 'https://api.instagram.com/v1/media/search?' +
+                'lat=' + lat
+                + '&lng=' + lang
+                + '&distance' + distance
+                + '&access_token=' + instaToken
+                ,
+                gzip: false
+            }
+            , function (error, response, body) {
+                console.log('server encoded the data as: ' + (response.headers['content-encoding'] || 'identity'))
                 try {
                     var json = JSON.parse(body);
                     //console.log(json);
                     var myData = filterData(json);
                     console.log(myData);
-                    for(var key in myData) {
-                       console.log(myData[key].images);
+                    for (var key in myData) {
+                        console.log(myData[key].images);
                     }
-                } catch (e)  {
+                } catch (e) {
                     console.log("no updates could be made to DB")
                 }
-
             }
+        );
+    } else {
+        try {
+            Bucket.find("", function (err, docs) {
+                if(err) {
+                    res.status(400).send("instagram could not send data");
+                }
+                console.log(docs);
+                res.json(docs);
+            });
+        } catch (e) {
+            res.status(400).send("instagram could not send data");
         }
-    );
+    }
 }
 
 module.exports.getInstaImages = getCurrentImages;

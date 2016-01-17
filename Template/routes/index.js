@@ -16,7 +16,7 @@ setInterval(function(){
     distance = 5000;
     console.log(lat + " " + " " + lang + " "  + distance);
     insta.getInstaImages(lat,lang, distance, null, null, resetDb);
-}, 5000);
+}, 50000);
 
 router.get('/newLocation', function(req, res, next) {
     try {
