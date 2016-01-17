@@ -61,13 +61,17 @@ function filterData(data) {
 function storeBuckets(buckets) {
    for(var key in buckets)   {
        var aBucket = buckets[key];
+       aBucket.images.sort(function(a,b) {
+           return b.time - a.time;
+       });
+       //console.log(aBucket.images);
        var myBucket = new Bucket(aBucket);
         myBucket.save(function(err,obj) {
             if(err) {
               console.log(err);
             } else {
-              console.log("obj was saved ");
-              console.log(obj);
+              //console.log("obj was saved ");
+              //console.log(obj);
             }
         });
    }
@@ -103,15 +107,15 @@ function getCurrentImages(lat, lang, distance, req, res, updateDatabse) {
                 gzip: false
             }
             , function (error, response, body) {
-                console.log('server encoded the data as: ' + (response.headers['content-encoding'] || 'identity'))
                 try {
+                    //console.log('server encoded the data as: ' + (response.headers['content-encoding'] || 'identity'))
                     var json = JSON.parse(body);
                     //console.log(json);
                     var myData = filterData(json);
-                    console.log(myData);
-                    for (var key in myData) {
-                        console.log(myData[key].images);
-                    }
+                    //console.log(myData);
+                    //for (var key in myData) {
+                    //    console.log(myData[key].images);
+                    //}
                 } catch (e) {
                     console.log("no updates could be made to DB")
                 }
@@ -124,7 +128,7 @@ function getCurrentImages(lat, lang, distance, req, res, updateDatabse) {
                     res.status(400).send("instagram could not send data");
                 }
                 console.log(docs);
-                res.json(docs);
+                //res.json(docs);
             });
         } catch (e) {
             res.status(400).send("instagram could not send data");
