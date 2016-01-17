@@ -32,31 +32,4 @@ router.get('/newLocation', function(req, res, next) {
     }
 });
 
-
-//
-//function addEntry() {
-//    var myBucket = new Bucket();
-//    var x = Math.random();
-//    myBucket.title = "title" + x;
-//    myBucket.lat = x;
-//    myBucket.lng = x;
-//    myBucket.images = [];
-//    for(var i = 0; i < 4; i++) {
-//        var y = {}
-//        y.url = "aurl/stf/sdfdsfss.com";
-//        y.time =  x;
-//        for(var t =0; t < 4; t++) {
-//            if(!y.tags) {
-//                y.tags = [];
-//            } else {
-//                y.tags.push('tag' + t);
-//            }
-//        }
-//        myBucket.images.push(y);
-//        console.log(y);
-//    }
-//    return myBucket;
-//}
-
-
 module.exports = router;

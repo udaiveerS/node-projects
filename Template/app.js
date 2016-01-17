@@ -14,7 +14,6 @@ var app = express();
 var mongoConnectString = "mongodb://localhost/template";
 mongoose.connect(mongoConnectString);
 
-var instaToken = '1539375414.31aeb77.fb6ade7acfce42719298f3745c4791be';
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -37,36 +36,6 @@ app.use(function(req, res, next) {
 
 app.use('/', routes);
 app.use('/users', users);
-
-
-var request = require('request')
-function getCurrentImages(lat, lang, distance) {
-  request(
-      {
-        method: 'GET'
-        ,
-        uri: 'https://api.instagram.com/v1/media/search?' +
-                'lat='+ lat
-                + '&lng=' + lang
-                + '&distance' + distance
-                +'&access_token=' + instaToken
-        ,
-        gzip: false
-      }
-      , function (error, response, body) {
-        // body is the decompressed response body
-        console.log('server encoded the data as: ' + (response.headers['content-encoding'] || 'identity'))
-        try {
-
-        var json = JSON.parse(body);
-            console.log(json.data.length);
-        } catch (e) {
-
-        }
-      }
-  );
-
-}
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
