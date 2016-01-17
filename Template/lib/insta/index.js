@@ -128,7 +128,7 @@ function getCurrentImages(lat, lang, distance, req, res, updateDatabse) {
                     res.status(400).send("instagram could not send data");
                 }
                 console.log(docs);
-                //res.json(docs);
+                res.json(docs);
             });
         } catch (e) {
             res.status(400).send("instagram could not send data");
