@@ -22,6 +22,12 @@ var Bucket = mongoose.model('buckets', BucketSchema);
 
 
 function filterData(data) {
+    Bucket.find("").remove(function(err) {
+        if(err) {
+            console.log("removing buckets went wrong");
+        }
+    });
+
     var filtered = {};
     try {
         data = data.data;
