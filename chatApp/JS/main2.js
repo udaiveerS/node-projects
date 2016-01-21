@@ -7,9 +7,9 @@ var activeUsers = 0;
 // socket.io endpoint
 var suffix = '/socket.io/socket.io.js';
 
-//var servo = 'q-apps.io';
-var servo = '';
-var host = 'localhost';
+var servo = 'q-apps.io';
+//var servo = '';
+//var host = 'localhost';
 //socket up URI
 var ip = 'http://' + (servo||host) + ':9000';
 //var ip = 'http://' + (servo||host);
