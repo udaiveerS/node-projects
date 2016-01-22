@@ -4,7 +4,7 @@ html,body {
 }
 
 body {
-    background: url('img/mountain.jpg');
+    background: url('../img/mountain.jpg');
     background-color: rgba(33,36,32, .90);
     background-size:cover;
     overflow: hidden;
