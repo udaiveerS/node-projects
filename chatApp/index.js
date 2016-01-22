@@ -2,8 +2,8 @@ var mongo = require('mongodb').MongoClient;
 var http = require('http');
 var fs = require('fs');
 var options = {
-    cert: fs.readFileSync('./etc/nginx/ssl/qapps-bundle.crt'),
-    key: fs.readFileSync('./etc/nginx/sslqapps.key'),
+    cert: fs.readFileSync('/etc/nginx/ssl/qapps-bundle.crt'),
+    key: fs.readFileSync('/etc/nginx/ssl/qapps.key'),
 };
 
 var app = http.createServer(options, router);
