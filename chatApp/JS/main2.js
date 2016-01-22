@@ -7,11 +7,11 @@ var activeUsers = 0;
 // socket.io endpoint
 var suffix = '/socket.io/socket.io.js';
 
-//var servo = 'q-apps.io';
-var servo = '';
-var host = 'localhost';
+var servo = 'chat.q-apps.io';
+//var servo = '';
+//var host = 'localhost';
 //socket up URI
-var ip = 'http://' + (servo||host) + ':9000';
+var ip = 'https://' + (servo||host);
 //var ip = 'http://' + (servo||host);
 
 /**
@@ -19,7 +19,8 @@ var ip = 'http://' + (servo||host) + ':9000';
  * the io object is defined in the socket.io script
  */
 try {
-    var socket = io.connect(ip);
+    var socket = io.connect(ip, {secure: true});
+    //var socket = io.connect(ip);
 } catch(std) {
     // set status to warn user
     //console.log("not connected");
@@ -496,7 +497,7 @@ function addSlashes(string) {
     return string.replace(/\\/g, '\\\\').
     replace(/\u0008/g, '\\b').
     replace(/\t/g, '\\t').
-    replace(/\n/g, '\\n').
+    //replace(/\n/g, '\n').
     replace(/\f/g, '\\f').
     replace(/\r/g, '\\r').
     replace(/'/g, '\\\'').
