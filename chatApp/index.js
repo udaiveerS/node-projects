@@ -1,9 +1,14 @@
 var mongo = require('mongodb').MongoClient;
-var http = require('http'); 
-var app = http.createServer(router);
+var http = require('http');
+var fs = require('fs');
+var options = {
+    cert: fs.readFileSync('./etc/nginx/ssl/qapps-bundle.crt'),
+    key: fs.readFileSync('./etc/nginx/sslqapps.key'),
+};
+
+var app = http.createServer(options, router);
 var client = require('socket.io').listen(app).sockets;
 var url = require('url'); 
-var fs = require('fs');
 var path = require('path');
 var faker = require('faker');
 

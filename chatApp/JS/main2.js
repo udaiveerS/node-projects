@@ -19,7 +19,7 @@ var ip = 'https://' + (servo||host) + ':9000';
  * the io object is defined in the socket.io script
  */
 try {
-    var socket = io.connect(ip);
+    var socket = io.connect(ip, {secure: true});
 } catch(std) {
     // set status to warn user
     //console.log("not connected");
