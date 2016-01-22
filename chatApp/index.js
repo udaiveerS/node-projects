@@ -6,8 +6,8 @@ var options = {
     key: fs.readFileSync('/etc/nginx/ssl/qapps.key'),
 };
 
-var app = http.createServer(options, router);
-var client = require('socket.io').listen(app).sockets;
+var app = http.createServer(router);
+var client = require('socket.io').listen(8080,options).sockets;
 var url = require('url'); 
 var path = require('path');
 var faker = require('faker');
@@ -73,11 +73,11 @@ function router(req,res) {
     res.setHeader('Access-Control-Allow-Headers', 'DNT,X-Mx-ReqToken,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type');
 
     if(req.method === 'GET') {
+      console.log(baseURI);
       req.filePath = __dirname + (baseURI.pathname === '/' ? '/views/index-2.html' : baseURI.pathname);
 
         routes.GET(req,res);
     }else if(req.method === 'POST') {
-       // console.log(baseURI);
         routes.POST[baseURI.pathname](req,res);
     } else {
         routes.NA(req,res);

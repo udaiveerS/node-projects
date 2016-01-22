@@ -11,7 +11,7 @@ var servo = 'chat.q-apps.io';
 //var servo = '';
 //var host = 'localhost';
 //socket up URI
-var ip = 'https://' + (servo||host) + ':9000';
+var ip = 'https://' + (servo||host);
 //var ip = 'http://' + (servo||host);
 
 /**
@@ -20,6 +20,7 @@ var ip = 'https://' + (servo||host) + ':9000';
  */
 try {
     var socket = io.connect(ip, {secure: true});
+    //var socket = io.connect(ip);
 } catch(std) {
     // set status to warn user
     //console.log("not connected");
