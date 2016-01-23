@@ -1,0 +1,1 @@
+ nohup ./testScriptBash bool_test >/dev/null 2>&1 &
