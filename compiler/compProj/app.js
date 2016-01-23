@@ -9,6 +9,7 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 var hbs = require('hbs');
 var app = express();
+var bash = require("./lib/node-cli");
 
 // set up env variable
 app.set('env', "development");
@@ -65,6 +66,33 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
+
+var compileCommand = "../test_script/testScriptBash bool_test";
+
+//var exec = require('child_process').exec;
+//
+//var child = exec('cd ../test_script', function (error, stdout, stderr) {
+//    exec('../test_script/testScriptBash bool_test',
+//        function (error, stdout, stderr) {
+//            console.log('stdout: ' + stdout);
+//            console.log('stderr: ' + stderr);
+//
+//            if (error !== null) {
+//                console.log('exec error: ' + error);
+//            }
+//
+//        });
+//});
+
+bash.execute(compileCommand)
+    .then(function(res) {
+      console.log("succ" + res);
+    }, function(err) {
+      console.log("err" + err);
+    });
+
+//var AbasePath = "../test_script/TestScript.jar";
+//var a ='java -jar ../test_script/TestScript.jar ../test_script/bool_test.txt';
 
 module.exports = app;
 
