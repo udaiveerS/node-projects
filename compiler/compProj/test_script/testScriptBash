@@ -1,0 +1,62 @@
+#!/bin/sh
+
+fileName="$1" 
+
+#if 2 arguments provided then create .txt file with input 
+if [ "$#" -eq 2 ]; then
+    input=$2
+    echo "creating ${fileName}.txt"
+    echo $input > "${fileName}.txt"
+fi
+
+fileTxt="${1}.txt"
+fileJ="${1}.j"
+logOut="${1}.out"
+classFile="${1}.class"
+
+echo "fileTxt = ${fileTxt}"
+echo "fileJ = ${fileJ} "
+echo "logOut = ${logOut}"
+
+
+echo "trying to compile..."
+(java -jar TestScript.jar "$fileTxt" > "${logOut}") & pid=$!
+( sleep 1 && kill -HUP $pid ) 2>/dev/null & watcher=$!
+if wait $pid 2>/dev/null; then
+    echo "your_command finished"
+    pkill -HUP -P $watcher
+    wait $watcher
+
+    if [ -f $logOut ]
+    then
+        echo "compiler message"
+        cat $logOut
+    else
+        echo "compiler message"
+        echo "compiler Error could not parse program" >> ${logOut}
+        cat $logOut
+    fi
+else
+    echo "your_command interrupted"
+    echo "compilation failed due to timeout" >> ${logOut}
+    cat $logOut
+fi
+
+# compile the jasmine files 
+echo "compiling jasmine file"
+java -jar jasmin.jar $fileJ
+
+if [ -f "$classFile" ]
+    then
+        echo "running the class file" >> ${logOut}
+        echo '----------- Code Execution -----------' >> ${logOut}
+        echo "running the class file" 
+        (java $fileName) >> ${logOut}
+        cat $logOut
+    else
+        echo "jasmin code generation error"
+        echo "jasmin code generation error: .class file could not be generated" >> ${logOut}
+        echo "terminating compilation..." >> ${logOut}
+        cat $logOut
+fi
+
