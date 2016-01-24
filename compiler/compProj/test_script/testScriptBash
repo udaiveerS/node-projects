@@ -9,15 +9,7 @@ if [ "$#" -eq 2 ]; then
     echo $input > "${fileName}.txt"
 fi
 
-SCRIPT_PATH="${BASH_SOURCE[0]}";
-if ([ -h "${SCRIPT_PATH}" ]) then
-      while([ -h "${SCRIPT_PATH}" ]) do SCRIPT_PATH=`readlink "${SCRIPT_PATH}"`; done
-fi
-pushd . > /dev/null
-cd `dirname ${SCRIPT_PATH}` > /dev/null
-SCRIPT_PATH=`pwd`;
 SP="../test_script/"
-popd  > /dev/null
 
 echo "basename $SP"
 fileTxt="${SP}${1}.txt"
