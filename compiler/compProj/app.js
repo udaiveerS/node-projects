@@ -10,6 +10,8 @@ var users = require('./routes/users');
 var hbs = require('hbs');
 var app = express();
 var bash = require("./lib/node-cli");
+var crypto = require("crypto");
+var compiler = require("./lib/compiler-factory");
 
 // set up env variable
 app.set('env', "development");
@@ -36,6 +38,51 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', routes);
 app.use('/users', users);
 
+var router = express.Router();
+
+// construct compiler obj
+
+router.post('/compile', function(req, res, next) {
+  try {
+    var txt = req.body.txt;
+    var id = crypto.randomBytes(14).toString('hex');
+    // create a compiler factory
+    var aCompiler = compiler.compilerFactory(id, txt);
+  } catch (e) {
+    res.status(400);
+    res.json({"out": "invalid text format", "err": "invalid text format"});
+  }
+  // create a file id.txt with the code which is in txt variable
+  var responseObj = {out: "", err: "", j: ""};
+  aCompiler.writeTxt()
+    .then(() => {
+      //execute the bash script to compile and run to produce all the files/errors/outputs
+      return bash.execute(aCompiler.compileCommand);
+    })
+    .then(() => {
+      //execute command to get the .out file
+      return bash.execute(aCompiler.readOutFileCommand);
+    })
+    .then(res => {
+      console.log(res);
+      responseObj.out = res;
+      //execute command to get the .j file
+      return bash.execute(aCompiler.readJFileCommand)
+    })
+    .then(res => {
+      console.log(res);
+      responseObj.j = res;
+      //send the json object
+      res.json(responseObj);
+      // remove all files associated with program
+      return bash.execute(aCompiler.cleanUpCommand);
+    })
+    .catch(err => {
+     console.log(err);
+      res.status(400);
+      res.json({"out": "invalid text format", "err": "invalid text format"});
+    });
+});
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
@@ -67,46 +114,18 @@ app.use(function(err, req, res, next) {
   });
 });
 
-function compilerFactory(fileName, fileTxt = 'sample txt') {
-  var jFile = fileName + ".j";
-  var txtFile = fileName + ".txt";
-  var outFile = fileName + ".out";
+//console.log(compiler);
+// start writing the text file
+var result = {jFile: "", outFile: ""};
 
-  var compileCommand = "../test_script/testScriptBash " + fileName;
-  var readOutFile = "cat " + outFile;
-  var readJFile = "cat " + jFile;
-  var cleanUp = "rm " + jFile + " " + txtFile + " " + outFile;
 
-  function writeTxt(txt = fileTxt) {
-    return new Promise(function (resolve, reject) {
-      fs.writeFile(txtFile, txt , (err) => {
-        if (err) reject(err);
-        resolve('saved')
-      });
-    });
-  }
-
-  return {
-    jFile: jFile,
-    txtFile: txtFile,
-    outFile: outFile,
-    writeTxt: writeTxt,
-    compileCommand: compileCommand,
-    readOutFileCommand: readOutFile,
-    readJFileCommand: readJFile,
-    cleanUpCommand: cleanUp
-  }
-}
-
-var compiler = compilerFactory('bool_test2');
-
-var compileCommand = "../test_script/testScriptBash bool_test";
-bash.execute(compileCommand)
-    .then(function(res) {
-      console.log(res);
-    }, function(err) {
-      console.log("err" + err);
-    });
+//var compileCommand = "../test_script/testScriptBash bool_test";
+//bash.execute(compileCommand)
+//    .then(function(res) {
+//      console.log(res);
+//    }, function(err) {
+//      console.log("err" + err);
+//    });
 
 //var AbasePath = "../test_script/TestScript.jar";
 //var a ='java -jar ../test_script/TestScript.jar ../test_script/bool_test.txt';

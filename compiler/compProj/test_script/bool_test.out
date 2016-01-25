@@ -1,6 +1,7 @@
-Program parsing Successful
-compiling jasmine file
-running the class file
+trying to compile...
+Test Script compiler successfully compiled txt
+compiling jasmine file to .class file
+running the class file on JVM
 ----------- Code Execution -----------
 CORRECT: 1 < 4
 Should Print else 10 < 4
