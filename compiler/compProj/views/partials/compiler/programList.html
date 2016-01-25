@@ -1,15 +1,23 @@
 <h2> Sample Programs</h2>
-<div class="btn-group-vertical btn-programs-group" role="group" aria-label="program List">
-    <div class="btn-group" role="group">
-        <button type="button" class="btn btn-default btn-block active">Sample Program 1</button>
-    </div>
-    <div class="btn-group" role="group">
-        <button type="button" class="btn btn-default btn-block">Sample Program 2</button>
-    </div>
-    <div class="btn-group" role="group">
-        <button type="button" class="btn btn-default btn-block">Sample Program 3</button>
-    </div>
-    <div class="btn-group" role="group">
-        <button type="button" class="btn btn-default btn-block">Sample Program 4</button>
-    </div>
-</div>
+<form class="btn-group-vertical btn-programs-group" data-toggle="buttons" role="group" aria-label="program List">
+        <label class="btn btn-default active" id="option1">
+                <input value="simple" type="radio" name="options" id='f' autocomplete="off" checked>
+                Sample Program
+        </label>
+        <label class="btn btn-default" id="option2">
+                <input value="fib" type="radio" name="options" id='e' autocomplete="off">
+                fibonacci
+        </label>
+        <label class="btn btn-default" id="option3">
+                <input value="euler" type="radio" name="options" id='c' autocomplete="off">
+                euler
+        </label>
+        <label class="btn btn-default" id="option4">
+                <input value="ifs" type="radio" name="options" id="b" autocomplete="off">
+                If Statements
+        </label>
+        <label class="btn btn-default" id="option5">
+                <input value="recursion" type="radio" name="options" id="a"  autocomplete="off">
+                Recursion
+        </label>
+</form>

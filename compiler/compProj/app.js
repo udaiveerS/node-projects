@@ -40,8 +40,6 @@ app.use('/users', users);
 
 var router = express.Router();
 
-// construct compiler obj
-
 router.post('/compile', function(req, res, next) {
   try {
     var txt = req.body.txt;
@@ -113,22 +111,6 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
-
-//console.log(compiler);
-// start writing the text file
-var result = {jFile: "", outFile: ""};
-
-
-//var compileCommand = "../test_script/testScriptBash bool_test";
-//bash.execute(compileCommand)
-//    .then(function(res) {
-//      console.log(res);
-//    }, function(err) {
-//      console.log("err" + err);
-//    });
-
-//var AbasePath = "../test_script/TestScript.jar";
-//var a ='java -jar ../test_script/TestScript.jar ../test_script/bool_test.txt';
 
 module.exports = app;
 
