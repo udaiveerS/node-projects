@@ -11,7 +11,7 @@ fi
 
 SP="../test_script/"
 
-echo "basename $SP"
+#echo "basename $SP"
 fileTxt="${SP}${1}.txt"
 fileJ="${SP}${1}.j"
 logOut="${SP}${1}.out"
@@ -19,47 +19,45 @@ classFile="${SP}${1}.class"
 jar1="${SP}TestScript.jar"
 jar2="${SP}jasmin.jar"
 
-echo "fileTxt = ${fileTxt}"
-echo "fileJ = ${fileJ} "
-echo "logOut = ${logOut}"
+#echo "fileTxt = ${fileTxt}"
+#echo "fileJ = ${fileJ} "
+#echo "logOut = ${logOut}"
 
 
 echo "trying to compile..."
 (java -jar ${jar1} "$fileTxt" > "${logOut}") & pid=$!
 ( sleep 2 && kill -HUP $pid ) 2>/dev/null & watcher=$!
 if wait $pid 2>/dev/null; then
-    echo "your_command finished"
+    #echo "your_command finished"
     pkill -HUP -P $watcher
     wait $watcher
 
     if [ -f $logOut ]
     then
-        echo "compiler message"
+        #echo "compiler message"
         cat $logOut
     else
-        echo "compiler message"
         echo "compiler Error could not parse program" >> ${logOut}
         cat $logOut
     fi
 else
-    echo "your_command interrupted"
+    #echo "command interrupted"
     echo "compilation failed due to timeout" >> ${logOut}
     cat $logOut
 fi
 
 # compile the jasmine files 
-echo "compiling jasmine file"
+echo "compiling jasmine file" >> ${logOut}
 java -jar $jar2 $fileJ -d ${SP} 
 
+# run the class files 
 if [ -f "$classFile" ]
     then
         echo "running the class file" >> ${logOut}
         echo '----------- Code Execution -----------' >> ${logOut}
-        echo "running the class file" 
         (java $fileName) >> ${logOut}
         cat $logOut
     else
-        echo "jasmin code generation error"
         echo "jasmin code generation error: .class file could not be generated" >> ${logOut}
         echo "terminating compilation..." >> ${logOut}
         cat $logOut

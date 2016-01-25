@@ -4,7 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
+var fs = require("fs");
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var hbs = require('hbs');
@@ -67,26 +67,43 @@ app.use(function(err, req, res, next) {
   });
 });
 
+function compilerFactory(fileName, fileTxt = 'sample txt') {
+  var jFile = fileName + ".j";
+  var txtFile = fileName + ".txt";
+  var outFile = fileName + ".out";
+
+  var compileCommand = "../test_script/testScriptBash " + fileName;
+  var readOutFile = "cat " + outFile;
+  var readJFile = "cat " + jFile;
+  var cleanUp = "rm " + jFile + " " + txtFile + " " + outFile;
+
+  function writeTxt(txt = fileTxt) {
+    return new Promise(function (resolve, reject) {
+      fs.writeFile(txtFile, txt , (err) => {
+        if (err) reject(err);
+        resolve('saved')
+      });
+    });
+  }
+
+  return {
+    jFile: jFile,
+    txtFile: txtFile,
+    outFile: outFile,
+    writeTxt: writeTxt,
+    compileCommand: compileCommand,
+    readOutFileCommand: readOutFile,
+    readJFileCommand: readJFile,
+    cleanUpCommand: cleanUp
+  }
+}
+
+var compiler = compilerFactory('bool_test2');
+
 var compileCommand = "../test_script/testScriptBash bool_test";
-
-//var exec = require('child_process').exec;
-//
-//var child = exec('cd ../test_script', function (error, stdout, stderr) {
-//    exec('../test_script/testScriptBash bool_test',
-//        function (error, stdout, stderr) {
-//            console.log('stdout: ' + stdout);
-//            console.log('stderr: ' + stderr);
-//
-//            if (error !== null) {
-//                console.log('exec error: ' + error);
-//            }
-//
-//        });
-//});
-
 bash.execute(compileCommand)
     .then(function(res) {
-      console.log("succ" + res);
+      console.log(res);
     }, function(err) {
       console.log("err" + err);
     });
