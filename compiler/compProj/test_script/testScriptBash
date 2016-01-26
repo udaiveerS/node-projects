@@ -1,5 +1,7 @@
 #!/bin/sh
 
+OS="mac"
+
 fullName="$1" 
 fullPath="$2"
 fileName="$3"
@@ -41,15 +43,20 @@ fi
 # compile the jasmine files 
 echo "compiling jasmine file to .class file" >> ${logOut}
 echo "java -jar jasmin.jar ${fileName}.j" >> ${logOut}
-java -jar $jar2 "${fileJ}" -d "./test_script"
+
+if [ "mac" == "$OS" ] 
+    then
+        java -jar $jar2 "${fileJ}" -d "../test_script"
+    else
+        java -jar $jar2 "${fileJ}" -d "./test_script"
+fi
 
 # run the class files 
 echo "file location for class file ${fileName}.class" >> ${logOut} 
-
 if [ -f $classFile ]
     then
         echo "running the class file on JVM" >> ${logOut}
-        #echo "java -cp ${fullName} ${fullName}"  >> ${logOut}
+        echo "java -cp ${fullName} ${fullName}"  >> ${logOut}
         echo '----------- Code Execution -----------' >> ${logOut}
         java  -cp "${fullPath}" "${fileName}" >> ${logOut}
     else

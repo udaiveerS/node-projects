@@ -1,7 +1,7 @@
 var editor = ace.edit("editor");
 
-var url = 'https://compiler.q-apps.io/compile';
-//var url = 'http://localhost:8040/compile';
+//var url = 'https://compiler.q-apps.io/compile';
+var url = 'http://localhost:8040/compile';
 
 var userPrograms;
 

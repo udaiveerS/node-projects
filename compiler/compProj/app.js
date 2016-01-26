@@ -93,7 +93,7 @@ app.post('/compile', function(req, res, next) {
       return bash.execute(aCompiler.readJFileCommand);
     })
     .then(obj => {
-      //console.log(obj);
+      console.log(obj);
       responseObj.j = obj;
       //send the json object
       res.status(200);
@@ -102,7 +102,7 @@ app.post('/compile', function(req, res, next) {
       return 'ok';
     })
     .catch(err => {
-      //console.log(err);
+      console.log(err);
       res.status(400);
       res.json({"out": "invalid text format", "err": "invalid text format"});
     });

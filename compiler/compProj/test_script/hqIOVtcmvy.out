@@ -2,9 +2,10 @@ trying to compile...
 Program parsing Successful
 Test Script compiler successfully compiled txt
 compiling jasmine file to .class file
-java -jar jasmin.jar cqwNlPibdP.j
-file location for class file cqwNlPibdP.class
+java -jar jasmin.jar hqIOVtcmvy.j
+file location for class file hqIOVtcmvy.class
 running the class file on JVM
+java -cp /Users/udaiveer/Desktop/Workspaces/WebStorm/node-projects/compiler/compProj/test_script/hqIOVtcmvy /Users/udaiveer/Desktop/Workspaces/WebStorm/node-projects/compiler/compProj/test_script/hqIOVtcmvy
 ----------- Code Execution -----------
 CORRECT: 1 < 4
 Should Print else 10 < 4
