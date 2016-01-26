@@ -9,18 +9,36 @@
     <!-- compiler programs + compilerTextEditor -->
     <div class="container">
         <div class="row">
-           <div class="col-xs-12 col-sm-3 col-md-4 col-lg-4 align_center_text">
-               {{> programList}}
-           </div>
-           <div class="col-xs-12 col-sm-9 col-md-8 col-lg-8">
-               {{> compilerButtons}}
-               {{> compilerTextEditor}}
-           </div>
+            <div class="col-xs-12 col-sm-3 col-md-4 col-lg-4 align_center_text">
+                {{> programList}}
+                <div class="well text-left visible-lg">
+                   This compiler is in its infancy. Compiler is a final project
+                    for <em>Prof Ron Mak Compiler Design Class SJSU 2015</em>. The parser and error checking
+                    are not very robust. That said it certainly works
+                    for the programs provided here. Feel free to change them
+                    and try it for your self. You can always reset if anything
+                    goes terribly wrong.
+                </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-9 col-md-8 col-lg-8">
+                {{> compilerButtons}}
+                {{> compilerTextEditor}}
+                <br>
+                <div class="well text-left hidden-lg">
+                   This compiler is in its infancy. Compiler is a final project
+                    for <em>Prof Ron Mak Compiler Design Class SJSU 2015</em>. The parser and error checking
+                    are not very robust. That said it certainly works
+                    for the programs provided here. Feel free to change them
+                    and try it for your self. You can always reset if anything
+                    goes terribly wrong.
+                </div>
+            </div>
         </div>
 
         <div class="row">
             <div class="col-xs-12 col-sm-5 col-md-5 col-lg-4">
-               {{> compilerOutput}}
+                {{> compilerOutput}}
             </div>
             <div class="col-xs-12 col-sm-7 col-md-7 col-lg-8">
                 {{> jasmineOutput}}

@@ -18,7 +18,7 @@ function compilerFactory(fileName, fileTxt) {
     var compileCommand = "../test_script/testScriptBash " + fileName;
     var readOutFile = "cat " + outFile;
     var readJFile = "cat " + jFile;
-    var cleanUp = "rm " + jFile + " " + txtFile + " " + outFile;
+    var cleanUp = "rm ../test_script/*.j ../test_script/*.class ../test_script/*.out ../test_script/*.txt";
 
     function writeTxt() {
         return new Promise(function (resolve, reject) {

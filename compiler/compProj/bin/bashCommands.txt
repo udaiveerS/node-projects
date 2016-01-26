@@ -1,3 +1,0 @@
- nohup ./testScriptBash bool_test >/dev/null 2>&1 &
-
- http://stackoverflow.com/questions/12941083/get-the-output-of-a-shell-command-in-node-js

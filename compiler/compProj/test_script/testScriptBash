@@ -10,6 +10,7 @@ if [ "$#" -eq 2 ]; then
 fi
 
 SP="../test_script/"
+SP1="../test_script"
 
 #echo "basename $SP"
 fileTxt="${SP}${1}.txt"
@@ -52,7 +53,8 @@ if [ -f "$classFile" ]
     then
         echo "running the class file on JVM" >> ${logOut}
         echo '----------- Code Execution -----------' >> ${logOut}
-        (java $fileName) >> ${logOut}
+        echo java -cp ${SP} ${1} >> ${logOut}
+        java -cp ${SP} ${1} >> ${logOut}
     else
         echo "jasmin code generation error: .class file could not be generated" >> ${logOut}
         echo "terminating compilation..." >> ${logOut}

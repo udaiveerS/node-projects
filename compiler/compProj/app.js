@@ -12,6 +12,7 @@ var app = express();
 var bash = require("./lib/node-cli");
 var crypto = require("crypto");
 var compiler = require("./lib/compiler-factory");
+var cors = require('cors');
 
 // set up env variable
 app.set('env', "development");
@@ -29,23 +30,43 @@ hbs.registerPartials(__dirname + '/views/partials/about');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+// counter to delete files after every 10 compiled files
+
+var compilerCount  = 0;
+
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(cors());
 app.use('/', routes);
 app.use('/users', users);
 
-var router = express.Router();
+function makeid()
+{
+  var text = "";
+  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
-router.post('/compile', function(req, res, next) {
+  for( var i=0; i < 10; i++ )
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+  return text;
+}
+
+app.post('/compile', function(req, res, next) {
   try {
     var txt = req.body.txt;
-    var id = crypto.randomBytes(14).toString('hex');
+    var id = makeid();
+    //var id = "if_testerer"
     // create a compiler factory
     var aCompiler = compiler.compilerFactory(id, txt);
+    compilerCount++;
+    if(compilerCount >= 10) {
+      console.log("cleaning up");
+      bash.execute(aCompiler.cleanUpCommand);
+      compilerCount = 0;
+    }
   } catch (e) {
     res.status(400);
     res.json({"out": "invalid text format", "err": "invalid text format"});
@@ -54,6 +75,7 @@ router.post('/compile', function(req, res, next) {
   var responseObj = {out: "", err: "", j: ""};
   aCompiler.writeTxt()
     .then(() => {
+
       //execute the bash script to compile and run to produce all the files/errors/outputs
       return bash.execute(aCompiler.compileCommand);
     })
@@ -61,22 +83,23 @@ router.post('/compile', function(req, res, next) {
       //execute command to get the .out file
       return bash.execute(aCompiler.readOutFileCommand);
     })
-    .then(res => {
-      console.log(res);
-      responseObj.out = res;
+    .then(response => {
+      //console.log(response);
+      responseObj.out = response;
       //execute command to get the .j file
       return bash.execute(aCompiler.readJFileCommand)
     })
-    .then(res => {
-      console.log(res);
-      responseObj.j = res;
+    .then(obj => {
+      //console.log(obj);
+      responseObj.j = obj;
       //send the json object
-      res.json(responseObj);
-      // remove all files associated with program
-      return bash.execute(aCompiler.cleanUpCommand);
+      res.status(200);
+      res.json(JSON.stringify(responseObj));
+
+      return 'ok';
     })
     .catch(err => {
-     console.log(err);
+     //console.log(err);
       res.status(400);
       res.json({"out": "invalid text format", "err": "invalid text format"});
     });
