@@ -1,0 +1,10 @@
+trying to compile...
+Program parsing Successful
+Test Script compiler successfully compiled txt
+compiling jasmine file to .class file
+java -jar jasmin.jar CbabJRsrUQ.j
+file location for class file CbabJRsrUQ.class
+running the class file on JVM
+----------- Code Execution -----------
+in the function
+4.968
