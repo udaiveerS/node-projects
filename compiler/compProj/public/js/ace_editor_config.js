@@ -1,5 +1,8 @@
 var editor = ace.edit("editor");
 
+//var url = 'https://chat.q-apps.io/compile';
+var url = 'http://localhost:8040/compile';
+
 var userPrograms;
 
 var opts = {
@@ -89,7 +92,7 @@ $(window).load(function() {
         $(jasminOut).append(spinner2.el);
         $.ajax({
             type: "POST",
-            url: 'http://localhost:8040/compile',
+            url: url,
             data: obj,
             crossDomain: true,
             success: function(data, status, xhr) {
