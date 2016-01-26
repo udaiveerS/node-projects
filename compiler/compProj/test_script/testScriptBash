@@ -1,32 +1,26 @@
 #!/bin/sh
 
-fileName="$1" 
+fullName="$1" 
+fullPath="$2"
+fileName="$3"
 
-#if 2 arguments provided then create .txt file with input 
-if [ "$#" -eq 2 ]; then
-    input=$2
-    echo "creating ${fileName}.txt"
-    echo $input > "${fileName}.txt"
-fi
-
-SP="../test_script/"
-SP1="../test_script"
+SP="${fullPath}"
+SP1="${fullPath}"
 
 #echo "basename $SP"
-fileTxt="${SP}${1}.txt"
-fileJ="${SP}${1}.j"
-logOut="${SP}${1}.out"
-classFile="${SP}${1}.class"
-jar1="${SP}TestScript.jar"
-jar2="${SP}jasmin.jar"
+fileTxt="${fullName}.txt"
+fileJ="${fullName}.j"
+logOut="${fullName}.out"
+classFile="${fullName}.class"
 
-#echo "fileTxt = ${fileTxt}"
-#echo "fileJ = ${fileJ} "
-#echo "logOut = ${logOut}"
-
+jar1="${fullPath}TestScript.jar"
+jarTestScript="TestScript.jar"
+jar2="${fullPath}jasmin.jar"
 
 echo "trying to compile..." > "${logOut}"
-(java -jar ${jar1} "$fileTxt" >> "${logOut}") & pid=$!
+
+
+(java -jar "${jar1}" "$fileTxt" >> "${logOut}") & pid=$!
 ( sleep 2 && kill -HUP $pid ) 2>/dev/null & watcher=$!
 if wait $pid 2>/dev/null; then
     #echo "your_command finished"
@@ -46,15 +40,18 @@ fi
 
 # compile the jasmine files 
 echo "compiling jasmine file to .class file" >> ${logOut}
-java -jar $jar2 $fileJ -d ${SP} 
+echo "java -jar jasmin.jar ${fileName}.j" >> ${logOut}
+java -jar $jar2 "${fileJ}" -d "./test_script"
 
 # run the class files 
-if [ -f "$classFile" ]
+echo "file location for class file ${fileName}.class" >> ${logOut} 
+
+if [ -f $classFile ]
     then
         echo "running the class file on JVM" >> ${logOut}
+        #echo "java -cp ${fullName} ${fullName}"  >> ${logOut}
         echo '----------- Code Execution -----------' >> ${logOut}
-        echo java -cp ${SP} ${1} >> ${logOut}
-        java -cp ${SP} ${1} >> ${logOut}
+        java  -cp "${fullPath}" "${fileName}" >> ${logOut}
     else
         echo "jasmin code generation error: .class file could not be generated" >> ${logOut}
         echo "terminating compilation..." >> ${logOut}

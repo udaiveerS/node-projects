@@ -1,0 +1,32 @@
+trying to compile...
+Program parsing Successful
+Test Script compiler successfully compiled txt
+compiling jasmine file to .class file
+java -jar jasmin.jar wGGBnPReHw.j
+file location for class file wGGBnPReHw.class
+running the class file on JVM
+----------- Code Execution -----------
+CORRECT: 1 < 4
+Should Print else 10 < 4
+CORRECT: 10 > 4
+Should Print 3 > 4
+CORRECT: 10 >= 4
+CORRECT: 4 >= 4
+CORRECT: 1 <= 4
+CORRECT: 0.11 <= 0.11
+CORRECT: 2.44 == 2.44
+Should  Print else  2.44 != 2.44
+CORRECT: 2.0 != 3.0
+
+Total IF tests:
+14.0
+IF test passed:
+14.0
+Total ELSE tests:
+7.0
+ELSE test passed:
+7.0
+-----------------
+Total test
+21.0
+total test passed

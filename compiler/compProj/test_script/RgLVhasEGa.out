@@ -2,8 +2,9 @@ trying to compile...
 Program parsing Successful
 Test Script compiler successfully compiled txt
 compiling jasmine file to .class file
+java -jar jasmin.jar RgLVhasEGa.j
+file location for class file RgLVhasEGa.class
 running the class file on JVM
 ----------- Code Execution -----------
-java -cp ../test_script/ gTwodJtktT
 in the function
 4.968

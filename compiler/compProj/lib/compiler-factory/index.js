@@ -8,21 +8,32 @@ var fs = require("fs");
  * @param fileTxt
  * @returns {{jFile: string, txtFile: string, outFile: string, writeTxt: writeTxt, compileCommand: string, readOutFileCommand: string, readJFileCommand: string, cleanUpCommand: string}}
  */
-function compilerFactory(fileName, fileTxt) {
-    fileTxt = fileTxt || "sample\ntext\nstuff\n";
-    var prefixPath = "../test_script/";
-    var jFile = prefixPath + fileName + ".j";
-    var txtFile = prefixPath + fileName + ".txt";
-    var outFile = prefixPath + fileName + ".out";
+function compilerFactory(fileName, fileTxt, dirname, file_id) {
+    //console.log(fileName);
+    //console.log(dirname);
+    //console.log(file_id);
 
-    var compileCommand = "../test_script/testScriptBash " + fileName;
+    fileTxt = fileTxt || "sample\ntext\nstuff\n";
+    var jFile = fileName + ".j";
+    var txtFile = fileName + ".txt";
+    var outFile = fileName + ".out";
+
+    var txts = dirname + "*.txt";
+    var jays = dirname + "*.j";
+    var outs = dirname + "*.out";
+    var classes = dirname + "*.class";
+
+    var compileCommand = dirname + "testScriptBash " + fileName + " " + dirname + " " + file_id ;
     var readOutFile = "cat " + outFile;
     var readJFile = "cat " + jFile;
-    var cleanUp = "rm ../test_script/*.j ../test_script/*.class ../test_script/*.out ../test_script/*.txt";
 
-    function writeTxt() {
+    var cleanUp = "rm " + txts + " " + jays + " "  + outs +  " " + classes;
+
+    function writeTxt(fullpath) {
+     // console.log(fileTxt);
         return new Promise(function (resolve, reject) {
-            fs.writeFile(txtFile, fileTxt, (err) => {
+            fs.writeFile(txtFile, fileTxt,{ flags: 'wx' }, (err) => {
+                //console.log("eerr = " +  err);
                 if (err) reject(err);
                 resolve('saved');
             });

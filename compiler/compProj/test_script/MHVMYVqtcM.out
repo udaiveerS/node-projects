@@ -1,0 +1,7 @@
+trying to compile...
+Test Script compiler successfully compiled txt
+compiling jasmine file to .class file
+java -jar jasmin.jar MHVMYVqtcM.j
+file location for class file MHVMYVqtcM.class
+jasmin code generation error: .class file could not be generated
+terminating compilation...

@@ -1,4 +1,4 @@
-.class public gTwodJtktT
+.class public RgLVhasEGa
 .super java/lang/Object
 
 .field private static sum F
@@ -6,17 +6,17 @@
 
 
 .method public static doStuff2()V
-      getstatic gTwodJtktT/sum F                                     ;identifier
-      getstatic gTwodJtktT/t F                                     ;identifier
+      getstatic RgLVhasEGa/sum F                                     ;identifier
+      getstatic RgLVhasEGa/t F                                     ;identifier
       fadd
       ldc 4.032
       fsub
-      putstatic gTwodJtktT/sum F                                     ;pop value: assingment_node
+      putstatic RgLVhasEGa/sum F                                     ;pop value: assingment_node
        getstatic    java/lang/System/out Ljava/io/PrintStream;
        ldc "in the function"
        invokevirtual java/io/PrintStream.println(Ljava/lang/String;)V
        getstatic    java/lang/System/out Ljava/io/PrintStream;
-       getstatic     gTwodJtktT/sum F
+       getstatic     RgLVhasEGa/sum F
       invokestatic  java/lang/String.valueOf(F)Ljava/lang/String;
        invokevirtual java/io/PrintStream.println(Ljava/lang/String;)V
 return
@@ -37,10 +37,10 @@ return
 .method public static main([Ljava/lang/String;)V
 
       ldc 0.0
-      putstatic gTwodJtktT/t F                                     ;pop value: assingment_node
+      putstatic RgLVhasEGa/t F                                     ;pop value: assingment_node
       ldc 9.0
-      putstatic gTwodJtktT/sum F                                     ;pop value: assingment_node
-      invokestatic gTwodJtktT/doStuff2()V
+      putstatic RgLVhasEGa/sum F                                     ;pop value: assingment_node
+      invokestatic RgLVhasEGa/doStuff2()V
 
     return
 

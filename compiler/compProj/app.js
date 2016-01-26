@@ -60,7 +60,8 @@ app.post('/compile', function(req, res, next) {
     var id = makeid();
     //var id = "if_testerer"
     // create a compiler factory
-    var aCompiler = compiler.compilerFactory(id, txt);
+    var full_path = __dirname + "/test_script/"; 
+    var aCompiler = compiler.compilerFactory(full_path + id, txt, full_path , id);
     compilerCount++;
     if(compilerCount >= 10) {
       console.log("cleaning up");
@@ -71,11 +72,13 @@ app.post('/compile', function(req, res, next) {
     res.status(400);
     res.json({"out": "invalid text format", "err": "invalid text format"});
   }
+
   // create a file id.txt with the code which is in txt variable
   var responseObj = {out: "", err: "", j: ""};
-  aCompiler.writeTxt()
-    .then(() => {
-
+  //console.log(full_path);
+  aCompiler.writeTxt(full_path)
+    .then((datum) => {
+      //console.log('file ' + datum);
       //execute the bash script to compile and run to produce all the files/errors/outputs
       return bash.execute(aCompiler.compileCommand);
     })
@@ -87,7 +90,7 @@ app.post('/compile', function(req, res, next) {
       //console.log(response);
       responseObj.out = response;
       //execute command to get the .j file
-      return bash.execute(aCompiler.readJFileCommand)
+      return bash.execute(aCompiler.readJFileCommand);
     })
     .then(obj => {
       //console.log(obj);
@@ -99,7 +102,7 @@ app.post('/compile', function(req, res, next) {
       return 'ok';
     })
     .catch(err => {
-     //console.log(err);
+      //console.log(err);
       res.status(400);
       res.json({"out": "invalid text format", "err": "invalid text format"});
     });
