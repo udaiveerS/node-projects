@@ -1,6 +1,7 @@
 #!/bin/sh
 
-OS="mac"
+#OS="mac"
+OS="linux"
 
 fullName="$1" 
 fullPath="$2"
