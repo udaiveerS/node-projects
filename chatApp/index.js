@@ -73,7 +73,7 @@ function router(req,res) {
     res.setHeader('Access-Control-Allow-Headers', 'DNT,X-Mx-ReqToken,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type');
 
     if(req.method === 'GET') {
-      console.log(baseURI);
+      //console.log(baseURI);
       req.filePath = __dirname + (baseURI.pathname === '/' ? '/views/index-2.html' : baseURI.pathname);
 
         routes.GET(req,res);
