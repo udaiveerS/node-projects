@@ -72,10 +72,10 @@ var client = new medium.MediumClient({
 //  console.log(err);
 //  console.log(credentials);
 //});
-
-client.exchangeRefreshToken(refreshToken,function(err, credentials) {
-    console.log(credentials);
-});
+//
+//client.exchangeRefreshToken(refreshToken,function(err, credentials) {
+//    console.log(credentials);
+//});
 
 //var qs = require('qs');
 //var https = require('https');
