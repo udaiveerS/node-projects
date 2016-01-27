@@ -1,0 +1,8 @@
+trying to compile...
+Program parsing Successful
+Test Script compiler successfully compiled txt
+compiling jasmine file to .class file
+java -jar jasmin.jar mIktLuKPWJ.j
+file location for class file mIktLuKPWJ.class
+jasmin code generation error: .class file could not be generated
+terminating compilation...

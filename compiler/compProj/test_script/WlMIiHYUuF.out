@@ -1,0 +1,208 @@
+trying to compile...
+Program parsing Successful
+Test Script compiler successfully compiled txt
+compiling jasmine file to .class file
+java -jar jasmin.jar WlMIiHYUuF.j
+file location for class file WlMIiHYUuF.class
+running the class file on JVM
+----------- Code Execution -----------
+The first fibonacci number is: 
+0.0
+The second fibonacci number is: 
+1.0
+The next fibonacci number is: 
+1.0
+The next fibonacci number is: 
+2.0
+The next fibonacci number is: 
+3.0
+The next fibonacci number is: 
+5.0
+The next fibonacci number is: 
+8.0
+The next fibonacci number is: 
+13.0
+The next fibonacci number is: 
+21.0
+The next fibonacci number is: 
+34.0
+The next fibonacci number is: 
+55.0
+The next fibonacci number is: 
+89.0
+The next fibonacci number is: 
+144.0
+The next fibonacci number is: 
+233.0
+The next fibonacci number is: 
+377.0
+The next fibonacci number is: 
+610.0
+The next fibonacci number is: 
+987.0
+The next fibonacci number is: 
+1597.0
+The next fibonacci number is: 
+2584.0
+The next fibonacci number is: 
+4181.0
+The next fibonacci number is: 
+6765.0
+The next fibonacci number is: 
+10946.0
+The next fibonacci number is: 
+17711.0
+The next fibonacci number is: 
+28657.0
+The next fibonacci number is: 
+46368.0
+The next fibonacci number is: 
+75025.0
+The next fibonacci number is: 
+121393.0
+The next fibonacci number is: 
+196418.0
+The next fibonacci number is: 
+317811.0
+The next fibonacci number is: 
+514229.0
+The next fibonacci number is: 
+832040.0
+The next fibonacci number is: 
+1346269.0
+The next fibonacci number is: 
+2178309.0
+The next fibonacci number is: 
+3524578.0
+The next fibonacci number is: 
+5702887.0
+The next fibonacci number is: 
+9227465.0
+The next fibonacci number is: 
+1.4930352E7
+The next fibonacci number is: 
+2.4157816E7
+The next fibonacci number is: 
+3.9088168E7
+The next fibonacci number is: 
+6.3245984E7
+The next fibonacci number is: 
+1.02334152E8
+The next fibonacci number is: 
+1.65580128E8
+The next fibonacci number is: 
+2.67914272E8
+The next fibonacci number is: 
+4.334944E8
+The next fibonacci number is: 
+7.0140864E8
+The next fibonacci number is: 
+1.13490304E9
+The next fibonacci number is: 
+1.83631168E9
+The next fibonacci number is: 
+2.97121485E9
+The next fibonacci number is: 
+4.8075264E9
+The next fibonacci number is: 
+7.7787412E9
+The next fibonacci number is: 
+1.25862676E10
+The next fibonacci number is: 
+2.03650089E10
+The next fibonacci number is: 
+3.29512755E10
+The next fibonacci number is: 
+5.3316284E10
+The next fibonacci number is: 
+8.626756E10
+The next fibonacci number is: 
+1.39583848E11
+The next fibonacci number is: 
+2.25851408E11
+The next fibonacci number is: 
+3.65435257E11
+The next fibonacci number is: 
+5.9128663E11
+The next fibonacci number is: 
+9.5672192E11
+The next fibonacci number is: 
+1.54800855E12
+The next fibonacci number is: 
+2.50473035E12
+The next fibonacci number is: 
+4.0527389E12
+The next fibonacci number is: 
+6.5574692E12
+The next fibonacci number is: 
+1.06102081E13
+The next fibonacci number is: 
+1.71676774E13
+The next fibonacci number is: 
+2.77778855E13
+The next fibonacci number is: 
+4.4945562E13
+The next fibonacci number is: 
+7.2723443E13
+The next fibonacci number is: 
+1.17669001E14
+The next fibonacci number is: 
+1.90392444E14
+The next fibonacci number is: 
+3.08061428E14
+The next fibonacci number is: 
+4.98453872E14
+The next fibonacci number is: 
+8.0651527E14
+The next fibonacci number is: 
+1.30496917E15
+The next fibonacci number is: 
+2.11148444E15
+The next fibonacci number is: 
+3.41645375E15
+The next fibonacci number is: 
+5.5279381E15
+The next fibonacci number is: 
+8.9443918E15
+The next fibonacci number is: 
+1.44723304E16
+The next fibonacci number is: 
+2.34167222E16
+The next fibonacci number is: 
+3.788905E16
+The next fibonacci number is: 
+6.130577E16
+The next fibonacci number is: 
+9.9194821E16
+The next fibonacci number is: 
+1.60500591E17
+The next fibonacci number is: 
+2.59695404E17
+The next fibonacci number is: 
+4.20195995E17
+The next fibonacci number is: 
+6.798914E17
+The next fibonacci number is: 
+1.10008736E18
+The next fibonacci number is: 
+1.77997876E18
+The next fibonacci number is: 
+2.88006626E18
+The next fibonacci number is: 
+4.6600447E18
+The next fibonacci number is: 
+7.540111E18
+The next fibonacci number is: 
+1.2200156E19
+The next fibonacci number is: 
+1.9740267E19
+The next fibonacci number is: 
+3.1940421E19
+The next fibonacci number is: 
+5.168069E19
+The next fibonacci number is: 
+8.362111E19
+The next fibonacci number is: 
+1.353018E20
+The next fibonacci number is: 
+2.1892292E20
