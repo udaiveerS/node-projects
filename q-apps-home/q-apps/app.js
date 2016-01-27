@@ -33,6 +33,8 @@ app.use(function(req, res, next) {
   next(err);
 });
 
+var refreshToken = "2817be29ef1e2a8c69439720a885e61e417569feed694c584cfb0a634c69a6c99";
+
 // error handlers
 
 // development error handler
@@ -47,7 +49,6 @@ if (app.get('env') === 'development') {
   });
 }
 
-// production error handler
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
   res.status(err.status || 500);
@@ -58,63 +59,72 @@ app.use(function(err, req, res, next) {
 });
 
 var client = new medium.MediumClient({
-  clientId: '132d940695be',
-  clientSecret: 'af9aa97aa69364beb36225b79b231c882e537ca1'
+  clientId: 'e7d362f62e11',
+  clientSecret: 'f0134b407c0b443415390fd8216cac6d3a8fb957'
 });
 
-var url = client.getAuthorizationUrl('secretState', 'https://q-apps.io/api/medium', [
-  medium.Scope.BASIC_PROFILE, medium.Scope.PUBLISH_POST
-]);
-
-
-var qs = require('qs');
-var https = require('https');
-
-var data  = {
-    code: "f79dd700c137",
-    client_id: '132d940695be',
-    client_secret: 'af9aa97aa69364beb36225b79b231c882e537ca1',
-    grant_type: 'authorization_code',
-    redirect_uri: "https://q-apps.io/api/medium"
-};
-
-console.log(qs.stringify(data));
+//var url = client.getAuthorizationUrl('secretState', 'http://example.com/code', [
+//  medium.Scope.BASIC_PROFILE, medium.Scope.PUBLISH_POST
+//]);
 //console.log(url);
-getAccessToken(data);
 
-function getAccessToken(params) {
-  var requestParams = {
-    host: 'api.medium.com',
-    port: 443,
-    method: 'POST',
-    path: '/v1/tokens',
-    grant_type: "authorization_code",
-    data: qs.stringify(params)
-  };
+//client.exchangeAuthorizationCode('70c53149b788', 'http://example.com/code', function (err, credentials) {
+//  console.log(err);
+//  console.log(credentials);
+//});
 
-  var req = https.request(requestParams, function (res) {
-    var obj = '';
-    res.on('data', function (data) {
-      obj += data;
-      console.log(data);
-    });
+client.exchangeRefreshToken(refreshToken,function(err, credentials) {
+    console.log(credentials);
+});
 
-    res.on('end', function () {
-      var payload;
-      try {
-        payload = JSON.parse(obj);
-        console.log(payload);
-      } catch (err) {
-        console.log(err);
-      }
-    });
-
-  }).on('error', function (err) {
-    console.log(err);
-  });
-
-  req.end();
-}
+//var qs = require('qs');
+//var https = require('https');
+//
+//var data  = {
+//    code: "f79dd700c137",
+//    client_id: '132d940695be',
+//    client_secret: 'af9aa97aa69364beb36225b79b231c882e537ca1',
+//    grant_type: 'authorization_code',
+//    redirect_uri: "https://q-apps.io/api/medium"
+//};
+//
+//console.log(qs.stringify(data));
+////console.log(url);
+//getAccessToken(data);
+//
+//function getAccessToken(params) {
+//  var requestParams = {
+//    host: 'api.medium.com',
+//    port: 443,
+//    method: 'POST',
+//    path: '/v1/tokens',
+//    grant_type: "authorization_code",
+//    data: qs.stringify(params)
+//  };
+//
+//  var req = https.request(requestParams, function (res) {
+//    var obj = '';
+//    res.on('data', function (data) {
+//      obj += data;
+//      console.log(data);
+//    });
+//
+//    res.on('end', function () {
+//      var payload;
+//      try {
+//        payload = JSON.parse(obj);
+//        console.log(payload);
+//      } catch (err) {
+//        console.log(err);
+//      }
+//    });
+//
+//  }).on('error', function (err) {
+//    console.log(err);
+//  });
+//
+//  req.end();
+//}
 
 //var request = require('request');
 //
