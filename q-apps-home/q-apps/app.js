@@ -4,7 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var medium = require('medium-sdk')
+var medium = require('./lib/medium');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
@@ -33,8 +33,6 @@ app.use(function(req, res, next) {
   next(err);
 });
 
-var refreshToken = "2817be29ef1e2a8c69439720a885e61e417569feed694c584cfb0a634c69a6c99";
-
 // error handlers
 
 // development error handler
@@ -60,115 +58,44 @@ app.use(function(err, req, res, next) {
 
 var client = new medium.MediumClient({
   clientId: 'e7d362f62e11',
-  clientSecret: 'f0134b407c0b443415390fd8216cac6d3a8fb957'
+  clientSecret: 'f0134b407c0b443415390fd8216cac6d3a8fb957',
+  refreshToken:'2681bd8f34e956726880cff1cfbf364e2b682f80afa62fe3e06dd696de7e4788d',
+  accessToken: '2ab4c477aa51d38b2514e63e3557ab1e6a51a84e52740542000e9d655773e7e30'
 });
 
-//var url = client.getAuthorizationUrl('secretState', 'http://example.com/code', [
+consoel.log(client);
+var redirectURL = 'http://example.com/code';
+
+//var url = client.getAuthorizationUrl('secretState', redirectURL, [
 //  medium.Scope.BASIC_PROFILE, medium.Scope.PUBLISH_POST
 //]);
+//
 //console.log(url);
 
-//client.exchangeAuthorizationCode('70c53149b788', 'http://example.com/code', function (err, credentials) {
+client.exchangeRefreshToken(function(err,tokens) {
+  console.log(err);
+  console.log(tokens);
+  client.getUser(function (err, user) {
+   console.log(user) ;
+  });
+});
+
+
+//client.exchangeAuthorizationCode('28d08755869d',redirectURL, function (err, token) {
+//  console.log(token);
 //  console.log(err);
-//  console.log(credentials);
+//  client.refreshToken = token && token.refresh_token;
+//  client.getUser(function (err, user) {
+//      client.createPost({
+//        userId: user.id,
+//        title: 'A new post',
+//        contentFormat: medium.PostContentFormat.HTML,
+//        content: '<h1>A New Post</h1><p>This is my new post.</p>',
+//        publishStatus: medium.PostPublishStatus.DRAFT
+//      }, function (err, post) {
+//        console.log(token, user, post)
+//      })
+//  })
 //});
-//
-//client.exchangeRefreshToken(refreshToken,function(err, credentials) {
-//    console.log(credentials);
-//});
-
-//var qs = require('qs');
-//var https = require('https');
-//
-//var data  = {
-//    code: "f79dd700c137",
-//    client_id: '132d940695be',
-//    client_secret: 'af9aa97aa69364beb36225b79b231c882e537ca1',
-//    grant_type: 'authorization_code',
-//    redirect_uri: "https://q-apps.io/api/medium"
-//};
-//
-//console.log(qs.stringify(data));
-////console.log(url);
-//getAccessToken(data);
-//
-//function getAccessToken(params) {
-//  var requestParams = {
-//    host: 'api.medium.com',
-//    port: 443,
-//    method: 'POST',
-//    path: '/v1/tokens',
-//    grant_type: "authorization_code",
-//    data: qs.stringify(params)
-//  };
-//
-//  var req = https.request(requestParams, function (res) {
-//    var obj = '';
-//    res.on('data', function (data) {
-//      obj += data;
-//      console.log(data);
-//    });
-//
-//    res.on('end', function () {
-//      var payload;
-//      try {
-//        payload = JSON.parse(obj);
-//        console.log(payload);
-//      } catch (err) {
-//        console.log(err);
-//      }
-//    });
-//
-//  }).on('error', function (err) {
-//    console.log(err);
-//  });
-//
-//  req.end();
-//}
-
-//var request = require('request');
-//
-//var params = {
-//  code: "",
-//  client_id: "",
-//  client_secret: "",
-//  grant_type: "",
-//  redirect_uri: "",
-//};
-
-//var options = {
-//  host: 'api.medium.com',
-//  port: 443,
-//  path: '/v1/tokens',
-//  method: 'POST',
-//  contentType: 'application/x-www-form-urlencoded',
-//  accept: 'application/json',
-//  data: qs.stringify(params)
-//};
-//
-//console.log("Start");
-//
-//var x = http.request(options, function(res) {
-//  console.log("Connected");
-//  var body = ""
-//
-//  res.on('data', function (data) {
-//    body += data;
-//    console.log(data);
-//  });
-//
-//  res.on('end', function () {
-//    var payload;
-//    try {
-//      console.log(body);
-//      payload = JSON.parse(body);
-//      console.log(payload);
-//    } catch (err) {
-//
-//    }
-//
-//  });
-//});
-
 
 module.exports = app;
