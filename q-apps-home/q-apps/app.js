@@ -81,9 +81,10 @@ function scrapeMedium() {
               //console.log(window.$( this ).text());
               var title = window.$(this).find('h3').text();
               var date = window.$(this).find('span>a.link.link--darken').text();
+              var url = window.$(this).find('article.postArticle>a').attr('href');
               //console.log(title);
               //console.log(date);
-              posts.push({title: title, date: date});
+              posts.push({title: title, date: date, url: url});
               resolve(posts);
             });
           }
