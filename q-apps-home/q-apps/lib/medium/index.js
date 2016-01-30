@@ -88,14 +88,15 @@ function MediumClient(options) {
   this._clientSecret = options.clientSecret;
   this._accessToken = options.accessToken;
   this._refreshToken = options.refreshToken;
+  this._expires_at = 0;
 }
 
-function updateClientInfo(options) {
-  if(options) {
-    this._accessToken = options.access_token;
-    this._refreshToken = options.refresh_token;
-  }
-}
+
+MediumClient.prototype.checkExp = function() {
+  var timeExp = Number(this._expires_at);
+  var now =new Date().getTime();
+  return timeExp <= now;
+};
 
 /**
  * Sets an access token on the client used for making requests.
@@ -308,6 +309,7 @@ MediumClient.prototype.createPostInPublication = function (options, callback) {
  * @param {NodeCallback} callback
  */
 MediumClient.prototype._acquireAccessToken = function (params, callback) {
+  //console.log(params);
   this._makeRequest({
     method: 'POST',
     path: '/v1/tokens',
@@ -315,7 +317,9 @@ MediumClient.prototype._acquireAccessToken = function (params, callback) {
     data: qs.stringify(params)
   }, function (err, data) {
     if (!err) {
-      this._accessToken = data.access_token
+      this._accessToken = data.access_token;
+      this._refreshToken = data.refresh_token;
+      this._expires_at = data.expires_at;
     }
     callback(err, data)
   }.bind(this))

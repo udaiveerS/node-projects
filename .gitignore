@@ -6,7 +6,9 @@ logs
 pids
 *.pid
 *.seed
-
+*.j
+*.class
+*.out
 
 # User-specific stuff:
 .idea/workspace.xml
