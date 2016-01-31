@@ -3,6 +3,7 @@
 <head>
     <title>Projects</title>
     {{> style_sheets}}
+    <link rel='stylesheet' href='/public/stylesheets/projects.css' />
 </head>
     <body>
         <div class="container">
@@ -13,12 +14,98 @@
             </div>
         </div>
         {{> nav}}
+        <hr class="style-two">
 
-        <div class="container">
-            <div class="row">
+        <div id="projects-container" class="container">
+            <div class="row proj">
+                <div class="col-xs-offset-2 col-xs-8">
+                    <h1><a target="" href="https://github.com/udaiveerS/node-projects">Online Compiler</a></h1>
+                </div>
+                <div class="col-xs-offset-2 col-xs-8">
+                    <a href="https://github.com/udaiveerS/node-projects"><img src="/public/images/compiler.png" class="proj-img img-responsive" alt="Responsive image"></a>
+                </div>
+                <div class="col-xs-offset-2 col-xs-8">
+                    <p>
+                        TestScript is a language that was designed for CS153: Compiler Design Class. The language is
+                        loosely based on Type Script The original repo for TestScript compiler can be found on my git
+                        profile page. The online compiler is providing an online compiling service via node js with a
+                        UI so anyone can write a program in TestScript for them selves. Link is:
+                        <a href="https://compiler.q-apps.io"> compiler.q-apps.io</a>.
+                    </p>
+                </div>
             </div>
+
+            <div class="row proj">
+                <div class="col-xs-offset-2 col-xs-8">
+                    <h1><a target="" href="https://github.com/udaiveerS/node-projects">Chat Server</a></h1>
+                </div>
+                <div class="col-xs-offset-2 col-xs-8">
+                    <a href="https://github.com/udaiveerS/node-projects"><img src="/public/images/chat.png" class="proj-img img-responsive" alt="Responsive image"></a>
+                </div>
+                <div class="col-xs-offset-2 col-xs-8">
+                    <p>
+                        The Chat server is a project that is built in node.js and Socket.io using the bare minimum
+                        libraries. For this project I did not used express of mongoose, instead I used the connection
+                        library provided by mongoDB and I built my own way to do routing. Chat server has a working
+                        online demo at <a href="https://chat.q-apps.io"> chat.q-apps.io</a>.
+                    </p>
+                </div>
+            </div>
+
+            <div class="row proj">
+                <div class="col-xs-offset-2 col-xs-8">
+                    <h1><a target="" href="https://github.com/udaiveerS/CS-153">Java Compiler</a></h1>
+                </div>
+                <div class="col-xs-offset-2 col-xs-8">
+                    <a href="https://github.com/udaiveerS/CS-153"><img src="/public/images/java.png" class="proj-img img-responsive" alt="Responsive image"></a>
+                </div>
+                <div class="col-xs-offset-2 col-xs-8">
+                    <p>
+                        TestScript is the final Eclipse project base on the TypeScript language specs. TestScript is
+                        sectioned into 3 packages frontend/Intermediate/backend. The project includes test programs
+                        that can be compiled and run using the JVM. Each sample program produces a .jasmine file
+                        which then can be compiled into a corresponding .class file and executed on the JVM.
+                    </p>
+                </div>
+            </div>
+
+            <div class="row proj">
+                <div class="col-xs-offset-2 col-xs-8">
+                    <h1><a target="" href="https://github.com/udaiveerS/node-projects">Udaiveer.me</a></h1>
+                </div>
+                <div class="col-xs-offset-2 col-xs-8">
+                    <a href="https://github.com/udaiveerS/node-projects"><img src="/public/images/blog.png" class="proj-img img-responsive" alt="Responsive image"></a>
+                </div>
+                <div class="col-xs-offset-2 col-xs-8">
+                    <p>
+                        Their is more to this blog than just simple static content. As someone that really does
+                        not want too much work trying to keep all my social media links updated. I have made this
+                        website self updating. I frequently write blogs on Medium and instead of trying to update
+                        this website every time I write a blog. I have set the blog entries to update every
+                        day. In the end it is less work for me and the website will always show the most up-to date content.
+                    </p>
+                </div>
+            </div>
+
+            <div class="row proj">
+                <div class="col-xs-offset-2 col-xs-8">
+                    <h1><a target="" href="https://github.com/udaiveerS/D3-Interactive-Tree"> D3 Tree</a></h1>
+                </div>
+
+                <div class="col-xs-offset-2 col-xs-8">
+                    <a href="https://github.com/udaiveerS/D3-Interactive-Tree"><img src="/public/images/D3.png" class="proj-img img-responsive" alt="Responsive image"></a>
+                </div>
+
+                <div class="col-xs-offset-2 col-xs-8">
+                    <p>
+                        An interactive self orienting tree with build with D3. Allows deletion and insertions at any level.
+                        Can potentially be used to edit any hierarchical data in json format by binding data to nodes. The
+                        Tree also allows renaming of nodes.
+                    </p>
+                </div>
+            </div>
+
         </div>
         {{> scripts}}
-        <hr class="style-two">
     </body>
 </html>
