@@ -48,6 +48,7 @@ app.get('/posts', function(req,res) {
   res.json(posts);
 });
 
+
 var mins = 60;
 setInterval(function() {
  scrapeMedium()
