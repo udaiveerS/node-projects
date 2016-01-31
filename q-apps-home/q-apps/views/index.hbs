@@ -6,34 +6,42 @@
 </head>
 <body>
 
-    <div class="container-fluid">
-       <div class="row">
-           <div id="profile-container">
-               <div class="profile">
-                   <img src="/public/images/profile2.png" alt="profile picture" id="profile-picture">
-                   <h3>@uda400</h3>
-               </div>
-           </div>
-       </div>
-    </div>
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="custom-nav">
-                   <ul>
-                       <li><a id='home' href="/">Blogs</a></li>
-                       <li><a id='projects' href="/">Projects</a></li>
-                   </ul>
+<div class="container-fluid">
+    <div class="row">
+        <div id="profile-container">
+            <div class="profile">
+                <img src="/public/images/profile2.png" alt="profile picture" id="profile-picture">
+                <h3>@uda400</h3>
+                <div style="margin-top:.5em;">
+                    <i class="fa fa-twitter fa-2x"></i>
+                    <i class="fa fa-linkedin-square fa-2x"></i>
+                    <i class="fa fa-medium fa-2x"></i>
+                    <i class="fa fa-envelope fa-2x"></i>
+                    <i class="fa fa-github"></i>
                 </div>
             </div>
         </div>
     </div>
-    <div id="blogs" class="container">
-        <div class="row">
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="custom-nav">
+                <ul>
+                    <li><a id='home' href="/">Blogs</a></li>
+                    <li><a id='projects' href="/">Projects</a></li>
+                </ul>
+            </div>
         </div>
     </div>
+</div>
+<div id="blogs" class="container">
+    <div class="row">
+    </div>
+</div>
 
-    {{> footer}}
-    <script src="/public/javascripts/main.js"></script>
+{{> footer}}
+<script src="/public/javascripts/main.js"></script>
 </body>
 </html>
