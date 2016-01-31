@@ -7,7 +7,7 @@ var activeUsers = 0;
 // socket.io endpoint
 var suffix = '/socket.io/socket.io.js';
 
-var servo = 'chat.q-apps.io';
+var servo = 'chat.udaiveer-me.io';
 //var servo = '';
 //var host = 'localhost';
 //socket up URI

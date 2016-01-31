@@ -9,6 +9,7 @@ pids
 *.j
 *.class
 *.out
+*.swp
 
 # User-specific stuff:
 .idea/workspace.xml
