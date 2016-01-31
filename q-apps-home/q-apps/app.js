@@ -10,7 +10,7 @@ var users = require('./routes/users');
 var nodeCli = require('./lib/node-cli');
 var $ = require('jquery');
 var jsdom = require("jsdom");
-var hbs = require('hbs')
+var hbs = require('hbs');
 
 var app = express();
 
