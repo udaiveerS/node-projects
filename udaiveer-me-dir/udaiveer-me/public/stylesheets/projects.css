@@ -3,21 +3,48 @@
     margin-top: 1em;
 }
 
-#projects-head h1 {
-    font-size: 4em;
+.proj p {
+    margin-top: 1em;
 }
 
-#projects-container p {
-    font-size: 1.5em;
+@media all and (min-width: 960px) {
+    p{
+        font-size: 22px;
+    }
+
+    #projects-head h1 {
+        font-size: 35px;
+    }
+}
+
+@media all and (max-width: 959px) and (min-width: 600px) {
+    p{
+        font-size: 18px;
+    }
+
+    #projects-head h1 {
+        font-size: 28px;
+    }
+}
+
+@media all and (max-width: 599px) and (min-width: 50px) {
+    p{
+        font-size: 15px;
+    }
+
+    #custom-nav a {
+        font-size: 13px;
+    }
+
+    #projects-head h1 {
+        font-size: 24px;
+    }
 }
 
 .proj {
     margin-bottom: 1em;
 }
 
-.proj p {
-    margin-top: 1em;
-}
 
 hr.style-two {
     border: 0;
