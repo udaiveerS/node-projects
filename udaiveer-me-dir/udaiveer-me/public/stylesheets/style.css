@@ -23,7 +23,6 @@ body {
     text-align: center;
     padding: 0;
     margin: 0;
-    font-size: 1.5em;
 }
 
 .custom-nav>ul {
@@ -60,12 +59,7 @@ ul a:hover {
     text-align: right;
 }
 
-#blogs {
-    font-size: 1.5em;
-}
-
 .year {
-    font-size: 1.7em;
     margin-top: 1em;
     margin-bottom: .3em;
 }
@@ -73,3 +67,22 @@ ul a:hover {
 .blog-entry {
     padding: .3em 0;
 }
+
+
+
+.profile h3 {
+    font-size: 2em;
+}
+
+.custom-nav {
+    font-size: 1.5em;
+}
+
+.year {
+    font-size: 2em;
+}
+
+.blog-entry {
+    font-size: 1.4em;
+}
+

@@ -1,5 +1,5 @@
-//var url = "http://localhost:8060/posts";
-var url = "http://udaiveer.me/posts";
+var url = "http://localhost:8060/posts";
+//var url = "http://udaiveer.me/posts";
 
 $(window).load(function() {
   console.log('window loaded');
@@ -29,18 +29,18 @@ function appendBlogs(blogs) {
 
   keys.forEach(function(dateKey) {
     var time = '<div class="row">' +
-      '<div class="year col-xs-offset-1 col-md-offset-2 col-md-10 col-xs-11">' + dateKey + '</div>' +
+      '<div class="year col-xs-offset-1 col-lg-offset-2 col-md-7 col-lg-7">' + dateKey + '</div>' +
       '</div>';
     $(blogsContainer).append(time);
     if (blogs.hasOwnProperty(dateKey)) {
       blogs[dateKey].forEach(function (elem) {
         var blogEntry = "<div class=\"row blog-entry\">" +
-                          "<div class=\"col-xs-offset-1 col-md-offset-2 col-xs-11 col-md-6\">" +
+                          "<div class=\"col-xs-offset-1 col-lg-offset-2 col-sm-7 col-md-7 col-lg-5\">" +
                             "<a href=\"" + elem.url + "\">" +
                               elem.title +
                             "</a>" +
                           "</div>" +
-                        "<div class=\"visible-lg col-lg-2 time\"><span>" + elem.date + "</span></div>" +
+                        "<div class=\"hidden-xs col-sm-3 col-md-3 col-lg-3 time\"><span>" + elem.date + "</span></div>" +
                         "</div>";
         $(blogsContainer).append(blogEntry);
       });

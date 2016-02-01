@@ -50,7 +50,7 @@ app.get('/posts', function(req,res) {
 });
 
 
-var mins = 60;
+var mins = 1;
 setInterval(function() {
  scrapeMedium()
   .then((array) => {
@@ -71,7 +71,7 @@ function scrapeMedium() {
   return new Promise(function(resolve, reject) {
     nodeCli.execute("phantomjs " + __dirname + "/bin/test.js")
       .then((out) => {
-        console.log(out);
+        //console.log(out);
         return nodeCli.execute("cat " + __dirname + "/medium.txt");
       })
       .then((out) => {
@@ -83,11 +83,11 @@ function scrapeMedium() {
             window.$('div.block.block--inset').each(function (elem) {
               //console.log(window.$( this ).text());
               var title = window.$(this).find('h3').text();
-              console.log(title);
+              //console.log(title);
               var date = window.$(this).find('span>a.link--darken').text();
-              console.log(date);
+              //console.log(date);
               var url = window.$(this).find('article.postArticle>a').attr('href');
-              console.log(url);
+              //console.log(url);
               //console.log(title);
               //console.log(date);
               posts.push({title: title, date: date, url: url});
