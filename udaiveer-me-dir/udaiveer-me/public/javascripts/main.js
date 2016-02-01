@@ -1,5 +1,5 @@
 //var url = "http://localhost:8060/posts";
-var url = "https://udaiveer.me/posts";
+var url = "http://udaiveer.me/posts";
 
 $(window).load(function() {
   console.log('window loaded');

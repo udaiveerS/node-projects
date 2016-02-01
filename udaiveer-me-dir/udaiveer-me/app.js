@@ -34,18 +34,19 @@ app.use('/users', users);
 
 
 
+var posts2 = [];
 var posts = [];
 
 scrapeMedium()
   .then((array) => {
-    posts = array;
+   posts2 = array;
   })
   .catch((err) => {
     console.log(err);
   });
 
 app.get('/posts', function(req,res) {
-  res.json(posts);
+  res.json(posts2);
 });
 
 
@@ -53,12 +54,12 @@ var mins = 60;
 setInterval(function() {
  scrapeMedium()
   .then((array) => {
-    posts = array;
+    posts2 = array;
   })
   .catch((err) => {
     console.log(err);
   });
-}, mins * 60 * 60);
+}, mins * 60 * 1000);
 
 
 /**
@@ -71,23 +72,27 @@ function scrapeMedium() {
     nodeCli.execute("phantomjs " + __dirname + "/bin/test.js")
       .then((out) => {
         console.log(out);
-        return nodeCli.execute("cat " + __dirname + "/bin/medium.txt");
+        return nodeCli.execute("cat " + __dirname + "/medium.txt");
       })
       .then((out) => {
+        posts= [];
         jsdom.env(
           out,
           ["https://code.jquery.com/jquery-2.2.0.min.js"],
           function (err, window) {
-            window.$('div.block.block--inset.block--list').each(function (elem) {
+            window.$('div.block.block--inset').each(function (elem) {
               //console.log(window.$( this ).text());
               var title = window.$(this).find('h3').text();
-              var date = window.$(this).find('span>a.link.link--darken').text();
+              console.log(title);
+              var date = window.$(this).find('span>a.link--darken').text();
+              console.log(date);
               var url = window.$(this).find('article.postArticle>a').attr('href');
+              console.log(url);
               //console.log(title);
               //console.log(date);
               posts.push({title: title, date: date, url: url});
-              resolve(posts);
             });
+            resolve(posts);
           }
         );
       })
