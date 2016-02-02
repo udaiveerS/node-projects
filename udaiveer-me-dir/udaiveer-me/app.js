@@ -50,7 +50,7 @@ app.get('/posts', function(req,res) {
 });
 
 
-var mins = 1;
+var hours = 1;
 setInterval(function() {
  scrapeMedium()
   .then((array) => {
@@ -59,7 +59,7 @@ setInterval(function() {
   .catch((err) => {
     console.log(err);
   });
-}, mins * 60 * 1000);
+}, hours * 60 * 60 * 1000);
 
 
 /**
