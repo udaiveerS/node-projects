@@ -7,6 +7,10 @@
     margin-top: 1em;
 }
 
+img {
+    width: 100%;
+}
+
 @media all and (min-width: 960px) {
     p{
         font-size: 22px;
