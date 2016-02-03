@@ -45,12 +45,12 @@ fi
 echo "compiling jasmine file to .class file" >> ${logOut}
 echo "java -jar jasmin.jar ${fileName}.j" >> ${logOut}
 
-if [ $OS=="mac" ] 
-    then
-        java -jar $jar2 "${fileJ}" -d "../test_script"
-    else
+#if [ $OS=="mac" ] 
+#    then
+#        java -jar $jar2 "${fileJ}" -d "../test_script"
+#    else
         java -jar $jar2 "${fileJ}" -d "./test_script"
-fi
+#fi
 
 # run the class files 
 echo "file location for class file ${fileName}.class" >> ${logOut} 
