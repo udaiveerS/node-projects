@@ -46,14 +46,17 @@ a:hover {
 }
 
 a:hover {
-    color:           #a7a7a7;
-    text-decoration: underline;
+    border-bottom: 1px solid #a7a7a7;
 }
 
 .active {
     color: #a7a7a7 !important;
     text-decoration: underline !important;
 }
+
+.blog-link {
+      border-bottom: 1px solid #a7a7a7;
+} 
 
 .time {
     color: #a7a7a7;

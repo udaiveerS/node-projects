@@ -36,7 +36,7 @@ function appendBlogs(blogs) {
       blogs[dateKey].forEach(function (elem) {
         var blogEntry = "<div class=\"row blog-entry\">" +
                           "<div class=\"col-xs-offset-1 col-lg-offset-2 col-sm-7 col-md-7 col-lg-5\">" +
-                            "<a href=\"" + elem.url + "\">" +
+                            "<a class=\"blog-link\" href=\"" + elem.url + "\">" +
                               elem.title +
                             "</a>" +
                           "</div>" +
