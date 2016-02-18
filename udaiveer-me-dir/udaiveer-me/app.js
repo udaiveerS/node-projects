@@ -83,13 +83,16 @@ function scrapeMedium() {
             window.$('div.block.block--inset').each(function (elem) {
               //console.log(window.$( this ).text());
               var title = window.$(this).find('h3').text();
+              if(!title) {
+                title = window.$(this).find('h2').text()
+              }
               //console.log(title);
               var date = window.$(this).find('span>a.link--darken').text();
               //console.log(date);
               var url = window.$(this).find('article.postArticle>a').attr('href');
-              //console.log(url);
-              //console.log(title);
-              //console.log(date);
+              console.log(url);
+              console.log(title);
+              console.log(date);
               posts.push({title: title, date: date, url: url});
             });
             resolve(posts);
