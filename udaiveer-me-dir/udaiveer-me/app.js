@@ -39,6 +39,7 @@ var posts = [];
 
 scrapeMedium()
   .then((array) => {
+    //console.log(array);
    posts2 = array;
   })
   .catch((err) => {
@@ -60,8 +61,7 @@ setInterval(function() {
     console.log(err);
   });
 }, hours * 60 * 60 * 1000);
-
-
+//  hours * 60 * 60 * 1000
 /**
  * Scrapes my medium page and return an array of objects
  * {title: 'title', date: 'date'}]
@@ -71,17 +71,16 @@ function scrapeMedium() {
   return new Promise(function(resolve, reject) {
     nodeCli.execute("phantomjs " + __dirname + "/bin/test.js")
       .then((out) => {
-        //console.log(out);
         return nodeCli.execute("cat " + __dirname + "/medium.txt");
       })
       .then((out) => {
         posts= [];
+        //console.log("making selection");
         jsdom.env(
           out,
           ["https://code.jquery.com/jquery-2.2.0.min.js"],
           function (err, window) {
-            window.$('div.block.block--inset').each(function (elem) {
-              //console.log(window.$( this ).text());
+            window.$('.block.block--inset').each(function (elem) {
               var title = window.$(this).find('h3').text();
               if(!title) {
                 title = window.$(this).find('h2').text()
@@ -90,9 +89,9 @@ function scrapeMedium() {
               var date = window.$(this).find('span>a.link--darken').text();
               //console.log(date);
               var url = window.$(this).find('article.postArticle>a').attr('href');
-              console.log(url);
-              console.log(title);
-              console.log(date);
+              //console.log("url: " + url);
+              //console.log("title: " + title);
+              //console.log("date: " + date);
               posts.push({title: title, date: date, url: url});
             });
             resolve(posts);

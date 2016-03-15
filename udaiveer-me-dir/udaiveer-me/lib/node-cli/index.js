@@ -2,7 +2,7 @@ var exec = require('child_process').exec;
 
 function execute(command){
     return new Promise(function(resolve, reject)  {
-        exec(command, function(error, stdout, stderr){
+        exec(command, {maxBuffer: 1024 * 1000}, function(error, stdout, stderr){
           //console.log(error);
           //console.log(stdout);
           //console.log(stderr);

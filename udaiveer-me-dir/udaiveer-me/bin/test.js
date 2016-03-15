@@ -3,7 +3,7 @@ var page = require('webpage').create();
 page.open('https://medium.com/@uda/latest?count=1000', function(status) {
     function writePage() {
         var html = page.evaluate(function () {
-            var root = document.getElementsByTagName("html")[0];
+            var root = document.getElementsByClassName("blockGroup blockGroup--posts")[0];
             var html = root ? root.outerHTML : document.body.innerHTML;
             return html
         });

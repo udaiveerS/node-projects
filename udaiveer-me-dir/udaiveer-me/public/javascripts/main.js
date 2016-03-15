@@ -2,12 +2,12 @@
 var url = "http://udaiveer.me/posts";
 
 $(window).load(function() {
-  console.log('window loaded');
+  //console.log('window loaded');
   $.get(url, function( data ) {
     console.log(data);
     var blogs = groupByYear(data);
     appendBlogs(blogs);
-    console.log(blogs);
+    //console.log(blogs);
   });
 
 });
